@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    //States
+    public enum playerState {ground, flight}
+    public playerState state;   
+
     //Movement
     public float speed=6f;
     public CharacterController controller;
@@ -15,12 +19,16 @@ public class PlayerController : MonoBehaviour
 
     //Jump
     public float jumpSpeed = 8f;
-    public float gravity = -9.81f;
+    public float gravity = -20f;
     public Transform groundCheck;
     private float checkDistance = 0.4f;
     public LayerMask groundMask;
     Vector3 velocity;
     private bool isGrounded, doubleJump;
+
+    //Flight
+    public float forwardSpeed = 25, strafeSpeed = 7.5f, hoverSpeed = 5f;
+    private float activeForwardSpeed, activeStrafeSpeed, activeHoverSpeed;
 
     // Start is called before the first frame update
     void Start()
@@ -32,21 +40,32 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Movement();
-        Jump();
-        velocity.y += gravity * Time.deltaTime;
+        if (state == playerState.ground)
+        {
+            Movement();
+            velocity.y += gravity * Time.deltaTime;
+        }
+        else
+        {
+            Flight();
+        }
+        
         
     }
 
     // Update is called once per frame
     void Update()
     {
-        isGrounded = Physics.CheckSphere(groundCheck.position,checkDistance,groundMask);
-        if (isGrounded && velocity.y < 0)
+        if (state == playerState.ground)
         {
-            velocity.y = -2f;
-            doubleJump = false;
+            isGrounded = Physics.CheckSphere(groundCheck.position, checkDistance, groundMask);
+            if (isGrounded && velocity.y < 0)
+            {
+                velocity.y = -2f;
+                doubleJump = false;
+            }
         }
+        
     }
 
     private void Movement()
@@ -88,8 +107,18 @@ public class PlayerController : MonoBehaviour
         controller.Move(velocity * Time.deltaTime);
     }
 
-    private void Jump()
+    private void Flight()
     {
-       
+        activeForwardSpeed = Input.GetAxisRaw("vertical")*forwardSpeed;
+        activeStrafeSpeed = Input.GetAxisRaw("Horizontal")*strafeSpeed;
+        activeHoverSpeed = Input.GetAxisRaw("Hover") *hoverSpeed;
+
+        transform.position += transform.forward * activeForwardSpeed * Time.deltaTime;
+
+        transform.position += transform.right * activeStrafeSpeed * Time.deltaTime;
+
+        transform.position += transform.up * activeHoverSpeed * Time.deltaTime;
+
+
     }
 }
