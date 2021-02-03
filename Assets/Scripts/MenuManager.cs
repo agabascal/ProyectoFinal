@@ -5,6 +5,16 @@ using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
+    public GameObject panelPrincipal;
+    public GameObject panelSettings;
+    public GameObject panelCredits;
+
+    private void Start()
+    {
+        panelPrincipal.SetActive(true);
+        panelSettings.SetActive(false);
+        panelCredits.SetActive(false);
+    }
     public void Play()
     {
         SceneManager.LoadScene("Program");
@@ -12,11 +22,25 @@ public class MenuManager : MonoBehaviour
 
     public void Settings()
     {
+        panelPrincipal.SetActive(false);
+        panelSettings.SetActive(true);
+    }
 
+    public void Credits()
+    {
+        panelPrincipal.SetActive(false);
+        panelCredits.SetActive(true);
     }
 
     public void Exit()
     {
         Application.Quit();
+    }
+
+    public void Back()
+    {
+        panelPrincipal.SetActive(true);
+        panelSettings.SetActive(false);
+        panelCredits.SetActive(false);
     }
 }
