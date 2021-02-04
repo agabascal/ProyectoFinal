@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+
     //States
     public enum playerState {ground, flight}
     public playerState state;   
 
+    [Header("Movement")]
     //Movement
     public float speed=6f;
     public CharacterController controller;
@@ -16,6 +18,11 @@ public class PlayerController : MonoBehaviour
     private Transform cam;
     Vector3 direction;
     Vector3 moveDir;
+
+    [Header("Flight")]
+    public float flightGravity = -1;
+
+
 
     //Jump
     public float jumpSpeed = 8f;
@@ -26,6 +33,18 @@ public class PlayerController : MonoBehaviour
     Vector3 velocity;
     private bool isGrounded, doubleJump;
 
+    [Header("Combat")]
+
+    [Header("Range")]
+    //Range Attack
+    public Transform shootPoint;
+    public GameObject bullet;
+
+
+    [Header("Animation")]
+    public Animator anim;
+
+
     //Flight
     public float forwardSpeed = 25, strafeSpeed = 7.5f, hoverSpeed = 5f;
     private float activeForwardSpeed, activeStrafeSpeed, activeHoverSpeed;
@@ -35,6 +54,7 @@ public class PlayerController : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         controller = GetComponent<CharacterController>();
+        anim = GetComponent<Animator>();
         cam = Camera.main.transform;
     }
 
@@ -48,6 +68,8 @@ public class PlayerController : MonoBehaviour
         else
         {
             Flight();
+            velocity.y += flightGravity * Time.deltaTime;
+            controller.Move(velocity*Time.deltaTime);
         }
         
         
@@ -56,14 +78,37 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         if (state == playerState.ground)
+        {
+            //Gravity
+            isGrounded = Physics.CheckSphere(groundCheck.position, checkDistance, groundMask);
+            if (isGrounded && velocity.y < 0)
+            {
+                state = playerState.ground;
+                velocity.y = -2f;
+                doubleJump = false;
+            }
+        }
+        else
         {
             isGrounded = Physics.CheckSphere(groundCheck.position, checkDistance, groundMask);
             if (isGrounded && velocity.y < 0)
             {
+                state = playerState.ground;
                 velocity.y = -2f;
                 doubleJump = false;
             }
+        }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            anim.Play("Shoot");
+        }
+
+        if (Input.GetKeyDown(KeyCode.F) && !isGrounded)
+        {
+            state = playerState.flight;
         }
         
     }
@@ -99,7 +144,7 @@ public class PlayerController : MonoBehaviour
             velocity.y = Mathf.Sqrt(jumpSpeed * -2f * gravity);            
         }
 
-        if (!isGrounded && !doubleJump && Input.GetKeyDown(KeyCode.Space))
+        if (!isGrounded && !doubleJump && Input.GetKeyDown(KeyCode.Space) && velocity.y <0)
         {
             velocity.y = Mathf.Sqrt((jumpSpeed* 0.75f) * -2f * gravity);
             doubleJump = true;
@@ -109,16 +154,13 @@ public class PlayerController : MonoBehaviour
 
     private void Flight()
     {
-        activeForwardSpeed = Input.GetAxisRaw("vertical")*forwardSpeed;
-        activeStrafeSpeed = Input.GetAxisRaw("Horizontal")*strafeSpeed;
-        activeHoverSpeed = Input.GetAxisRaw("Hover") *hoverSpeed;
+        
+    
 
-        transform.position += transform.forward * activeForwardSpeed * Time.deltaTime;
+    }
 
-        transform.position += transform.right * activeStrafeSpeed * Time.deltaTime;
-
-        transform.position += transform.up * activeHoverSpeed * Time.deltaTime;
-
-
+    public void RangeAttack()
+    {
+        Instantiate(bullet,shootPoint.transform.position,transform.rotation);
     }
 }
