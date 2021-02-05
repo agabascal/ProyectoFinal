@@ -48,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   curvature: 2
-  particles: {fileID: 6311790065666938394, guid: 2439e3e72de592f4a8e2b182d57af491,
+  particles: {fileID: 6963157693355787483, guid: ac8b44528a0588b4b9760228c1719dcb,
     type: 3}
 --- !u!54 &8280318845121286211
 Rigidbody:
