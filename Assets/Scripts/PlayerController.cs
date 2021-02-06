@@ -1,32 +1,28 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Cinemachine;
 
 public class PlayerController : MonoBehaviour
 {
 
     //States
-    public enum playerState { ground, flight }
-    public playerState state;
+    public enum playerState {ground, flight}
+    public playerState state;   
 
     [Header("Movement")]
     //Movement
-    public float speed = 6f;
+    public float speed=6f;
     public CharacterController controller;
-    private float turnSmooth = 0.1f;
+    private float turnSmooth=0.1f;
     private float smoothVelocity;
-    private Camera cam;
+    private Transform cam;
     Vector3 direction;
     Vector3 moveDir;
-  
 
     [Header("Flight")]
-    public float forwardSpeed = 10f;
-    public float flightGravity = -2f;
-    private float rotSpeedX = 3f;
-    private float rotSpeedY = 1.5f;
-    public GameObject wings;
+    public float flightGravity = -1;
+
+
 
     //Jump
     public float jumpSpeed = 8f;
@@ -35,7 +31,7 @@ public class PlayerController : MonoBehaviour
     private float checkDistance = 0.4f;
     public LayerMask groundMask;
     Vector3 velocity;
-    public bool isGrounded, doubleJump;
+    private bool isGrounded, doubleJump;
 
     [Header("Combat")]
 
@@ -49,19 +45,17 @@ public class PlayerController : MonoBehaviour
     public Animator anim;
 
 
+    //Flight
+    public float forwardSpeed = 25, strafeSpeed = 7.5f, hoverSpeed = 5f;
+    private float activeForwardSpeed, activeStrafeSpeed, activeHoverSpeed;
+
     // Start is called before the first frame update
     void Start()
     {
-
-        Cursor.lockState = CursorLockMode.Confined;
-        // Cursor.visible = false;
-
-        //GetComponents
+        Cursor.lockState = CursorLockMode.Locked;
         controller = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
-        cam = Camera.main;
-
-
+        cam = Camera.main.transform;
     }
 
     private void FixedUpdate()
@@ -69,15 +63,12 @@ public class PlayerController : MonoBehaviour
         if (state == playerState.ground)
         {
             Movement();
-            controller.enabled = true;
-            cam.GetComponent<CinemachineBrain>().enabled = true;
-            cam.GetComponent<FlightCameraControl>().enabled = false;
             velocity.y += gravity * Time.deltaTime;
         }
         else
         {
-
             Flight();
+<<<<<<< HEAD
             controller.enabled = false;
 
             cam.GetComponent<CinemachineBrain>().enabled = false;
@@ -86,22 +77,25 @@ public class PlayerController : MonoBehaviour
             velocity.y += flightGravity * Time.deltaTime;
             transform.Translate(velocity * Time.deltaTime);
             //controller.Move(velocity * Time.deltaTime);
+=======
+            velocity.y += flightGravity * Time.deltaTime;
+            controller.Move(velocity*Time.deltaTime);
+>>>>>>> parent of 5c98ce1... Control de Vuelo
         }
-
-
+        
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        
         if (state == playerState.ground)
         {
             //Gravity
             isGrounded = Physics.CheckSphere(groundCheck.position, checkDistance, groundMask);
             if (isGrounded && velocity.y < 0)
             {
-                wings.SetActive(false);
                 state = playerState.ground;
                 velocity.y = -2f;
                 doubleJump = false;
@@ -109,7 +103,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            isGrounded = Physics.CheckSphere(groundCheck.position, checkDistance * 4, groundMask);
+            isGrounded = Physics.CheckSphere(groundCheck.position, checkDistance, groundMask);
             if (isGrounded && velocity.y < 0)
             {
                 state = playerState.ground;
@@ -123,15 +117,11 @@ public class PlayerController : MonoBehaviour
             anim.Play("Shoot");
         }
 
-        if (Input.GetKeyDown(KeyCode.F) && !isGrounded && state == playerState.ground)
+        if (Input.GetKeyDown(KeyCode.F) && !isGrounded)
         {
-            wings.SetActive(true);
             state = playerState.flight;
         }
-        if (isGrounded)
-        {
-            state = playerState.ground;
-        }
+        
     }
 
     private void Movement()
@@ -139,44 +129,43 @@ public class PlayerController : MonoBehaviour
         float h = Input.GetAxisRaw("Horizontal");
         float v = Input.GetAxisRaw("Vertical");
 
-        direction = new Vector3(h, 0, v);
+        direction = new Vector3(h,0,v);
 
-        if (direction.magnitude >= 0.1f)
+        if (direction.magnitude>=0.1f)
         {
-            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.transform.eulerAngles.y;
-            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref smoothVelocity, turnSmooth);
-            transform.rotation = Quaternion.Euler(0f, angle, 0f);
-            moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+            float targetAngle = Mathf.Atan2(direction.x,direction.z)*Mathf.Rad2Deg + cam.transform.eulerAngles.y;
+            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y,targetAngle,ref smoothVelocity,turnSmooth);
+            transform.rotation = Quaternion.Euler(0f,angle,0f);
+
+            moveDir = Quaternion.Euler(0f,targetAngle,0f)*Vector3.forward;
             if (!Input.GetKey(KeyCode.LeftShift))
             {
                 controller.Move(moveDir.normalized * speed * Time.deltaTime);
             }
             else
             {
-                controller.Move(moveDir.normalized * speed * 2 * Time.deltaTime);
+                controller.Move(moveDir.normalized * speed*2 * Time.deltaTime);
 
             }
         }
 
-
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        
+        if (Input.GetKeyDown(KeyCode.Space)&&isGrounded)
         {
-            velocity.y = Mathf.Sqrt(jumpSpeed * -2f * gravity);
+            velocity.y = Mathf.Sqrt(jumpSpeed * -2f * gravity);            
         }
 
-        if (!isGrounded && !doubleJump && Input.GetKeyDown(KeyCode.Space) && velocity.y < 0)
+        if (!isGrounded && !doubleJump && Input.GetKeyDown(KeyCode.Space) && velocity.y <0)
         {
-            velocity.y = Mathf.Sqrt((jumpSpeed * 0.75f) * -2f * gravity);
+            velocity.y = Mathf.Sqrt((jumpSpeed* 0.75f) * -2f * gravity);
             doubleJump = true;
         }
         controller.Move(velocity * Time.deltaTime);
     }
 
-    
-
-
     private void Flight()
     {
+<<<<<<< HEAD
 
         transform.position +=  transform.forward * forwardSpeed * Time.deltaTime;
 
@@ -194,6 +183,10 @@ public class PlayerController : MonoBehaviour
             forwardSpeed = 15;
         }
 
+=======
+        
+    
+>>>>>>> parent of 5c98ce1... Control de Vuelo
 
     }
 

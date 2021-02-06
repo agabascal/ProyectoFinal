@@ -60,14 +60,14 @@ Material:
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
-    - _Choppiness: -0.19
+    - _Choppiness: 0.1
     - _Cull: 2
     - _Cutoff: 0.5
     - _DstBlend: 0
     - _EnvironmentReflections: 1
     - _FlowSpeed: 0.2
     - _FlowStrength: 0.001
-    - _FoamDistance: 1
+    - _FoamDistance: 0.86
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
