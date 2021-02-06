@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class PlayerController : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Flight")]
     public float flightGravity = -1;
+    public GameObject wings;
 
 
 
@@ -64,23 +66,24 @@ public class PlayerController : MonoBehaviour
         {
             Movement();
             velocity.y += gravity * Time.deltaTime;
+            controller.enabled = true;
+            cam.GetComponent<CinemachineBrain>().enabled = true;
+            cam.GetComponent<FlightCameraControl>().enabled = false;
+            wings.SetActive(false);
         }
         else
         {
             Flight();
-<<<<<<< HEAD
+
             controller.enabled = false;
 
             cam.GetComponent<CinemachineBrain>().enabled = false;
             cam.GetComponent<FlightCameraControl>().enabled = true;
+            wings.SetActive(true);
 
             velocity.y += flightGravity * Time.deltaTime;
-            transform.Translate(velocity * Time.deltaTime);
-            //controller.Move(velocity * Time.deltaTime);
-=======
-            velocity.y += flightGravity * Time.deltaTime;
-            controller.Move(velocity*Time.deltaTime);
->>>>>>> parent of 5c98ce1... Control de Vuelo
+            transform.Translate(velocity * Time.deltaTime);            
+
         }
         
         
@@ -121,7 +124,12 @@ public class PlayerController : MonoBehaviour
         {
             state = playerState.flight;
         }
-        
+        if (isGrounded)
+        {
+            state = playerState.ground;
+
+        }
+
     }
 
     private void Movement()
@@ -165,15 +173,14 @@ public class PlayerController : MonoBehaviour
 
     private void Flight()
     {
-<<<<<<< HEAD
+
 
         transform.position +=  transform.forward * forwardSpeed * Time.deltaTime;
 
         transform.Rotate(Input.GetAxis("Vertical"), 0.0f, -Input.GetAxis("Horizontal"));
 
-       // Mathf.Clamp(transform.rotation.y, -45f, +45f);
-
         forwardSpeed -= transform.forward.y * Time.deltaTime * 25.0f;
+
         if (forwardSpeed >35)
         {
             forwardSpeed = 35;
@@ -182,11 +189,6 @@ public class PlayerController : MonoBehaviour
         {
             forwardSpeed = 15;
         }
-
-=======
-        
-    
->>>>>>> parent of 5c98ce1... Control de Vuelo
 
     }
 
