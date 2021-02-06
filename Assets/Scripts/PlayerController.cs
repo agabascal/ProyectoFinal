@@ -83,7 +83,8 @@ public class PlayerController : MonoBehaviour
             cam.GetComponent<CinemachineBrain>().enabled = false;
             cam.GetComponent<FlightCameraControl>().enabled = true;
 
-            //velocity.y += flightGravity * Time.deltaTime;
+            velocity.y += flightGravity * Time.deltaTime;
+            transform.Translate(velocity * Time.deltaTime);
             //controller.Move(velocity * Time.deltaTime);
         }
 
@@ -175,11 +176,13 @@ public class PlayerController : MonoBehaviour
 
 
     private void Flight()
-    {        
+    {
 
-        transform.position += transform.forward * forwardSpeed * Time.deltaTime;
+        transform.position +=  transform.forward * forwardSpeed * Time.deltaTime;
 
         transform.Rotate(Input.GetAxis("Vertical"), 0.0f, -Input.GetAxis("Horizontal"));
+
+       // Mathf.Clamp(transform.rotation.y, -45f, +45f);
 
         forwardSpeed -= transform.forward.y * Time.deltaTime * 25.0f;
         if (forwardSpeed >35)
