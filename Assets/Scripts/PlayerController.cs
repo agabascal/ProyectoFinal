@@ -176,8 +176,9 @@ public class PlayerController : MonoBehaviour
 
 
         transform.position +=  transform.forward * forwardSpeed * Time.deltaTime;
-
+        
         transform.Rotate(Input.GetAxis("Vertical"), 0.0f, -Input.GetAxis("Horizontal"));
+        
 
         forwardSpeed -= transform.forward.y * Time.deltaTime * 25.0f;
 
@@ -196,4 +197,6 @@ public class PlayerController : MonoBehaviour
     {
         Instantiate(bullet,shootPoint.transform.position,transform.rotation);
     }
+
+   
 }
