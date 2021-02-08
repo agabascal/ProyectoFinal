@@ -5,6 +5,8 @@ using UnityEngine.AI;
 
 public class FlyingEnemy : MonoBehaviour
 {
+
+    //Navigation
     public Transform target;
 
     public Transform shootPoint;
@@ -13,6 +15,9 @@ public class FlyingEnemy : MonoBehaviour
     public NavMeshAgent agent;
 
     public float detectRadius, attackRadius;
+
+    //Combat
+    public int life = 3;
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +33,10 @@ public class FlyingEnemy : MonoBehaviour
         {
             transform.LookAt(target.position);
             agent.SetDestination(target.position);
+        }
+        if (life==0)
+        {
+            Destroy(gameObject);
         }
     }
 

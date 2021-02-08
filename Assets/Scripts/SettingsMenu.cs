@@ -16,7 +16,10 @@ public class SettingsMenu : MonoBehaviour
     {
         resolutions = Screen.resolutions;
 
-        resolutionDropDown.ClearOptions();
+        if (resolutionDropDown != null)
+        {
+            resolutionDropDown.ClearOptions();
+        }
 
         List<string> options = new List<string>();
 
