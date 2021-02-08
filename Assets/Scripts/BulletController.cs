@@ -33,7 +33,17 @@ public class BulletController : MonoBehaviour
             GameObject newParticles = Instantiate(particles, transform.localPosition, Quaternion.identity);
             Destroy(newParticles, 2f);
             Destroy(gameObject);
-            
+            if (collision.gameObject.CompareTag("Enemy"))
+            {
+                if (collision.gameObject.GetComponent<EnemyController>())
+                {
+                    collision.gameObject.GetComponent<EnemyController>().life--;
+                }
+                if (collision.gameObject.GetComponent<FlyingEnemy>())
+                {
+                    collision.gameObject.GetComponent<FlyingEnemy>().life--;
+                }
+            }
         }
     }
 }

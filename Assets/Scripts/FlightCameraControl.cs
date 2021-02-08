@@ -10,6 +10,7 @@ public class FlightCameraControl : MonoBehaviour
     public float offset = 10f;
     public float distance = 5f;
     private float bias = 0.96f;
+    public float smooth;
 
     // Start is called before the first frame update
     void Start()
@@ -24,7 +25,9 @@ public class FlightCameraControl : MonoBehaviour
 
         pos = (target.position - target.forward * offset) + (Vector3.up * distance);
 
-        transform.position = transform.position * bias + (pos * (1.0f - bias));
+        Vector3 nextPos = transform.position * bias + (pos * (1.0f - bias));
+
+        transform.position = Vector3.Slerp(transform.position,nextPos,smooth);
 
         transform.LookAt(target.position + target.forward * 30f);
     }

@@ -5,10 +5,14 @@ using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
-
+    //Navigation
     public float lookRadius = 10f;
     public Transform target;
     private NavMeshAgent agent;
+
+    //Combat
+    public int life = 3;
+
 
     // Start is called before the first frame update
     void Start()
@@ -31,6 +35,10 @@ public class EnemyController : MonoBehaviour
                 //Attack the target
                 //look at the target                
             }
+        }
+        if (life == 0)
+        {
+            Destroy(gameObject);
         }
     }
 

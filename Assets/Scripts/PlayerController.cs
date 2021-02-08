@@ -23,8 +23,14 @@ public class PlayerController : MonoBehaviour
     [Header("Flight")]
     public float flightGravity = -1;
     public GameObject wings;
-
-
+    public float forwardSpeed = 25;
+    private bool isFlying;
+    private float zRot = 0f;
+    private float yRot = 0f;
+    private float xRot = 0f;
+    private float zsensitivity = 2f;
+    public bool isBoosted;
+    private float boostTimer;
 
     //Jump
     public float jumpSpeed = 8f;
@@ -47,9 +53,7 @@ public class PlayerController : MonoBehaviour
     public Animator anim;
 
 
-    //Flight
-    public float forwardSpeed = 25, strafeSpeed = 7.5f, hoverSpeed = 5f;
-    private float activeForwardSpeed, activeStrafeSpeed, activeHoverSpeed;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -66,7 +70,6 @@ public class PlayerController : MonoBehaviour
         {
             Movement();
             velocity.y += gravity * Time.deltaTime;
-            controller.enabled = true;
             cam.GetComponent<CinemachineBrain>().enabled = true;
             cam.GetComponent<FlightCameraControl>().enabled = false;
             wings.SetActive(false);
@@ -75,13 +78,16 @@ public class PlayerController : MonoBehaviour
         {
             Flight();
 
-            controller.enabled = false;
 
             cam.GetComponent<CinemachineBrain>().enabled = false;
             cam.GetComponent<FlightCameraControl>().enabled = true;
             wings.SetActive(true);
 
             velocity.y += flightGravity * Time.deltaTime;
+            if (velocity.y <-5)
+            {
+                velocity.y = -5f;
+            }
             transform.Translate(velocity * Time.deltaTime);            
 
         }
@@ -123,6 +129,11 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F) && !isGrounded)
         {
             state = playerState.flight;
+        }
+        if (Input.GetKeyDown(KeyCode.X) && state == playerState.flight)
+        {
+            state = playerState.ground;
+
         }
         if (isGrounded)
         {
@@ -175,20 +186,45 @@ public class PlayerController : MonoBehaviour
     {
 
 
-        transform.position +=  transform.forward * forwardSpeed * Time.deltaTime;
-        
-        transform.Rotate(Input.GetAxis("Vertical"), 0.0f, -Input.GetAxis("Horizontal"));
-        
+        controller.Move(transform.forward * forwardSpeed * Time.deltaTime);              
 
-        forwardSpeed -= transform.forward.y * Time.deltaTime * 25.0f;
+        transform.Rotate(Input.GetAxis("Vertical"),0.0f, -Input.GetAxis("Horizontal"));
+        
+        forwardSpeed -= transform.forward.y * Time.deltaTime * 35.0f;
 
-        if (forwardSpeed >35)
+        if (isBoosted)
         {
-            forwardSpeed = 35;
+            Debug.Log(isBoosted);
+            forwardSpeed *= 1.5f;
+            boostTimer += Time.deltaTime;
+            if (boostTimer >=1.5f)
+            {
+                
+                isBoosted = false;
+                Debug.Log(isBoosted);
+                boostTimer = 0;
+            }         
         }
-        if (forwardSpeed < 15)
+
+        if (!isBoosted)
         {
-            forwardSpeed = 15;
+            if (forwardSpeed > 45)
+            {
+                forwardSpeed = 45;
+            }
+        }
+        else
+        {
+            if (forwardSpeed > 180)
+            {
+                forwardSpeed = 180;
+            }
+        }
+
+        
+        if (forwardSpeed < 25)
+        {
+            forwardSpeed = 25;
         }
 
     }

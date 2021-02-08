@@ -4,12 +4,23 @@ using UnityEngine;
 
 public class WindBoost : MonoBehaviour
 {
-    private void OnTriggerEnter(Collider other)
+    public enum boostType {Vertical, Horizontal }
+    public boostType type;
+
+    private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            other.transform.position += Vector3.up * 500 * Time.deltaTime;
-            Debug.Log("boost");
+            if (type == boostType.Vertical)
+            {
+                other.GetComponent<CharacterController>().Move(Vector3.Lerp(other.transform.position, Vector3.up, 50));
+
+            }
+            else
+            {
+                other.GetComponent<PlayerController>().isBoosted = true;
+            }
+          
         }
     }
 }
