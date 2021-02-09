@@ -18,6 +18,9 @@ public class FlyingEnemy : MonoBehaviour
 
     //Combat
     public int life = 3;
+    private float nextAttackTime;
+    public float attackRate;
+
 
     // Start is called before the first frame update
     void Start()
@@ -29,10 +32,21 @@ public class FlyingEnemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Vector2.Distance(target.position,transform.position)<detectRadius)
+
+        if (Vector3.Distance(transform.position,target.position)<detectRadius)
         {
             transform.LookAt(target.position);
             agent.SetDestination(target.position);
+
+            if (Vector3.Distance(transform.position, target.position) < attackRadius)
+            {
+                if (Time.time>= nextAttackTime)
+                {
+                    Instantiate(bullet, shootPoint.position, transform.rotation);
+                    nextAttackTime = Time.time + attackRate;
+                }                
+            }
+            
         }
         if (life==0)
         {

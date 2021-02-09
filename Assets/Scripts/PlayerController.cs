@@ -43,6 +43,11 @@ public class PlayerController : MonoBehaviour
 
     [Header("Combat")]
 
+    public int life = 3;
+    private float knockTimer = 2f;
+    private bool isKnocked;
+    public float knockForce;
+
     [Header("Range")]
     //Range Attack
     public Transform shootPoint;
@@ -140,6 +145,16 @@ public class PlayerController : MonoBehaviour
             state = playerState.ground;
 
         }
+       /* if (isKnocked)
+        {
+            knockTimer -= Time.deltaTime;
+            if (knockTimer <= 0)
+            {
+                GetComponent<Rigidbody>().isKinematic = true;
+                knockTimer = 2f;
+            }
+        
+        }*'\
 
     }
 
@@ -234,5 +249,16 @@ public class PlayerController : MonoBehaviour
         Instantiate(bullet,shootPoint.transform.position,transform.rotation);
     }
 
-   
+   /* private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            Vector3 knockDirection = other.transform.position - transform.position;
+            knockDirection = -knockDirection.normalized;
+            GetComponent<Rigidbody>().isKinematic = false;
+            GetComponent<Rigidbody>().AddForce(knockDirection * knockForce *100);
+            isKnocked = true;
+        }                
+    }*/
+
 }
