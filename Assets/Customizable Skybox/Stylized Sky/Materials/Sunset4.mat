@@ -30,13 +30,13 @@ Material:
     - _SunDiscMultiplier: 500
     - _SunDiscMultiplierSharpness: 1200
     - _SunHaloBlendMode: 0
-    - _SunHaloContribution: 0.5
+    - _SunHaloContribution: 0.555
     - _SunHaloExponent: 250
     - _View: 0
     - __dirty: 0
     m_Colors:
     - _HorizonLineColor: {r: 0.854902, g: 0.8267749, b: 0.77647066, a: 1}
     - _SkyGradientBottom: {r: 0.992647, g: 0.6458246, b: 0.51822007, a: 1}
-    - _SkyGradientTop: {r: 0.754717, g: 0.38803846, b: 0.5308502, a: 1}
+    - _SkyGradientTop: {r: 1, g: 0, b: 0.38709688, a: 1}
     - _SunDiscColor: {r: 1, g: 0.9516228, b: 0.9338235, a: 1}
     - _SunHaloColor: {r: 0.9333334, g: 0.86274517, b: 0.81568635, a: 1}
