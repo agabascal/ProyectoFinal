@@ -251,6 +251,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 42146626}
   m_CullTransparentMesh: 0
+--- !u!1 &102938621 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2488926355261958349, guid: 58586d17bee43a548b5a613d969fb689,
+    type: 3}
+  m_PrefabInstance: {fileID: 2488926354261512379}
+  m_PrefabAsset: {fileID: 0}
+--- !u!136 &102938622
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 102938621}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &161291092
 GameObject:
   m_ObjectHideFlags: 0
@@ -10640,7 +10660,7 @@ NavMeshAgent:
   m_Radius: 0.2
   m_Speed: 2
   m_Acceleration: 20
-  avoidancePriority: 50
+  avoidancePriority: 30
   m_AngularSpeed: 120
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
@@ -10664,7 +10684,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &760901800
 MonoBehaviour:
@@ -10681,6 +10701,8 @@ MonoBehaviour:
   lookRadius: 10
   target: {fileID: 0}
   life: 3
+  rb: {fileID: 0}
+  knockForce: 6
 --- !u!1 &782517926
 GameObject:
   m_ObjectHideFlags: 0
@@ -26930,7 +26952,7 @@ PrefabInstance:
     - target: {fileID: 2488926355261958336, guid: 58586d17bee43a548b5a613d969fb689,
         type: 3}
       propertyPath: knockForce
-      value: 9.54
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2488926355261958348, guid: 58586d17bee43a548b5a613d969fb689,
         type: 3}
@@ -27080,6 +27102,11 @@ PrefabInstance:
       propertyPath: m_LookAt
       value: 
       objectReference: {fileID: 1554167927}
+    - target: {fileID: 5340939072864383713, guid: 421a48c6afba912448f303b9b223bd36,
+        type: 3}
+      propertyPath: m_Orbits.Array.data[1].m_Radius
+      value: 16.72
+      objectReference: {fileID: 0}
     - target: {fileID: 5340939073022000720, guid: 421a48c6afba912448f303b9b223bd36,
         type: 3}
       propertyPath: m_LookAt

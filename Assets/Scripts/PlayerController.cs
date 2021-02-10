@@ -46,7 +46,9 @@ public class PlayerController : MonoBehaviour
     public int life = 3;
     private float knockTimer = 2f;
     private bool isKnocked;
-    public float knockForce;
+    public float knockForce = 5f;
+    public CapsuleCollider capsuleCol;
+    public Rigidbody rb;
 
     [Header("Range")]
     //Range Attack
@@ -65,8 +67,10 @@ public class PlayerController : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         controller = GetComponent<CharacterController>();
+        capsuleCol = GetComponent<CapsuleCollider>();
         anim = GetComponent<Animator>();
         cam = Camera.main.transform;
+        rb = GetComponent<Rigidbody>();
     }
 
     private void FixedUpdate()
@@ -154,7 +158,7 @@ public class PlayerController : MonoBehaviour
                 knockTimer = 2f;
             }
         
-        }*'\
+        }*/
 
     }
 
@@ -244,21 +248,33 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    private IEnumerator KnockBack()
+    {
+        capsuleCol.enabled = true;
+        controller.enabled = false;
+        rb.isKinematic = false;
+
+        rb.velocity = (-transform.forward + (Vector3.up * knockForce / 7)) * knockForce;
+
+        yield return new WaitForSeconds(knockTimer);
+
+        controller.enabled = true;
+        rb.isKinematic = true;
+        capsuleCol.enabled = false;
+
+    }
+
     public void RangeAttack()
     {
         Instantiate(bullet,shootPoint.transform.position,transform.rotation);
     }
 
-   /* private void OnCollisionEnter(Collision other)
+    private void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
-            Vector3 knockDirection = other.transform.position - transform.position;
-            knockDirection = -knockDirection.normalized;
-            GetComponent<Rigidbody>().isKinematic = false;
-            GetComponent<Rigidbody>().AddForce(knockDirection * knockForce *100);
-            isKnocked = true;
+            StartCoroutine(KnockBack());
         }                
-    }*/
+    }
 
 }

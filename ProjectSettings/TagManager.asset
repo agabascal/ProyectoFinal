@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - WindZone
+  - Bullet
   layers:
   - Default
   - TransparentFX
