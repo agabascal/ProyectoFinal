@@ -25,12 +25,10 @@ public class PlayerController : MonoBehaviour
     public GameObject wings;
     public float forwardSpeed = 25;
     private bool isFlying;
-    private float zRot = 0f;
-    private float yRot = 0f;
-    private float xRot = 0f;
-    private float zsensitivity = 2f;
     public bool isBoosted;
     private float boostTimer;
+    Vector3 currentRotation;
+    public float xSensitivity, zSensitivity;
 
     //Jump
     public float jumpSpeed = 8f;
@@ -44,7 +42,7 @@ public class PlayerController : MonoBehaviour
     [Header("Combat")]
 
     public int life = 3;
-    private float knockTimer = 2f;
+    private float knockTimer = 1f;
     private bool isKnocked;
     public float knockForce = 5f;
     public CapsuleCollider capsuleCol;
@@ -77,7 +75,10 @@ public class PlayerController : MonoBehaviour
     {
         if (state == playerState.ground)
         {
-            Movement();
+            if (controller.enabled)
+            {
+                Movement();
+            }
             velocity.y += gravity * Time.deltaTime;
             cam.GetComponent<CinemachineBrain>().enabled = true;
             cam.GetComponent<FlightCameraControl>().enabled = false;
@@ -148,22 +149,13 @@ public class PlayerController : MonoBehaviour
         {
             state = playerState.ground;
 
-        }
-       /* if (isKnocked)
-        {
-            knockTimer -= Time.deltaTime;
-            if (knockTimer <= 0)
-            {
-                GetComponent<Rigidbody>().isKinematic = true;
-                knockTimer = 2f;
-            }
-        
-        }*/
+        }       
 
     }
 
     private void Movement()
     {
+        
         float h = Input.GetAxisRaw("Horizontal");
         float v = Input.GetAxisRaw("Vertical");
 
@@ -178,12 +170,18 @@ public class PlayerController : MonoBehaviour
             moveDir = Quaternion.Euler(0f,targetAngle,0f)*Vector3.forward;
             if (!Input.GetKey(KeyCode.LeftShift))
             {
-                controller.Move(moveDir.normalized * speed * Time.deltaTime);
+                if (controller.enabled)
+                {
+                    controller.Move(moveDir.normalized * speed * Time.deltaTime);
+                }
+                
             }
             else
             {
-                controller.Move(moveDir.normalized * speed*2 * Time.deltaTime);
-
+                if (controller.enabled)
+                {
+                    controller.Move(moveDir.normalized * speed*2 * Time.deltaTime);
+                }
             }
         }
 
@@ -198,17 +196,34 @@ public class PlayerController : MonoBehaviour
             velocity.y = Mathf.Sqrt((jumpSpeed* 0.75f) * -2f * gravity);
             doubleJump = true;
         }
-        controller.Move(velocity * Time.deltaTime);
+        if (controller.enabled)
+        {
+            controller.Move(velocity * Time.deltaTime);
+        }
     }
 
     private void Flight()
     {
+        controller.Move(transform.forward * forwardSpeed * Time.deltaTime);
+
+        currentRotation.x += Input.GetAxis("Vertical") * xSensitivity;
+
+        currentRotation.x = Mathf.Clamp(currentRotation.x, -80, 80);
+
+        currentRotation.z += -Input.GetAxis("Horizontal") *zSensitivity;
+
+        currentRotation.y += Input.GetAxis("Horizontal");
+
+        currentRotation.z = Mathf.Clamp(currentRotation.z,-45,45);
+
+        transform.rotation = Quaternion.Euler(currentRotation);
 
 
-        controller.Move(transform.forward * forwardSpeed * Time.deltaTime);              
 
         transform.Rotate(Input.GetAxis("Vertical"),0.0f, -Input.GetAxis("Horizontal"));
+
         
+
         forwardSpeed -= transform.forward.y * Time.deltaTime * 35.0f;
 
         if (isBoosted)
@@ -239,28 +254,33 @@ public class PlayerController : MonoBehaviour
                 forwardSpeed = 180;
             }
         }
-
         
         if (forwardSpeed < 25)
         {
             forwardSpeed = 25;
         }
 
+        //Clamp Rotation        
+
+
     }
 
     private IEnumerator KnockBack()
     {
-        capsuleCol.enabled = true;
+        
+
         controller.enabled = false;
         rb.isKinematic = false;
+        //capsuleCol.enabled = true;
 
-        rb.velocity = (-transform.forward + (Vector3.up * knockForce / 7)) * knockForce;
+        rb.velocity = (-transform.forward + (Vector3.up * knockForce/7)) * knockForce;
 
         yield return new WaitForSeconds(knockTimer);
 
+        //capsuleCol.enabled = false;
         controller.enabled = true;
         rb.isKinematic = true;
-        capsuleCol.enabled = false;
+        
 
     }
 
@@ -269,11 +289,14 @@ public class PlayerController : MonoBehaviour
         Instantiate(bullet,shootPoint.transform.position,transform.rotation);
     }
 
-    private void OnCollisionEnter(Collision other)
+
+    //Funciona con trigger no collision con la capsula mientras tanto
+    private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Enemy"))
-        {
+        {      
             StartCoroutine(KnockBack());
+            life--;
         }                
     }
 
