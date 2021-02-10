@@ -43,6 +43,13 @@ public class PlayerController : MonoBehaviour
 
     [Header("Combat")]
 
+    public int life = 3;
+    private float knockTimer = 2f;
+    private bool isKnocked;
+    public float knockForce = 5f;
+    public CapsuleCollider capsuleCol;
+    public Rigidbody rb;
+
     [Header("Range")]
     //Range Attack
     public Transform shootPoint;
@@ -60,8 +67,10 @@ public class PlayerController : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         controller = GetComponent<CharacterController>();
+        capsuleCol = GetComponent<CapsuleCollider>();
         anim = GetComponent<Animator>();
         cam = Camera.main.transform;
+        rb = GetComponent<Rigidbody>();
     }
 
     private void FixedUpdate()
@@ -140,6 +149,16 @@ public class PlayerController : MonoBehaviour
             state = playerState.ground;
 
         }
+       /* if (isKnocked)
+        {
+            knockTimer -= Time.deltaTime;
+            if (knockTimer <= 0)
+            {
+                GetComponent<Rigidbody>().isKinematic = true;
+                knockTimer = 2f;
+            }
+        
+        }*/
 
     }
 
@@ -229,10 +248,33 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    private IEnumerator KnockBack()
+    {
+        capsuleCol.enabled = true;
+        controller.enabled = false;
+        rb.isKinematic = false;
+
+        rb.velocity = (-transform.forward + (Vector3.up * knockForce / 7)) * knockForce;
+
+        yield return new WaitForSeconds(knockTimer);
+
+        controller.enabled = true;
+        rb.isKinematic = true;
+        capsuleCol.enabled = false;
+
+    }
+
     public void RangeAttack()
     {
         Instantiate(bullet,shootPoint.transform.position,transform.rotation);
     }
 
-   
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            StartCoroutine(KnockBack());
+        }                
+    }
+
 }

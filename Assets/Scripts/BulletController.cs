@@ -13,7 +13,6 @@ public class BulletController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        //rb.AddForce(Vector3.up * curvature, ForceMode.Impulse);
         rb.AddForce(transform.forward.normalized * speed, ForceMode.Impulse);
         rb.AddForce(transform.up * curvature, ForceMode.Impulse);
     }
@@ -21,7 +20,7 @@ public class BulletController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //transform.Translate(Vector3.forward * speed * Time.deltaTime);
+        
         transform.forward = rb.velocity;
         Destroy(gameObject,5f);
     }
