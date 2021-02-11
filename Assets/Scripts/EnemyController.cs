@@ -13,8 +13,9 @@ public class EnemyController : MonoBehaviour
     //Combat
     public int life = 3;
     public Rigidbody rb;
-    private bool knockback;
+    public bool knockback;
     public float knockForce = 10f;
+    public bool isHurt;
 
 
     // Start is called before the first frame update
@@ -49,13 +50,7 @@ public class EnemyController : MonoBehaviour
         if (life == 0)
         {
             Destroy(gameObject);
-        }
-
-        if (knockback)
-        {
-            StartCoroutine(KnockBack());
-            knockback = false;
-        }
+        }        
     }
 
     private void FaceTarget()
@@ -65,13 +60,18 @@ public class EnemyController : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation,lookRotation,Time.deltaTime*5f);
     }
 
+    public void Knock()
+    {
+        isHurt = true;
+        StartCoroutine(KnockBack());
+        knockback = false;
 
+    }
     private IEnumerator KnockBack()
     {
-        agent.enabled = false;
-        rb.isKinematic = false;
-
         
+        agent.enabled = false;
+        rb.isKinematic = false;                
 
         rb.velocity = (-transform.forward +(Vector3.up * knockForce / 7)) * knockForce;
 
@@ -79,6 +79,7 @@ public class EnemyController : MonoBehaviour
 
         agent.enabled = true;
         rb.isKinematic = true;
+        isHurt = false;
     }
 
     private void OnCollisionEnter(Collision collision)

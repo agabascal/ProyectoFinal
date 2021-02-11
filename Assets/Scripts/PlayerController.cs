@@ -43,10 +43,11 @@ public class PlayerController : MonoBehaviour
 
     public int life = 3;
     private float knockTimer = 1f;
-    private bool isKnocked;
+    public bool isKnocked;
     public float knockForce = 5f;
     public CapsuleCollider capsuleCol;
     public Rigidbody rb;
+    public bool isHurt;
 
     [Header("Range")]
     //Range Attack
@@ -149,8 +150,17 @@ public class PlayerController : MonoBehaviour
         {
             state = playerState.ground;
 
-        }       
+        }
 
+        
+
+    }
+
+    public void Knock()
+    {
+        isKnocked = true;
+        StartCoroutine(KnockBack());
+        isKnocked = false;
     }
 
     private void Movement()
@@ -204,7 +214,7 @@ public class PlayerController : MonoBehaviour
 
     private void Flight()
     {
-        controller.Move(transform.forward * forwardSpeed * Time.deltaTime);
+        
 
         currentRotation.x += Input.GetAxis("Vertical") * xSensitivity;
 
@@ -218,11 +228,11 @@ public class PlayerController : MonoBehaviour
 
         transform.rotation = Quaternion.Euler(currentRotation);
 
-
+        
 
         transform.Rotate(Input.GetAxis("Vertical"),0.0f, -Input.GetAxis("Horizontal"));
 
-        
+        controller.Move(transform.forward * forwardSpeed * Time.deltaTime);
 
         forwardSpeed -= transform.forward.y * Time.deltaTime * 35.0f;
 
@@ -280,7 +290,7 @@ public class PlayerController : MonoBehaviour
         //capsuleCol.enabled = false;
         controller.enabled = true;
         rb.isKinematic = true;
-        
+        isHurt = false;
 
     }
 
