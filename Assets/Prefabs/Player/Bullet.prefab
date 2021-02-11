@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 4941335965253999432}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 8154595842604975136}
   - {fileID: 5628981256569165979}
@@ -46,8 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21166329419f655489fd299d69bdd5e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
-  curvature: 2
+  speed: 30
+  curvature: 1.25
   particles: {fileID: 6311790065666938394, guid: 2439e3e72de592f4a8e2b182d57af491,
     type: 3}
 --- !u!54 &8280318845121286211

@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     public CharacterController controller;
     private float turnSmooth=0.1f;
     private float smoothVelocity;
+    public float smoothturn;
     private Transform cam;
     Vector3 direction;
     Vector3 moveDir;
@@ -76,6 +77,8 @@ public class PlayerController : MonoBehaviour
     {
         if (state == playerState.ground)
         {
+
+            currentRotation = Vector3.zero;
             if (controller.enabled)
             {
                 Movement();
@@ -137,15 +140,20 @@ public class PlayerController : MonoBehaviour
             anim.Play("Shoot");
         }
 
-        if (Input.GetKeyDown(KeyCode.F) && !isGrounded)
+        if (GameManager.Instance.partsCollected == 4)
         {
-            state = playerState.flight;
+            if (Input.GetKeyDown(KeyCode.F) && !isGrounded)
+            {
+                state = playerState.flight;
+            }
         }
+       
         if (Input.GetKeyDown(KeyCode.X) && state == playerState.flight)
         {
             state = playerState.ground;
-
+            transform.rotation = Quaternion.Euler(0,0,0);
         }
+
         if (isGrounded)
         {
             state = playerState.ground;
@@ -228,9 +236,10 @@ public class PlayerController : MonoBehaviour
 
         transform.rotation = Quaternion.Euler(currentRotation);
 
-        
-
-        transform.Rotate(Input.GetAxis("Vertical"),0.0f, -Input.GetAxis("Horizontal"));
+        if (currentRotation.magnitude >0.1f)
+        {
+            transform.Rotate(Input.GetAxis("Vertical"), 0.0f, -Input.GetAxis("Horizontal"));
+        }                 
 
         controller.Move(transform.forward * forwardSpeed * Time.deltaTime);
 

@@ -5,12 +5,33 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    //Singleton
+
+    public static GameManager Instance { get; private set; }
+
     //Pause Menu
     public GameObject pausePanel;
     private bool isPaused;
 
+    //Level 1
+    public GameObject[] parts;
+    public int partsCollected;
 
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
 
+        DontDestroyOnLoad(gameObject);        
+    }
+    
+    
 
 
     // Start is called before the first frame update
@@ -26,6 +47,8 @@ public class GameManager : MonoBehaviour
         {
             PauseGame();
         }
+
+
     }
 
     public void PauseGame()
@@ -51,5 +74,11 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(0);
+    }
+
+    public void UpdateCollected(int id)
+    {
+        parts[id].SetActive(true);
+        partsCollected++;
     }
 }
