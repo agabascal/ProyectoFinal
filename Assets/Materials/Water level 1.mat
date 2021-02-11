@@ -65,9 +65,9 @@ Material:
     - _Cutoff: 0.5
     - _DstBlend: 0
     - _EnvironmentReflections: 1
-    - _FlowSpeed: 0.015
+    - _FlowSpeed: 0.0005
     - _FlowStrength: 0.005
-    - _FoamDistance: 1.39
+    - _FoamDistance: 3.64
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
@@ -75,7 +75,7 @@ Material:
     - _OcclusionStrength: 1
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Size: 3.76
+    - _Size: 4.56
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -86,11 +86,11 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _DarkFoamColor: {r: 0, g: 0.25548276, b: 0.3679245, a: 1}
+    - _DarkFoamColor: {r: 0.48104307, g: 0.76026845, b: 0.8867924, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _LightFoamColor: {r: 1, g: 1, b: 1, a: 1}
+    - _LightFoamColor: {r: 0.8503471, g: 0.8901928, b: 0.9150943, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-    - _WaterColor: {r: 0, g: 0.6285715, b: 1, a: 1}
+    - _WaterColor: {r: 0.3484336, g: 0.66204226, b: 0.8490566, a: 1}
 --- !u!114 &5962838785567800224
 MonoBehaviour:
   m_ObjectHideFlags: 11
