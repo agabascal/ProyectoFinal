@@ -65,7 +65,7 @@ Material:
     - _Cutoff: 0.5
     - _DstBlend: 0
     - _EnvironmentReflections: 1
-    - _FlowSpeed: 0.0005
+    - _FlowSpeed: 0.02
     - _FlowStrength: 0.005
     - _FoamDistance: 3.64
     - _GlossMapScale: 0
