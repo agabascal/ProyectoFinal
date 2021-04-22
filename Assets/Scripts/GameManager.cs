@@ -5,9 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    #region Singleton
     //Singleton
-
     public static GameManager Instance { get; private set; }
+    #endregion
 
     //Pause Menu
     public GameObject pausePanel;
@@ -17,6 +18,7 @@ public class GameManager : MonoBehaviour
     public GameObject[] parts;
     public int partsCollected;
 
+    //Use Awake to manage Singleton's existance 
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -30,25 +32,14 @@ public class GameManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);        
     }
-    
-    
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             PauseGame();
         }
-
-
     }
 
     public void PauseGame()

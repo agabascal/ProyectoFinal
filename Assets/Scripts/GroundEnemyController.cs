@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyController : MonoBehaviour
+public class GroundEnemyController : MonoBehaviour
 {
     //Navigation
+    [Header("Navigation")]
     public float lookRadius = 10f;
     public Transform target;
     private NavMeshAgent agent;
 
     //Combat
+    [Header("Combat")]
     public int life = 3;
     public Rigidbody rb;
     public bool knockback;
@@ -19,7 +21,7 @@ public class EnemyController : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         target = FindObjectOfType<PlayerController>().transform;
         agent = GetComponent<NavMeshAgent>();
@@ -27,7 +29,7 @@ public class EnemyController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         float distance = Vector3.Distance(target.position,transform.position);
 

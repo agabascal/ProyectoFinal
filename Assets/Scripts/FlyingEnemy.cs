@@ -7,32 +7,30 @@ public class FlyingEnemy : MonoBehaviour
 {
 
     //Navigation
-    public Transform target;
-
-    public Transform shootPoint;
+    [Header("Navigation")]
+    public Transform target;    
     public GameObject bullet;
-
     public NavMeshAgent agent;
-
     public float detectRadius, attackRadius;
 
     //Combat
+    [Header("Combat")]
     public int life = 3;
     private float nextAttackTime;
     public float attackRate;
+    public Transform shootPoint;
 
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         target = FindObjectOfType<PlayerController>().transform;
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-
         if (Vector3.Distance(transform.position,target.position)<detectRadius)
         {
             transform.LookAt(target.position);
@@ -45,8 +43,7 @@ public class FlyingEnemy : MonoBehaviour
                     Instantiate(bullet, shootPoint.position, transform.rotation);
                     nextAttackTime = Time.time + attackRate;
                 }                
-            }
-            
+            }            
         }
         if (life==0)
         {
