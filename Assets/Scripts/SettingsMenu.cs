@@ -6,10 +6,9 @@ using UnityEngine.UI;
 
 public class SettingsMenu : MonoBehaviour
 {
+    [Header("UI Elements")]
     public AudioMixer audioMixer;
-
     public Dropdown resolutionDropDown;
-
     Resolution[] resolutions;
 
     private void Start()

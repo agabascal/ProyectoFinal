@@ -5,7 +5,7 @@ using UnityEngine;
 public class HitboxController : MonoBehaviour
 {
 
-    public enum enemyType { player, enemy}
+    public enum enemyType {player, enemy}
     public enemyType type;
 
 
@@ -16,11 +16,11 @@ public class HitboxController : MonoBehaviour
             case enemyType.player:
                 if (collision.gameObject.CompareTag("Enemy"))
                 {
-                    if (!collision.gameObject.GetComponent<EnemyController>().isHurt)
+                    if (!collision.gameObject.GetComponent<GroundEnemyController>().isHurt)
                     {
-                        collision.gameObject.GetComponent<EnemyController>().isHurt = true;
-                        collision.gameObject.GetComponent<EnemyController>().life--;
-                        collision.gameObject.GetComponent<EnemyController>().Knock();
+                        collision.gameObject.GetComponent<GroundEnemyController>().isHurt = true;
+                        collision.gameObject.GetComponent<GroundEnemyController>().life--;
+                        collision.gameObject.GetComponent<GroundEnemyController>().Knock();
                     }                    
                 }
                 break;
@@ -32,8 +32,7 @@ public class HitboxController : MonoBehaviour
                         collision.gameObject.GetComponent<PlayerController>().isHurt = true;
                         collision.gameObject.GetComponent<PlayerController>().life--;
                         collision.gameObject.GetComponent<PlayerController>().Knock();
-                    }
-                    
+                    }                    
                 }
                 break;
         }

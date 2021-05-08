@@ -6,12 +6,13 @@ public class EnemyBullet : MonoBehaviour
 {
 
     public float speed;
-    private Rigidbody rb;
     public float curvature = 5;
+    private Rigidbody rb;
+    
 
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         rb = GetComponent<Rigidbody>();
         rb.AddForce(transform.forward.normalized * speed, ForceMode.Impulse);
@@ -19,7 +20,7 @@ public class EnemyBullet : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         transform.forward = rb.velocity;
         Destroy(gameObject, 5f);

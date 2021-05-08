@@ -9,20 +9,19 @@ public class FlightCameraControl : MonoBehaviour
     private Vector3 pos;
     public float offset = 10f;
     public float distance = 5f;
-    private float bias = 0.96f;
     public float smooth;
+    private float bias = 0.96f;
+    
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         target = FindObjectOfType<PlayerController>().transform;
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-
-
         pos = (target.position - target.forward * offset) + (Vector3.up * distance);
 
         Vector3 nextPos = transform.position * bias + (pos * (1.0f - bias));

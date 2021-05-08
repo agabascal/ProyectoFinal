@@ -8,28 +8,19 @@ public class PlayerController : MonoBehaviour
 
     //States
     public enum playerState {ground, flight}
-    public playerState state;   
+    public playerState state;
 
+    #region Movement
     [Header("Movement")]
     //Movement
-    public float speed=6f;
-    public CharacterController controller;
+    public float speed=6f;    
     private float turnSmooth=0.1f;
     private float smoothVelocity;
     public float smoothturn;
     private Transform cam;
-    Vector3 direction;
-    Vector3 moveDir;
-
-    [Header("Flight")]
-    public float flightGravity = -1;
-    public GameObject wings;
-    public float forwardSpeed = 25;
-    private bool isFlying;
-    public bool isBoosted;
-    private float boostTimer;
-    Vector3 currentRotation;
-    public float xSensitivity, zSensitivity;
+    private Vector3 direction;
+    private Vector3 moveDir;
+    public CharacterController controller;
 
     //Jump
     public float jumpSpeed = 8f;
@@ -37,11 +28,27 @@ public class PlayerController : MonoBehaviour
     public Transform groundCheck;
     private float checkDistance = 0.4f;
     public LayerMask groundMask;
-    Vector3 velocity;
+    private Vector3 velocity;
     private bool isGrounded, doubleJump;
+    #endregion
 
+    #region Flight Mechanic
+    [Header("Flight")]
+    public float flightGravity = -1;
+    public float forwardSpeed = 25;    
+    private float boostTimer;
+    public float xSensitivity, zSensitivity;
+
+    public GameObject wings;
+    
+    private bool isFlying;
+    public bool isBoosted;
+    
+    private Vector3 currentRotation;
+    #endregion
+
+    #region Combat
     [Header("Combat")]
-
     public int life = 3;
     private float knockTimer = 1f;
     public bool isKnocked;
@@ -54,16 +61,14 @@ public class PlayerController : MonoBehaviour
     //Range Attack
     public Transform shootPoint;
     public GameObject bullet;
-
+    #endregion
 
     [Header("Animation")]
-    public Animator anim;
-
-
-    
+    public Animator anim;    
 
     // Start is called before the first frame update
-    void Start()
+    //get all respective components needed for the different mechanics
+    private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         controller = GetComponent<CharacterController>();
@@ -73,11 +78,11 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
+    //Handle physics and movement
     private void FixedUpdate()
     {
         if (state == playerState.ground)
         {
-
             currentRotation = Vector3.zero;
             if (controller.enabled)
             {
@@ -91,8 +96,6 @@ public class PlayerController : MonoBehaviour
         else
         {
             Flight();
-
-
             cam.GetComponent<CinemachineBrain>().enabled = false;
             cam.GetComponent<FlightCameraControl>().enabled = true;
             wings.SetActive(true);
@@ -103,14 +106,11 @@ public class PlayerController : MonoBehaviour
                 velocity.y = -5f;
             }
             transform.Translate(velocity * Time.deltaTime);            
-
-        }
-        
-        
+        }               
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         
         if (state == playerState.ground)
@@ -163,13 +163,8 @@ public class PlayerController : MonoBehaviour
         
 
     }
-
-    public void Knock()
-    {
-        isKnocked = true;
-        StartCoroutine(KnockBack());
-        isKnocked = false;
-    }
+    
+    #region player movement
 
     private void Movement()
     {
@@ -222,18 +217,17 @@ public class PlayerController : MonoBehaviour
 
     private void Flight()
     {
-        
+            
+        //Manage Direction and lift forces media character rotation
 
         currentRotation.x += Input.GetAxis("Vertical") * xSensitivity;
-
         currentRotation.x = Mathf.Clamp(currentRotation.x, -80, 80);
 
         currentRotation.z += -Input.GetAxis("Horizontal") *zSensitivity;
+        currentRotation.z = Mathf.Clamp(currentRotation.z, -45, 45);
 
         currentRotation.y += Input.GetAxis("Horizontal");
-
-        currentRotation.z = Mathf.Clamp(currentRotation.z,-45,45);
-
+       
         transform.rotation = Quaternion.Euler(currentRotation);
 
         if (currentRotation.magnitude >0.1f)
@@ -242,9 +236,10 @@ public class PlayerController : MonoBehaviour
         }                 
 
         controller.Move(transform.forward * forwardSpeed * Time.deltaTime);
-
         forwardSpeed -= transform.forward.y * Time.deltaTime * 35.0f;
 
+
+        //Contact with WindBoostItems gameobjects 
         if (isBoosted)
         {
             Debug.Log(isBoosted);
@@ -277,22 +272,36 @@ public class PlayerController : MonoBehaviour
         if (forwardSpeed < 25)
         {
             forwardSpeed = 25;
-        }
+        }              
+    }
+    #endregion
 
-        //Clamp Rotation        
+    #region Combat
+   
+    public void RangeAttack()
+    {
+        Instantiate(bullet,shootPoint.transform.position,transform.rotation);
+    }
 
-
+    //Knockback on contact with enemies
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Enemy"))
+        {      
+            StartCoroutine(KnockBack());
+            life--;
+        }                
     }
 
     private IEnumerator KnockBack()
     {
-        
+
 
         controller.enabled = false;
         rb.isKinematic = false;
         //capsuleCol.enabled = true;
 
-        rb.velocity = (-transform.forward + (Vector3.up * knockForce/7)) * knockForce;
+        rb.velocity = (-transform.forward + (Vector3.up * knockForce / 7)) * knockForce;
 
         yield return new WaitForSeconds(knockTimer);
 
@@ -303,20 +312,11 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    public void RangeAttack()
+    public void Knock()
     {
-        Instantiate(bullet,shootPoint.transform.position,transform.rotation);
+        isKnocked = true;
+        StartCoroutine(KnockBack());
+        isKnocked = false;
     }
-
-
-    //Funciona con trigger no collision con la capsula mientras tanto
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Enemy"))
-        {      
-            StartCoroutine(KnockBack());
-            life--;
-        }                
-    }
-
+    #endregion
 }

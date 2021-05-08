@@ -4,13 +4,17 @@ using UnityEngine;
 
 public class BulletController : MonoBehaviour
 {
-    public float speed;
-    private Rigidbody rb;
-    public float curvature=5;
+    public enum bulletType {player, enemy};
+    public bulletType type;
     public GameObject particles;
 
+    [Header("Physics")]
+    public float speed;
+    public float curvature = 5;
+    private Rigidbody rb;        
+
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         rb = GetComponent<Rigidbody>();
         rb.AddForce(transform.forward.normalized * speed, ForceMode.Impulse);
@@ -18,25 +22,32 @@ public class BulletController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        
+    private void Update()
+    {        
         transform.forward = rb.velocity;
         Destroy(gameObject,5f);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!collision.gameObject.CompareTag("Player"))
+        if (type == bulletType.enemy && collision.gameObject.CompareTag("Player"))
+        {
+            if (collision.gameObject.CompareTag("Player"))
+            {
+                collision.gameObject.GetComponent<PlayerController>().life--;
+                Destroy(gameObject);
+            }
+        }
+        if (type == bulletType.player && collision.gameObject.CompareTag("Enemy"))
         {
             GameObject newParticles = Instantiate(particles, transform.localPosition, Quaternion.identity);
             Destroy(newParticles, 2f);
             Destroy(gameObject);
             if (collision.gameObject.CompareTag("Enemy"))
             {
-                if (collision.gameObject.GetComponent<EnemyController>())
+                if (collision.gameObject.GetComponent<GroundEnemyController>())
                 {
-                    collision.gameObject.GetComponent<EnemyController>().life--;
+                    collision.gameObject.GetComponent<GroundEnemyController>().life--;
                 }
                 if (collision.gameObject.GetComponent<FlyingEnemy>())
                 {
