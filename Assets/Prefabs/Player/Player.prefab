@@ -741,7 +741,6 @@ GameObject:
   - component: {fileID: 2488926355261958336}
   - component: {fileID: 2488926355261958343}
   - component: {fileID: 1219272037}
-  - component: {fileID: 102938622}
   - component: {fileID: 102938629}
   m_Layer: 0
   m_Name: Player
@@ -849,19 +848,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   speed: 6
+  smoothturn: 0
   controller: {fileID: 2488926355261958339}
-  flightGravity: -2
-  wings: {fileID: 395791031}
-  forwardSpeed: 25
-  isBoosted: 0
-  xSensitivity: 2
-  zSensitivity: 2
   jumpSpeed: 3
   gravity: -20
   groundCheck: {fileID: 2488926355193675381}
   groundMask:
     serializedVersion: 2
     m_Bits: 256
+  flightGravity: -2
+  forwardSpeed: 25
+  xSensitivity: 2
+  zSensitivity: 2
+  wings: {fileID: 395791031}
+  isBoosted: 0
   life: 3
   isKnocked: 0
   knockForce: 5
@@ -906,20 +906,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!136 &102938622
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2488926355261958349}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!136 &102938629
 CapsuleCollider:
   m_ObjectHideFlags: 0

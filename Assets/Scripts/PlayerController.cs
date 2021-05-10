@@ -26,10 +26,11 @@ public class PlayerController : MonoBehaviour
     public float jumpSpeed = 8f;
     public float gravity = -20f;
     public Transform groundCheck;
-    private float checkDistance = 0.4f;
+    public float checkDistance = 0.4f;
     public LayerMask groundMask;
     private Vector3 velocity;
     private bool isGrounded, doubleJump;
+    public bool flightUnlocked;
     #endregion
 
     #region Flight Mechanic
@@ -41,9 +42,9 @@ public class PlayerController : MonoBehaviour
 
     public GameObject wings;
     
-    private bool isFlying;
+    public bool isFlying;
     public bool isBoosted;
-    
+
     private Vector3 currentRotation;
     #endregion
 
@@ -53,12 +54,14 @@ public class PlayerController : MonoBehaviour
     private float knockTimer = 1f;
     public bool isKnocked;
     public float knockForce = 5f;
-    public CapsuleCollider capsuleCol;
+    public MeshCollider meshCol;
     public Rigidbody rb;
     public bool isHurt;
+    public BoxCollider tailHitbox;
 
     [Header("Range")]
     //Range Attack
+    public bool shootingUnlocked;
     public Transform shootPoint;
     public GameObject bullet;
     #endregion
@@ -72,7 +75,7 @@ public class PlayerController : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         controller = GetComponent<CharacterController>();
-        capsuleCol = GetComponent<CapsuleCollider>();
+        meshCol = GetComponent<MeshCollider>();
         anim = GetComponent<Animator>();
         cam = Camera.main.transform;
         rb = GetComponent<Rigidbody>();
@@ -89,15 +92,15 @@ public class PlayerController : MonoBehaviour
                 Movement();
             }
             velocity.y += gravity * Time.deltaTime;
-            cam.GetComponent<CinemachineBrain>().enabled = true;
-            cam.GetComponent<FlightCameraControl>().enabled = false;
+            //cam.GetComponent<CinemachineBrain>().enabled = true;
+           // cam.GetComponent<FlightCameraControl>().enabled = false;
             wings.SetActive(false);
         }
         else
         {
             Flight();
-            cam.GetComponent<CinemachineBrain>().enabled = false;
-            cam.GetComponent<FlightCameraControl>().enabled = true;
+            //cam.GetComponent<CinemachineBrain>().enabled = false;
+            //cam.GetComponent<FlightCameraControl>().enabled = true;
             wings.SetActive(true);
 
             velocity.y += flightGravity * Time.deltaTime;
@@ -123,10 +126,19 @@ public class PlayerController : MonoBehaviour
                 velocity.y = -2f;
                 doubleJump = false;
             }
+
+            isFlying = false;
+            if (Input.GetMouseButtonDown(0))
+            {
+                anim.Play("attack");
+                MeleeAttack();
+            }
         }
         else
         {
+            isFlying = true;
             isGrounded = Physics.CheckSphere(groundCheck.position, checkDistance, groundMask);
+
             if (isGrounded && velocity.y < 0)
             {
                 state = playerState.ground;
@@ -135,15 +147,18 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(1)&&shootingUnlocked)
         {
             anim.Play("Shoot");
         }
+
+        
 
         if (GameManager.Instance.partsCollected == 4)
         {
             if (Input.GetKeyDown(KeyCode.F) && !isGrounded)
             {
+                currentRotation = transform.eulerAngles;
                 state = playerState.flight;
             }
         }
@@ -157,7 +172,7 @@ public class PlayerController : MonoBehaviour
         if (isGrounded)
         {
             state = playerState.ground;
-
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x,transform.eulerAngles.y,0f);
         }
 
         
@@ -173,9 +188,10 @@ public class PlayerController : MonoBehaviour
         float v = Input.GetAxisRaw("Vertical");
 
         direction = new Vector3(h,0,v);
-
+        
         if (direction.magnitude>=0.1f)
         {
+            
             float targetAngle = Mathf.Atan2(direction.x,direction.z)*Mathf.Rad2Deg + cam.transform.eulerAngles.y;
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y,targetAngle,ref smoothVelocity,turnSmooth);
             transform.rotation = Quaternion.Euler(0f,angle,0f);
@@ -242,14 +258,12 @@ public class PlayerController : MonoBehaviour
         //Contact with WindBoostItems gameobjects 
         if (isBoosted)
         {
-            Debug.Log(isBoosted);
             forwardSpeed *= 1.5f;
             boostTimer += Time.deltaTime;
             if (boostTimer >=1.5f)
             {
                 
                 isBoosted = false;
-                Debug.Log(isBoosted);
                 boostTimer = 0;
             }         
         }
@@ -283,6 +297,18 @@ public class PlayerController : MonoBehaviour
         Instantiate(bullet,shootPoint.transform.position,transform.rotation);
     }
 
+    public void MeleeAttack()
+    {
+        tailHitbox.enabled = true;
+    }
+
+    public void StopAttack()
+    {
+        tailHitbox.enabled = false;
+    }
+
+
+
     //Knockback on contact with enemies
     private void OnTriggerEnter(Collider other)
     {
@@ -298,7 +324,7 @@ public class PlayerController : MonoBehaviour
 
 
         controller.enabled = false;
-        rb.isKinematic = false;
+        //rb.isKinematic = false;
         //capsuleCol.enabled = true;
 
         rb.velocity = (-transform.forward + (Vector3.up * knockForce / 7)) * knockForce;
@@ -307,7 +333,7 @@ public class PlayerController : MonoBehaviour
 
         //capsuleCol.enabled = false;
         controller.enabled = true;
-        rb.isKinematic = true;
+        //rb.isKinematic = true;
         isHurt = false;
 
     }

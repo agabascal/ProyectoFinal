@@ -52,5 +52,5 @@ Material:
     - _SkyGradientTop: {r: 0, g: 0.5633725, b: 0.8113207, a: 1}
     - _SubHorizonColor: {r: 0, g: 0, b: 0, a: 1}
     - _SunDiscColor: {r: 1, g: 1, b: 1, a: 1}
-    - _SunHaloColor: {r: 0.9117647, g: 0.8648356, b: 0.7709775, a: 1}
+    - _SunHaloColor: {r: 1, g: 1, b: 1, a: 1}
     - _Sunhalocolor: {r: 1, g: 0, b: 0, a: 0}

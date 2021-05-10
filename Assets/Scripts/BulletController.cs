@@ -17,14 +17,26 @@ public class BulletController : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        rb.AddForce(transform.forward.normalized * speed, ForceMode.Impulse);
-        rb.AddForce(transform.up * curvature, ForceMode.Impulse);
+        if (!FindObjectOfType<PlayerController>().isFlying)
+        {
+            rb.AddForce(transform.forward.normalized * speed, ForceMode.Impulse);
+            rb.AddForce(transform.up * curvature, ForceMode.Impulse);
+        }
+        else
+        {
+            rb.AddForce(transform.forward.normalized * speed, ForceMode.Impulse);
+            rb.AddForce(transform.up * curvature*5, ForceMode.Impulse);
+        }
+        
     }
 
     // Update is called once per frame
     private void Update()
-    {        
-        transform.forward = rb.velocity;
+    {
+        if (transform.forward != Vector3.zero)
+        {   
+            transform.forward = rb.velocity;
+        }      
         Destroy(gameObject,5f);
     }
 
@@ -54,6 +66,13 @@ public class BulletController : MonoBehaviour
                     collision.gameObject.GetComponent<FlyingEnemy>().life--;
                 }
             }
+        }
+
+        if (collision.gameObject.layer == 8)
+        {
+            GameObject newParticles = Instantiate(particles, transform.localPosition, Quaternion.identity);
+            Destroy(newParticles, 2f);
+            Destroy(gameObject);
         }
     }
 }
