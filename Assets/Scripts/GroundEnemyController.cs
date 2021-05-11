@@ -9,7 +9,7 @@ public class GroundEnemyController : MonoBehaviour
     [Header("Navigation")]
     public float lookRadius = 10f;
     public Transform target;
-    private NavMeshAgent agent;
+    public NavMeshAgent agent;
 
     //Combat
     [Header("Combat")]
@@ -18,22 +18,24 @@ public class GroundEnemyController : MonoBehaviour
     public bool knockback;
     public float knockForce = 10f;
     public bool isHurt;
+    private float distance;
 
+    [Header("Animation")]
+    public Animator anim;
 
     // Start is called before the first frame update
     private void Start()
     {
         target = FindObjectOfType<PlayerController>().transform;
-        agent = GetComponent<NavMeshAgent>();
         rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
     private void Update()
     {
-        float distance = Vector3.Distance(target.position,transform.position);
-
-        if (distance<= lookRadius)
+        distance = Vector3.Distance(target.position,transform.position);
+        Debug.Log(distance);
+        if (distance <= lookRadius)
         {
             if (agent.enabled)
             {
@@ -44,22 +46,38 @@ public class GroundEnemyController : MonoBehaviour
 
             if (distance <= agent.stoppingDistance)
             {
+                
                 //Attack the target
-                //look at the target                
+                anim.SetTrigger("attack");
+                //look at the target    
+                FaceTarget();
             }
         }
 
         if (life == 0)
         {
             Destroy(gameObject);
-        }        
+        }
+        if (anim!=null)
+        {
+            HandleAnimation();
+        }
+        
     }
 
     private void FaceTarget()
     {
-        Vector3 direction = (target.position - transform.position).normalized;
-        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-        transform.rotation = Quaternion.Slerp(transform.rotation,lookRotation,Time.deltaTime*5f);
+        /* Vector3 direction = (target.position - transform.position).normalized;
+         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+         transform.rotation = Quaternion.Slerp(transform.rotation,lookRotation,Time.deltaTime*5f);*/
+        transform.LookAt(target);
+    }
+
+    private void HandleAnimation()
+    {
+        anim.SetFloat("speed",rb.velocity.x);
+        anim.SetFloat("distance",distance);
+        
     }
 
     public void Knock()
