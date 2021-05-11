@@ -27,14 +27,14 @@ public class GroundEnemyController : MonoBehaviour
     private void Start()
     {
         target = FindObjectOfType<PlayerController>().transform;
-        rb = GetComponent<Rigidbody>();
+        rb = GetComponentInChildren<Rigidbody>();
     }
 
     // Update is called once per frame
     private void Update()
     {
         distance = Vector3.Distance(target.position,transform.position);
-        Debug.Log(distance);
+        
         if (distance <= lookRadius)
         {
             if (agent.enabled)
@@ -53,11 +53,7 @@ public class GroundEnemyController : MonoBehaviour
                 FaceTarget();
             }
         }
-
-        if (life == 0)
-        {
-            Destroy(gameObject);
-        }
+        
         if (anim!=null)
         {
             HandleAnimation();
@@ -65,6 +61,10 @@ public class GroundEnemyController : MonoBehaviour
         
     }
 
+    public void Death()
+    {
+        Invoke("Destroy(gameObject)",3f);        
+    }
     private void FaceTarget()
     {
         /* Vector3 direction = (target.position - transform.position).normalized;
