@@ -9,7 +9,6 @@ public class GroundEnemyController : MonoBehaviour
     [Header("Navigation")]
     public float lookRadius = 10f;
     public float walkpointRange;
-
     public Transform target;
     public NavMeshAgent agent;
     private Vector3 walkPoint;
