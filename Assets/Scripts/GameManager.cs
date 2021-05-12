@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -10,13 +11,22 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
     #endregion
 
+    
+
+    //Level 1 Gameplay
+    [Header("Level 1 Gameplay")]
+    public GameObject[] parts;
+    public int partsCollected;
+    public DialogueTrigger treeDialogue;
+
+    [Header("UI Elements")]
     //Pause Menu
     public GameObject pausePanel;
     private bool isPaused;
+    public Image fadeImage;
+    public GameObject dialoguePanel;
 
-    //Level 1
-    public GameObject[] parts;
-    public int partsCollected;
+    
 
     //Use Awake to manage Singleton's existance 
     private void Awake()
@@ -30,16 +40,33 @@ public class GameManager : MonoBehaviour
             Instance = this;
         }
 
-        DontDestroyOnLoad(gameObject);        
+        DontDestroyOnLoad(gameObject);
+
+        if (SceneManager.GetActiveScene().buildIndex == 1)
+        {
+            StartCoroutine(FadeIn());
+        }
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape)&& pausePanel!=null)
         {
             PauseGame();
         }
+        
+    }
+
+    public IEnumerator FadeIn()
+    {
+        for (float i = 1; i > 0; i -= .005f) 
+        {            
+            fadeImage.color = new Color(0,0,0,i);
+            yield return null;
+        }
+        dialoguePanel.SetActive(true);
+        treeDialogue.TriggerDialogue();
     }
 
     public void PauseGame()
@@ -68,7 +95,7 @@ public class GameManager : MonoBehaviour
     }
 
     public void UpdateCollected(int id)
-    {
+    {        
         parts[id].SetActive(true);
         partsCollected++;
     }

@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 direction;
     private Vector3 moveDir;
     public CharacterController controller;
+    public bool canMove;
 
     //Jump
     public float jumpSpeed = 8f;
@@ -87,7 +88,7 @@ public class PlayerController : MonoBehaviour
         if (state == playerState.ground)
         {
             currentRotation = Vector3.zero;
-            if (controller.enabled)
+            if (controller.enabled && canMove)
             {
                 Movement();
             }
@@ -116,7 +117,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         
-        if (state == playerState.ground)
+        if (state == playerState.ground && canMove)
         {
             //Gravity
             isGrounded = Physics.CheckSphere(groundCheck.position, checkDistance, groundMask);
@@ -147,7 +148,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonDown(1)&&shootingUnlocked)
+        if (Input.GetMouseButtonDown(1) && shootingUnlocked)
         {
             anim.Play("Shoot");
         }
@@ -158,6 +159,7 @@ public class PlayerController : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.F) && !isGrounded)
             {
+                
                 currentRotation = transform.eulerAngles;
                 state = playerState.flight;
             }
