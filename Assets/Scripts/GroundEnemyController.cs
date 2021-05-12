@@ -8,8 +8,12 @@ public class GroundEnemyController : MonoBehaviour
     //Navigation
     [Header("Navigation")]
     public float lookRadius = 10f;
+    public float walkpointRange;
+
     public Transform target;
     public NavMeshAgent agent;
+    private Vector3 walkPoint;
+    bool walkpointSet;
 
     //Combat
     [Header("Combat")]
@@ -22,6 +26,7 @@ public class GroundEnemyController : MonoBehaviour
 
     [Header("Animation")]
     public Animator anim;
+    private bool isDead = false;
 
     // Start is called before the first frame update
     private void Start()
@@ -58,13 +63,23 @@ public class GroundEnemyController : MonoBehaviour
         {
             HandleAnimation();
         }
+        if (life == 0 && !isDead)
+        {
+            agent.isStopped = true;
+            agent.speed = 0;
+            rb.velocity = Vector3.zero;
+
+            isDead = true;
+            anim.SetTrigger("death");
+        }
         
     }
 
-    public void Death()
+    public void EnemyDeath()
     {
-        Invoke("Destroy(gameObject)",3f);        
+        Destroy(gameObject,1.5f);        
     }
+
     private void FaceTarget()
     {
         /* Vector3 direction = (target.position - transform.position).normalized;
