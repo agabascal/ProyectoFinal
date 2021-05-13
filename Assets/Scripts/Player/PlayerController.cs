@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
     public float checkDistance = 0.4f;
     public LayerMask groundMask;
     private Vector3 velocity;
-    private bool isGrounded, doubleJump;
+    public bool isGrounded;
     public bool flightUnlocked;
     #endregion
 
@@ -87,6 +87,7 @@ public class PlayerController : MonoBehaviour
     {
         if (state == playerState.ground)
         {
+            checkDistance = 0.1f;
             currentRotation = Vector3.zero;
             if (controller.enabled && canMove)
             {
@@ -99,6 +100,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            checkDistance = 1f;
             Flight();
             //cam.GetComponent<CinemachineBrain>().enabled = false;
             //cam.GetComponent<FlightCameraControl>().enabled = true;
@@ -124,8 +126,7 @@ public class PlayerController : MonoBehaviour
             if (isGrounded && velocity.y < 0)
             {
                 state = playerState.ground;
-                velocity.y = -2f;
-                doubleJump = false;
+                velocity.y = -2f;                
             }
 
             isFlying = false;
@@ -143,8 +144,7 @@ public class PlayerController : MonoBehaviour
             if (isGrounded && velocity.y < 0)
             {
                 state = playerState.ground;
-                velocity.y = -2f;
-                doubleJump = false;
+                velocity.y = -2f;                
             }
         }
 
@@ -216,17 +216,12 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        
+        // jump
         if (Input.GetKeyDown(KeyCode.Space)&&isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpSpeed * -2f * gravity);            
         }
 
-        if (!isGrounded && !doubleJump && Input.GetKeyDown(KeyCode.Space) && velocity.y <0)
-        {
-            velocity.y = Mathf.Sqrt((jumpSpeed* 0.75f) * -2f * gravity);
-            doubleJump = true;
-        }
         if (controller.enabled)
         {
             controller.Move(velocity * Time.deltaTime);

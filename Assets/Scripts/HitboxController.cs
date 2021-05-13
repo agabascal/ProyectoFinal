@@ -5,15 +5,15 @@ using UnityEngine;
 public class HitboxController : MonoBehaviour
 {
 
-    public enum enemyType {player, enemy}
-    public enemyType type;
+    public enum HitboxType {player, enemy}
+    public HitboxType type;
 
 
     private void OnTriggerEnter(Collider collision)
     {
         switch (type)
         {
-            case enemyType.player:
+            case HitboxType.player:
                 if (collision.gameObject.CompareTag("Enemy"))
                 {
                     if (!collision.gameObject.GetComponent<GroundEnemyController>().isHurt)
@@ -24,7 +24,7 @@ public class HitboxController : MonoBehaviour
                     }                    
                 }
                 break;
-            case enemyType.enemy:
+            case HitboxType.enemy:
                 if (collision.gameObject.CompareTag("Player"))
                 {
                     if (!collision.gameObject.GetComponent<PlayerController>().isHurt)

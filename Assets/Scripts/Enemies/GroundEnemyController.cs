@@ -13,6 +13,8 @@ public class GroundEnemyController : MonoBehaviour
     public NavMeshAgent agent;
     private Vector3 walkPoint;
     bool walkpointSet;
+    public bool canAttack;
+    public LayerMask groundLayer;
 
     //Combat
     [Header("Combat")]
@@ -22,6 +24,8 @@ public class GroundEnemyController : MonoBehaviour
     public float knockForce = 10f;
     public bool isHurt;
     private float distance;
+    public float attackTime = 0.5f;
+    protected float nextAttackTime = 0.0f;
 
     [Header("Animation")]
     public Animator anim;
@@ -30,33 +34,44 @@ public class GroundEnemyController : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+        if (agent == null)
+        {
+            agent = GetComponent<NavMeshAgent>();
+        }
+       
         target = FindObjectOfType<PlayerController>().transform;
+        
         rb = GetComponentInChildren<Rigidbody>();
     }
 
     // Update is called once per frame
     private void Update()
     {
+        agent.updateRotation = false;
         distance = Vector3.Distance(target.position,transform.position);
         
         if (distance <= lookRadius)
         {
             if (agent.enabled)
             {
-                agent.SetDestination(target.position);
+                agent.SetDestination(target.position - new Vector3(0,10,0));
             }
             
             FaceTarget();
 
-            if (distance <= agent.stoppingDistance)
-            {
-                
+            if (distance <= agent.stoppingDistance && canAttack)
+            {                
                 //Attack the target
                 anim.SetTrigger("attack");
                 //look at the target    
                 FaceTarget();
             }
         }
+        if (distance>=10)
+        {
+            Patrol();
+        }
+        
         
         if (anim!=null)
         {
@@ -74,6 +89,43 @@ public class GroundEnemyController : MonoBehaviour
         
     }
 
+
+    private void Patrol()
+    {
+        FaceTarget();
+        if (!walkpointSet)
+        {
+            SearchWalkpoint();
+        }
+        else
+        {
+            if (agent.enabled)
+            {
+                agent.SetDestination(walkPoint);
+            }
+            
+        }
+
+        Vector3 distanceToWalkpoint = transform.position - walkPoint;
+
+        //walkpoint reached
+        if (distanceToWalkpoint.magnitude <1f)
+        {
+            walkpointSet = false;
+        }
+    }
+    private void SearchWalkpoint()
+    {
+        float randomZ = Random.Range(-walkpointRange,walkpointRange);
+        float randomX = Random.Range(-walkpointRange,walkpointRange);
+
+        walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
+
+        if (Physics.Raycast(walkPoint,-transform.up,2f,groundLayer))
+        {
+            walkpointSet = true;
+        }
+    }
     public void EnemyDeath()
     {
         Destroy(gameObject,1.5f);        
@@ -81,10 +133,10 @@ public class GroundEnemyController : MonoBehaviour
 
     private void FaceTarget()
     {
-        /* Vector3 direction = (target.position - transform.position).normalized;
+         Vector3 direction = (agent.destination - transform.position).normalized;
          Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-         transform.rotation = Quaternion.Slerp(transform.rotation,lookRotation,Time.deltaTime*5f);*/
-        transform.LookAt(target);
+         transform.rotation = Quaternion.Slerp(transform.rotation,lookRotation,Time.deltaTime*5f);
+        //        transform.LookAt(target);
     }
 
     private void HandleAnimation()
@@ -107,7 +159,7 @@ public class GroundEnemyController : MonoBehaviour
         agent.enabled = false;
         rb.isKinematic = false;                
 
-        rb.velocity = (-transform.forward +(Vector3.up * knockForce / 7)) * knockForce;
+        rb.velocity = (target.transform.forward +(Vector3.up * knockForce / 7)) * knockForce;
 
         yield return new WaitForSeconds(1.5f);
 
@@ -129,5 +181,7 @@ public class GroundEnemyController : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position,lookRadius);
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, walkpointRange);
     }
 }
