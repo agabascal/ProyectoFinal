@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PartController : MonoBehaviour
 {
-
+    public float intensity;
     public int id;
     private bool iscollected;
 
@@ -17,6 +17,7 @@ public class PartController : MonoBehaviour
                 GameManager.Instance.UpdateCollected(id);
                 iscollected = true;
                 Destroy(gameObject);
+                other.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", other.GetComponent<MeshRenderer>().material.GetColor("_EmissionColor")*intensity);
             }
             
         }

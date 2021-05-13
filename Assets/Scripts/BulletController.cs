@@ -60,6 +60,7 @@ public class BulletController : MonoBehaviour
                 if (collision.gameObject.GetComponent<GroundEnemyController>())
                 {
                     collision.gameObject.GetComponent<GroundEnemyController>().life--;
+                    collision.gameObject.GetComponent<GroundEnemyController>().Knock();
                 }
                 if (collision.gameObject.GetComponent<FlyingEnemy>())
                 {
