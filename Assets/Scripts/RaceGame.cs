@@ -22,7 +22,7 @@ public class RaceGame : MonoBehaviour
     void Start()
     {
         player = FindObjectOfType<PlayerController>().GetComponent<PlayerController>();
-        timer = 10;
+        timer = 50;
     }
 
     // Update is called once per frame

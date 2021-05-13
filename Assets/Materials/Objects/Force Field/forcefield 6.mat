@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: forcefield
+  m_Name: forcefield 6
   m_Shader: {fileID: -6465566751694194690, guid: d0183380ec9574246af7aa7e0d3a6a6a,
     type: 3}
   m_ShaderKeywords: 
@@ -27,9 +27,9 @@ Material:
     m_Floats:
     - _Fill: 0.33
     - _Fresnel: 1
-    - _offset: 0.4
+    - _offset: -0.37
     - _scrollspeed: 20.97
     m_Colors:
     - _PatternScale: {r: 0.2, g: 0.5, b: 0, a: 0}
     - _ScrollSpeed: {r: 0.01, g: 0.009, b: 0, a: 0}
-    - _emission: {r: 0.12941177, g: 0, b: 0.7490196, a: 0.98039216}
+    - _emission: {r: 0.046665095, g: 0.9911022, b: 0.9911022, a: 0.98039216}

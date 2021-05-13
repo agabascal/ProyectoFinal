@@ -51,9 +51,18 @@ public class DialogueManager : MonoBehaviour
 
     public void EndDialogue()
     {
-        GameManager.Instance.dialoguePanel.SetActive(false);
-        FindObjectOfType<PlayerController>().canMove = true;
-        Camera.main.transform.GetComponent<CinemachineBrain>().enabled = true;
+        if (GameManager.Instance.treeDialogue.index==0)
+        {
+            GameManager.Instance.treeDialogue.index++;
+            GameManager.Instance.dialoguePanel.SetActive(false);
+            FindObjectOfType<PlayerController>().canMove = true;
+            Camera.main.transform.GetComponent<CinemachineBrain>().enabled = true;
+        }
+        else
+        {
+            StartCoroutine(GameManager.Instance.FadeOut());
+        }
+        
     }
 
     private IEnumerator WriteText(string sentence)

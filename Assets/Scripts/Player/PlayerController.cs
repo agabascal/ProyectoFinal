@@ -246,7 +246,8 @@ public class PlayerController : MonoBehaviour
         if (currentRotation.magnitude >0.1f)
         {
             transform.Rotate(Input.GetAxis("Vertical"), 0.0f, -Input.GetAxis("Horizontal"));
-        }                 
+        }
+              
 
         controller.Move(transform.forward * forwardSpeed * Time.deltaTime);
         forwardSpeed -= transform.forward.y * Time.deltaTime * 35.0f;

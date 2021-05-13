@@ -4,31 +4,26 @@ using UnityEngine;
 
 public class ForceFieldController : MonoBehaviour
 {
-    public List<protectingEnemies> enemyList;
+    public List<GameObject> enemyList;
 
     public bool allDefeated;
 
-    [System.Serializable]
-    public class protectingEnemies
-    {
-        public GameObject enemy;
-        public bool isDefeated;
-    }
-    
+    public Animator forcefieldAnimation;
+    private bool isCollapsed=false;
+
 
     // Update is called once per frame
     void Update()
     {
-        foreach (protectingEnemies enemy in enemyList)
+        if (enemyList.Count == 0)
         {
-            if (!enemy.isDefeated)
-            {
-                allDefeated = false;
-            }
-            else
-            {
-
-            }
+            allDefeated = true;
+        }
+        if (allDefeated && !isCollapsed)
+        {
+            isCollapsed = true;
+            forcefieldAnimation.Play("collapse");
+            Destroy(gameObject,1.5f);
         }
     }
 }
