@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Cinemachine;
 
 public class DialogueManager : MonoBehaviour
 {
 
     private Queue<string> sentences;
     public Text dialogueText;
+    private bool canContinue;
     
 
     // Start is called before the first frame update
@@ -18,7 +20,7 @@ public class DialogueManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space)&& canContinue)
         {
             DisplayNextSentence();
         }
@@ -37,6 +39,7 @@ public class DialogueManager : MonoBehaviour
 
     public void DisplayNextSentence()
     {
+        StopAllCoroutines();
         if (sentences.Count == 0)
         {
             EndDialogue();
@@ -50,15 +53,18 @@ public class DialogueManager : MonoBehaviour
     {
         GameManager.Instance.dialoguePanel.SetActive(false);
         FindObjectOfType<PlayerController>().canMove = true;
+        Camera.main.transform.GetComponent<CinemachineBrain>().enabled = true;
     }
 
     private IEnumerator WriteText(string sentence)
     {
+        canContinue = false;
         dialogueText.text = "";
         foreach (char letter in sentence.ToCharArray())
         {
             dialogueText.text += letter;
             yield return null;
-        }        
+        }
+        canContinue = true;
     }
 }
