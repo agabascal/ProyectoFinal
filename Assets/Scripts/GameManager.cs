@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     public Vector3 cameraStartPos,cameraStartRot;
     private bool lastDialogue;
 
+
     [Header("UI Elements")]
     //Pause Menu
     public GameObject pausePanel;
@@ -31,6 +32,8 @@ public class GameManager : MonoBehaviour
     public Image fadeImage;
     public Image blackFadeImage,whiteFadeImage;
     public GameObject dialoguePanel;
+    public AudioSource musicEnvaironment;
+    public GameObject panelSettings;
 
     
 
@@ -127,6 +130,7 @@ public class GameManager : MonoBehaviour
             pausePanel.SetActive(true);
             isPaused = true;
             Time.timeScale = 0f;
+            musicEnvaironment.Stop();
         }
         else
         {
@@ -134,8 +138,21 @@ public class GameManager : MonoBehaviour
             pausePanel.SetActive(false);
             isPaused = false;
             Time.timeScale = 1f;
+            musicEnvaironment.Play();
         }
         
+    }
+
+    public void Settings()
+    {
+        panelSettings.SetActive(true);
+        pausePanel.SetActive(false);
+    }
+
+    public void Back()
+    {
+        panelSettings.SetActive(false);
+        pausePanel.SetActive(true);
     }
 
     public void Quit()
