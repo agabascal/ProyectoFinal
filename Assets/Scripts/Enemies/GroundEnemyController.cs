@@ -28,7 +28,8 @@ public class GroundEnemyController : MonoBehaviour
     private float distance;
     public float attackTime = 0.5f;
     protected float nextAttackTime = 0.0f;
-
+    public HitboxController hitbox;
+    public GameObject deathParticles;
 
     [Header("Animation")]
     public Animator anim;
@@ -138,7 +139,7 @@ public class GroundEnemyController : MonoBehaviour
     }
     public void EnemyDeath()
     {
-        Destroy(gameObject,3f);
+        Destroy(gameObject,0.5f);
         if (protectsItem)
         {
             if (fieldController.enemyList.Contains(this.gameObject))
@@ -147,6 +148,14 @@ public class GroundEnemyController : MonoBehaviour
             }
             
         }
+        if (hitbox!=null)
+        {
+            hitbox.enabled = false;
+        }
+        
+        GetComponent<Collider>().enabled = false;
+        GameObject particles = Instantiate(deathParticles,transform.position,Quaternion.identity);
+        Destroy(particles,2f);
     }
 
     private void FaceTarget()

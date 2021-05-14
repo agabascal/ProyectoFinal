@@ -20,7 +20,7 @@ public class DialogueManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space)&& canContinue)
+        if (Input.GetKeyDown(KeyCode.Return) && canContinue)
         {
             DisplayNextSentence();
         }
@@ -58,7 +58,7 @@ public class DialogueManager : MonoBehaviour
             FindObjectOfType<PlayerController>().canMove = true;
             Camera.main.transform.GetComponent<CinemachineBrain>().enabled = true;
         }
-        else
+        else if(GameManager.Instance.partsCollected == 4)
         {
             StartCoroutine(GameManager.Instance.FadeOut());
         }

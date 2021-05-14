@@ -633,7 +633,7 @@ GameObject:
   - component: {fileID: 8774077727513421492}
   - component: {fileID: 8774077727513421498}
   m_Layer: 0
-  m_Name: "Ara\xF1a_animWalk"
+  m_Name: Aranya
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -648,7 +648,7 @@ Transform:
   m_GameObject: {fileID: 8431478358337362912}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -61.18995, y: 0.5, z: -52.861435}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 633988498871559811}
   - {fileID: 1148777589473546375}
@@ -721,13 +721,13 @@ NavMeshAgent:
   m_Acceleration: 20
   avoidancePriority: 30
   m_AngularSpeed: 120
-  m_StoppingDistance: 3.5
+  m_StoppingDistance: 1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 4.96
   m_BaseOffset: 0
-  m_WalkableMask: 4294967295
+  m_WalkableMask: 7
   m_ObstacleAvoidanceType: 4
 --- !u!114 &8774077727513421498
 MonoBehaviour:
@@ -742,14 +742,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lookRadius: 15
-  walkpointRange: 0
+  walkpointRange: 13.77
   target: {fileID: 0}
   agent: {fileID: 8774077727513421492}
+  canAttack: 1
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 256
   life: 3
   rb: {fileID: 0}
   knockback: 0
-  knockForce: 6
   isHurt: 0
+  protectsItem: 1
+  fieldController: {fileID: 0}
+  knockForce: 6
+  attackTime: 0.5
   anim: {fileID: 8774077727513421491}
 --- !u!1 &8774077727728956170
 GameObject:
@@ -791,7 +798,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8774077727728956170}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 4.14, y: 1, z: 0.33}
