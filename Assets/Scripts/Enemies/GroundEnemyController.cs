@@ -66,7 +66,8 @@ public class GroundEnemyController : MonoBehaviour
             FaceTarget();
 
             if (distance <= agent.stoppingDistance)
-            {                
+            {
+                Debug.Log(distance);
                 //Attack the target
                 anim.SetTrigger("attack");
                 //look at the target    
@@ -155,7 +156,7 @@ public class GroundEnemyController : MonoBehaviour
         
         GetComponent<Collider>().enabled = false;
         GameObject particles = Instantiate(deathParticles,transform.position,Quaternion.identity);
-        Destroy(particles,2f);
+        Destroy(particles,5f);
     }
 
     private void FaceTarget()
@@ -209,5 +210,23 @@ public class GroundEnemyController : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position,lookRadius);
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, walkpointRange);
+    }
+
+    public void StartWormMovement()
+    {
+        agent.speed = 3.5f;
+    }
+    public void StopWormMovement()
+    {
+        agent.speed = 0;
+    }
+
+    public void StartAttack()
+    {
+        hitbox.enabled = true;
+    }
+    public void StopAttack()
+    {
+        hitbox.enabled = false;
     }
 }

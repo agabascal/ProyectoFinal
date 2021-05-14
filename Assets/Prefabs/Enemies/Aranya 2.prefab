@@ -633,7 +633,7 @@ GameObject:
   - component: {fileID: 8774077727513421492}
   - component: {fileID: 8774077727513421498}
   m_Layer: 0
-  m_Name: "Ara\xF1a_animWalk 1"
+  m_Name: Aranya 2
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -745,12 +745,21 @@ MonoBehaviour:
   walkpointRange: 0
   target: {fileID: 0}
   agent: {fileID: 8774077727513421492}
+  canAttack: 0
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 256
   life: 3
   rb: {fileID: 0}
   knockback: 0
-  knockForce: 6
   isHurt: 0
+  protectsItem: 0
+  fieldController: {fileID: 0}
+  knockForce: 6
   attackTime: 0.5
+  hitbox: {fileID: 8774077727728956172}
+  deathParticles: {fileID: 494344367814565812, guid: fe1c960195e06ba4ab984f7065865897,
+    type: 3}
   anim: {fileID: 8774077727513421491}
 --- !u!1 &8774077727728956170
 GameObject:

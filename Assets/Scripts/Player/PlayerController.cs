@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
     private float boostTimer;
     public float xSensitivity, zSensitivity;
 
-    public GameObject wings;
+    public GameObject[] trails;
     
     public bool isFlying;
     public bool isBoosted;
@@ -52,10 +52,10 @@ public class PlayerController : MonoBehaviour
     #region Combat
     [Header("Combat")]
     public int life = 3;
-    private float knockTimer = 1f;
+    public float knockTimer = 1f;
     public bool isKnocked;
     public float knockForce = 5f;
-    public MeshCollider meshCol;
+    public CapsuleCollider capsuleCol;
     public Rigidbody rb;
     public bool isHurt;
     public BoxCollider tailHitbox;
@@ -76,7 +76,7 @@ public class PlayerController : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         controller = GetComponent<CharacterController>();
-        meshCol = GetComponent<MeshCollider>();
+        capsuleCol = GetComponent<CapsuleCollider>();
         anim = GetComponent<Animator>();
         cam = Camera.main.transform;
         rb = GetComponent<Rigidbody>();
@@ -88,23 +88,21 @@ public class PlayerController : MonoBehaviour
         if (state == playerState.ground)
         {
             checkDistance = 0.1f;
-            currentRotation = Vector3.zero;
+            currentRotation = transform.eulerAngles;
             if (controller.enabled && canMove)
             {
                 Movement();
             }
             velocity.y += gravity * Time.deltaTime;
-            //cam.GetComponent<CinemachineBrain>().enabled = true;
-           // cam.GetComponent<FlightCameraControl>().enabled = false;
-            wings.SetActive(false);
+            trails[0].SetActive(false);
+            trails[1].SetActive(false);
         }
         else
         {
-            checkDistance = 1f;
+            checkDistance = 0.5f;
             Flight();
-            //cam.GetComponent<CinemachineBrain>().enabled = false;
-            //cam.GetComponent<FlightCameraControl>().enabled = true;
-            wings.SetActive(true);
+            trails[0].SetActive(true);
+            trails[1].SetActive(true);
 
             velocity.y += flightGravity * Time.deltaTime;
             if (velocity.y <-5)
@@ -123,7 +121,9 @@ public class PlayerController : MonoBehaviour
         {
             //Gravity
             isGrounded = Physics.CheckSphere(groundCheck.position, checkDistance, groundMask);
-            if (isGrounded && velocity.y < 0)
+            anim.SetBool("isGrounded",isGrounded);
+
+            if (isGrounded && velocity.y < 0 && !isHurt)
             {
                 state = playerState.ground;
                 velocity.y = -2f;                
@@ -132,10 +132,10 @@ public class PlayerController : MonoBehaviour
             isFlying = false;
             if (Input.GetMouseButtonDown(0))
             {
-                anim.Play("attack");
-                MeleeAttack();
+                anim.Play("Attack");                
             }
         }
+
         else
         {
             isFlying = true;
@@ -150,34 +150,38 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1) && shootingUnlocked)
         {
-            anim.Play("Shoot");
-        }
-
-        
+            canMove = false;
+            anim.Play("shoot");
+        }        
 
         if (GameManager.Instance.partsCollected == 4)
         {
-            if (Input.GetKeyDown(KeyCode.F) && !isGrounded)
+            if (Input.GetKeyDown(KeyCode.F) && isGrounded)
             {
                 
                 currentRotation = transform.eulerAngles;
-                state = playerState.flight;
+                anim.SetTrigger("takeOff");
             }
         }
        
         if (Input.GetKeyDown(KeyCode.X) && state == playerState.flight)
         {
             state = playerState.ground;
+            anim.SetTrigger("land");
             transform.rotation = Quaternion.Euler(0,0,0);
         }
 
-        if (isGrounded)
+        if (isGrounded && !isHurt)
         {
             state = playerState.ground;
             transform.eulerAngles = new Vector3(transform.eulerAngles.x,transform.eulerAngles.y,0f);
         }
 
-        
+        if (life==0 && canMove)
+        {
+            canMove = false;
+            anim.SetTrigger("death");
+        }
 
     }
     
@@ -190,7 +194,9 @@ public class PlayerController : MonoBehaviour
         float v = Input.GetAxisRaw("Vertical");
 
         direction = new Vector3(h,0,v);
-        
+
+        anim.SetFloat("speed", direction.magnitude);
+
         if (direction.magnitude>=0.1f)
         {
             
@@ -199,10 +205,12 @@ public class PlayerController : MonoBehaviour
             transform.rotation = Quaternion.Euler(0f,angle,0f);
 
             moveDir = Quaternion.Euler(0f,targetAngle,0f)*Vector3.forward;
+
             if (!Input.GetKey(KeyCode.LeftShift))
             {
                 if (controller.enabled)
                 {
+                    
                     controller.Move(moveDir.normalized * speed * Time.deltaTime);
                 }
                 
@@ -211,6 +219,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (controller.enabled)
                 {
+                    anim.SetFloat("speed", direction.magnitude*2);
                     controller.Move(moveDir.normalized * speed*2 * Time.deltaTime);
                 }
             }
@@ -219,13 +228,14 @@ public class PlayerController : MonoBehaviour
         // jump
         if (Input.GetKeyDown(KeyCode.Space)&&isGrounded)
         {
-            velocity.y = Mathf.Sqrt(jumpSpeed * -2f * gravity);            
+            anim.SetTrigger("jump");                      
         }
+        
+    }
 
-        if (controller.enabled)
-        {
-            controller.Move(velocity * Time.deltaTime);
-        }
+    public void Jump()
+    {
+        velocity.y = Mathf.Sqrt(jumpSpeed * -2f * gravity);
     }
 
     private void Flight()
@@ -286,17 +296,23 @@ public class PlayerController : MonoBehaviour
             forwardSpeed = 25;
         }              
     }
+
+    public void StartFlight()
+    {
+        state = playerState.flight;
+    }
     #endregion
 
     #region Combat
    
     public void RangeAttack()
-    {
+    {        
         Instantiate(bullet,shootPoint.transform.position,transform.rotation);
+        canMove = true;
     }
 
     public void MeleeAttack()
-    {
+    {        
         tailHitbox.enabled = true;
     }
 
@@ -304,7 +320,6 @@ public class PlayerController : MonoBehaviour
     {
         tailHitbox.enabled = false;
     }
-
 
 
     //Knockback on contact with enemies
@@ -319,21 +334,20 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator KnockBack()
     {
-
-
+        rb.isKinematic = false;
         controller.enabled = false;
-        //rb.isKinematic = false;
-        //capsuleCol.enabled = true;
-
-        rb.velocity = (-transform.forward + (Vector3.up * knockForce / 7)) * knockForce;
+        canMove = false;
+        capsuleCol.enabled = false;
+        isHurt = true;        
+        //rb.velocity = new Vector3(0, Vector3.up.magnitude / 7, -transform.forward.magnitude * knockForce);
 
         yield return new WaitForSeconds(knockTimer);
 
-        //capsuleCol.enabled = false;
+        capsuleCol.enabled = false;
         controller.enabled = true;
-        //rb.isKinematic = true;
+        rb.isKinematic = true;
         isHurt = false;
-
+        canMove = true;
     }
 
     public void Knock()
@@ -342,5 +356,16 @@ public class PlayerController : MonoBehaviour
         StartCoroutine(KnockBack());
         isKnocked = false;
     }
+
+
+    public void PlayerDeath()
+    {
+        //reload scene
+    }
     #endregion
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawSphere(groundCheck.position,checkDistance);
+    }
 }
