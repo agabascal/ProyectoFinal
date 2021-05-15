@@ -32,4 +32,4 @@ Material:
     m_Colors:
     - _PatternScale: {r: -0.15, g: 0.37, b: 0, a: 0.34}
     - _ScrollSpeed: {r: -0.01, g: -0.009, b: 0, a: 0}
-    - _emission: {r: 0.55472517, g: 0.33490568, b: 1, a: 0.98039216}
+    - _emission: {r: 0.07443686, g: 0.0010679982, b: 0.2264151, a: 1}

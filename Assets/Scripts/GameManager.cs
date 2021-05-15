@@ -34,7 +34,12 @@ public class GameManager : MonoBehaviour
     public GameObject dialoguePanel;
     public AudioSource musicEnvaironment;
     public GameObject panelSettings;
+    public Image[] hearts;
 
+    [Header("General Elements")]
+    public int heartAmount=3;
+    public Sprite emptyHeart, fullHeart;
+    
     
 
     //Use Awake to manage Singleton's existance 
@@ -52,6 +57,7 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         player = FindObjectOfType<PlayerController>().gameObject;
+
         if (SceneManager.GetActiveScene().buildIndex == 1)
         {
             fadeImage = blackFadeImage;
@@ -67,7 +73,7 @@ public class GameManager : MonoBehaviour
         {
             PauseGame();
         }
-        
+        PlayerLife();
     }
 
     public IEnumerator FadeIn()
@@ -88,8 +94,7 @@ public class GameManager : MonoBehaviour
         {
             dialoguePanel.SetActive(true);
             lastDialogue = true;
-            treeDialogue.TriggerDialogue(treeDialogue.dialogue[treeDialogue.index]);
-            
+            treeDialogue.TriggerDialogue(treeDialogue.dialogue[treeDialogue.index]);            
         }
 
     }
@@ -104,22 +109,30 @@ public class GameManager : MonoBehaviour
             fadeImage.color = new Color(fadeImage.color.r, fadeImage.color.r, fadeImage.color.r, i);
             yield return null;
         }
-        if (treeDialogue.index==1)
+        //Level 1 to Level 2 Transition
+        if (treeDialogue != null)
         {
-            if (!lastDialogue)
+            if (treeDialogue.index == 1)
             {
-                StartCoroutine(FadeIn());
+                Camera.main.transform.GetComponent<CinemachineBrain>().enabled = false;
+                player.GetComponent<Animator>().SetFloat("speed", 0f);
+                Camera.main.transform.localPosition = cameraStartPos;
+                Camera.main.transform.localEulerAngles = cameraStartRot;
+
+                player.transform.localPosition = playerStartPos;
+                player.transform.eulerAngles = playerStartRot;
+
+                if (!lastDialogue)
+                {
+                    StartCoroutine(FadeIn());
+                }
+                else
+                {
+                    SceneManager.LoadScene(2);
+                }
+
             }
-            else
-            {
-                //load next scene
-            }          
-            Camera.main.transform.localPosition = cameraStartPos;
-            Camera.main.transform.localEulerAngles = cameraStartRot;
-            player.transform.localPosition = playerStartPos;
-            player.transform.eulerAngles = playerStartRot;
         }
-       
         
     }
 
@@ -171,5 +184,41 @@ public class GameManager : MonoBehaviour
             fadeImage = whiteFadeImage;
             StartCoroutine(FadeOut());
         }
+    }
+
+    public void PlayerLife()
+    {
+        if (player.GetComponent<PlayerController>().life > heartAmount)
+        {
+            player.GetComponent<PlayerController>().life = heartAmount;
+        }
+        if (hearts.Length > 0)
+        {
+            for (int i = 0; i < hearts.Length; i++)
+            {
+                if (i < player.GetComponent<PlayerController>().life)
+                {
+                    hearts[i].sprite = fullHeart;
+                }
+                else
+                {
+                    hearts[i].sprite = emptyHeart;
+                }
+                if (i<heartAmount)
+                {
+                    hearts[i].enabled = true;
+                }
+                else
+                {
+                    hearts[i].enabled = false;
+                }
+                
+            }
+        }
+    }
+
+    public void GameOver()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

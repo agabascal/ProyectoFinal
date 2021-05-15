@@ -59,6 +59,7 @@ public class PlayerController : MonoBehaviour
     public Rigidbody rb;
     public bool isHurt;
     public BoxCollider tailHitbox;
+    public bool canBeHit;
 
     [Header("Range")]
     //Range Attack
@@ -93,17 +94,15 @@ public class PlayerController : MonoBehaviour
             {
                 Movement();
             }
-            if (!isHurt)
-            {
-                velocity.y += gravity * Time.deltaTime;
-            }            
+            velocity.y += gravity * Time.deltaTime;
             trails[0].SetActive(false);
             trails[1].SetActive(false);
         }
         else
         {
-            checkDistance = 0.5f;
+            
             Flight();
+            checkDistance = 1f;
             trails[0].SetActive(true);
             trails[1].SetActive(true);
 
@@ -112,8 +111,8 @@ public class PlayerController : MonoBehaviour
             {
                 velocity.y = -5f;
             }
-            transform.Translate(velocity * Time.deltaTime);            
-        }               
+            transform.Translate(velocity * Time.deltaTime);
+        }
     }
 
     // Update is called once per frame
@@ -125,12 +124,6 @@ public class PlayerController : MonoBehaviour
             //Gravity
             isGrounded = Physics.CheckSphere(groundCheck.position, checkDistance, groundMask);
             anim.SetBool("isGrounded",isGrounded);
-
-            if (isGrounded && velocity.y < 0 && !isHurt)
-            {
-                state = playerState.ground;
-                velocity.y = -2f;                
-            }
 
             isFlying = false;
             if (Input.GetMouseButtonDown(0))
@@ -144,7 +137,7 @@ public class PlayerController : MonoBehaviour
             isFlying = true;
             isGrounded = Physics.CheckSphere(groundCheck.position, checkDistance, groundMask);
 
-            if (isGrounded && velocity.y < 0)
+            if (isGrounded && velocity.y<0)
             {
                 state = playerState.ground;
                 velocity.y = -2f;                
@@ -159,9 +152,8 @@ public class PlayerController : MonoBehaviour
 
         if (GameManager.Instance.partsCollected == 4)
         {
-            if (Input.GetKeyDown(KeyCode.F) && state == playerState.ground)
-            {
-                
+            if (Input.GetKeyDown(KeyCode.F) && isGrounded)
+            {                
                 currentRotation = transform.eulerAngles;
                 anim.SetTrigger("takeOff");
             }
@@ -200,45 +192,49 @@ public class PlayerController : MonoBehaviour
 
         anim.SetFloat("speed", direction.magnitude);
 
-        if (direction.magnitude>=0.1f)
+        if (direction.magnitude >= 0.1f)
         {
-            
-            float targetAngle = Mathf.Atan2(direction.x,direction.z)*Mathf.Rad2Deg + cam.transform.eulerAngles.y;
-            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y,targetAngle,ref smoothVelocity,turnSmooth);
-            transform.rotation = Quaternion.Euler(0f,angle,0f);
 
-            moveDir = Quaternion.Euler(0f,targetAngle,0f)*Vector3.forward;
+            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.transform.eulerAngles.y;
+            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref smoothVelocity, turnSmooth);
+            transform.rotation = Quaternion.Euler(0f, angle, 0f);
+
+            moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
 
             if (!Input.GetKey(KeyCode.LeftShift))
             {
                 if (controller.enabled)
                 {
-                    
-                    controller.Move(moveDir.normalized * speed * Time.deltaTime);
+                    moveDir = moveDir.normalized * speed;
+                    controller.Move(moveDir * Time.deltaTime);
                 }
-                
+
             }
             else
             {
                 if (controller.enabled)
                 {
-                    anim.SetFloat("speed", direction.magnitude*2);
-                    controller.Move(moveDir.normalized * speed*2 * Time.deltaTime);
+                    anim.SetFloat("speed", direction.magnitude * 2);
+                    moveDir = moveDir.normalized * speed * 2;
+                    controller.Move(moveDir * Time.deltaTime);
+
                 }
             }
         }
-
+        
         // jump
         if (Input.GetKeyDown(KeyCode.Space)&&isGrounded)
         {
             anim.SetTrigger("jump");                      
         }
-        
+        anim.SetBool("isFlying",isFlying);
+        controller.Move(velocity * Time.deltaTime);
     }
 
     public void Jump()
     {
         velocity.y = Mathf.Sqrt(jumpSpeed * -2f * gravity);
+        
     }
 
     private void Flight()
@@ -310,12 +306,14 @@ public class PlayerController : MonoBehaviour
    
     public void RangeAttack()
     {        
-        Instantiate(bullet,shootPoint.transform.position,transform.rotation);
+        GameObject newBullet = Instantiate(bullet,shootPoint.transform.position,transform.rotation);
+        Physics.IgnoreCollision(newBullet.GetComponentInChildren<Collider>(),GetComponent<Collider>());
         canMove = true;
     }
 
     public void MeleeAttack()
-    {        
+    {
+        canBeHit = false;
         tailHitbox.enabled = true;
     }
 
@@ -328,10 +326,10 @@ public class PlayerController : MonoBehaviour
     //Knockback on contact with enemies
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Enemy"))
+        if (other.gameObject.CompareTag("Enemy") && canBeHit)
         {
-            //isHurt = true;
-            //StartCoroutine(KnockBack());
+            canBeHit = false;
+            StartCoroutine(KnockBack());
             velocity.y = Mathf.Sqrt(knockForce * -2f * gravity);
             life--;
         }                
@@ -340,6 +338,7 @@ public class PlayerController : MonoBehaviour
     private IEnumerator KnockBack()
     {
         rb.isKinematic = false;
+        isHurt = true;
         controller.enabled = false;
         canMove = false;
         capsuleCol.enabled = false;
@@ -352,6 +351,7 @@ public class PlayerController : MonoBehaviour
         rb.isKinematic = true;
         isHurt = false;
         canMove = true;
+        canBeHit = true;
     }
 
     public void Knock()
@@ -365,6 +365,7 @@ public class PlayerController : MonoBehaviour
     public void PlayerDeath()
     {
         //reload scene
+        GameManager.Instance.GameOver();
     }
     #endregion
 

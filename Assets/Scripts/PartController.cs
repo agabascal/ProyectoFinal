@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PartController : MonoBehaviour
 {
     public float intensity;
     public int id;
     private bool iscollected;
+    public Image uiImage;
+    public Sprite collectedSprite;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -17,7 +20,8 @@ public class PartController : MonoBehaviour
                 GameManager.Instance.UpdateCollected(id);
                 iscollected = true;
                 Destroy(gameObject);
-                other.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", other.GetComponent<MeshRenderer>().material.GetColor("_EmissionColor")*intensity);
+                other.GetComponentInChildren<SkinnedMeshRenderer>().material.SetColor("_EmissionColor", other.GetComponentInChildren<SkinnedMeshRenderer>().material.GetColor("_EmissionColor")*intensity);
+                uiImage.sprite = collectedSprite;
             }
             
         }

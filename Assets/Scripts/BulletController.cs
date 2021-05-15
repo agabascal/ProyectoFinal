@@ -29,10 +29,11 @@ public class BulletController : MonoBehaviour
         }
         
     }
-
+   
     // Update is called once per frame
     private void Update()
     {
+        Physics.IgnoreCollision(this.GetComponentInChildren<Collider>(),FindObjectOfType<PlayerController>().GetComponent<Collider>());
         if (transform.forward != Vector3.zero)
         {   
             transform.forward = rb.velocity;
@@ -55,6 +56,7 @@ public class BulletController : MonoBehaviour
             GameObject newParticles = Instantiate(particles, transform.localPosition, Quaternion.identity);
             Destroy(newParticles, 2f);
             Destroy(gameObject);
+
             if (collision.gameObject.CompareTag("Enemy"))
             {
                 if (collision.gameObject.GetComponent<GroundEnemyController>())
@@ -68,12 +70,14 @@ public class BulletController : MonoBehaviour
                 }
             }
         }
-
-        if (collision.gameObject.layer == 8)
+        else
         {
             GameObject newParticles = Instantiate(particles, transform.localPosition, Quaternion.identity);
             Destroy(newParticles, 2f);
             Destroy(gameObject);
         }
+
+           
+        
     }
 }

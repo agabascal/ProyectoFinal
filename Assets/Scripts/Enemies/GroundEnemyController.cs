@@ -15,6 +15,8 @@ public class GroundEnemyController : MonoBehaviour
     bool walkpointSet;
     public bool canAttack;
     public LayerMask groundLayer;
+    public GameObject wormParticles;
+    private float timer = 5f;
 
     //Combat
     [Header("Combat")]
@@ -89,8 +91,10 @@ public class GroundEnemyController : MonoBehaviour
             HandleAnimation();
         }
 
-        if (life == 0 && !isDead)
+        if (life <= 0 && !isDead)
         {
+            
+            anim.SetTrigger("death");
             if (agent.isOnNavMesh)
             {
                 agent.isStopped = true;
@@ -120,18 +124,25 @@ public class GroundEnemyController : MonoBehaviour
             
         }
 
+        timer -= Time.deltaTime;
+        
         Vector3 distanceToWalkpoint = transform.position - walkPoint;
 
         //walkpoint reached
-        if (distanceToWalkpoint.magnitude <1f)
+        if (distanceToWalkpoint.magnitude <1f || timer<=0f)
         {
             walkpointSet = false;
+            timer = 3f;
         }
     }
 
     private void SearchWalkpoint()
     {
-        walk.Play();
+        if (walk != null)
+        {
+            walk.Play();
+        }
+        
         float randomZ = Random.Range(-walkpointRange,walkpointRange);
         float randomX = Random.Range(-walkpointRange,walkpointRange);
 
@@ -221,6 +232,8 @@ public class GroundEnemyController : MonoBehaviour
     public void StartWormMovement()
     {
         agent.speed = 3.5f;
+        GameObject dirtParticles = Instantiate(wormParticles,transform.position, Quaternion.Euler(transform.rotation.x,transform.localEulerAngles.y-180,transform.rotation.z));
+        Destroy(dirtParticles,1.5f);
     }
     public void StopWormMovement()
     {

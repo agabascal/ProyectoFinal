@@ -49,7 +49,7 @@ MonoBehaviour:
   type: 0
   particles: {fileID: 6311790065666938394, guid: 2439e3e72de592f4a8e2b182d57af491,
     type: 3}
-  speed: 30
+  speed: 15
   curvature: 0.1
 --- !u!54 &8280318845121286211
 Rigidbody:
