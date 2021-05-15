@@ -67,7 +67,6 @@ public class GroundEnemyController : MonoBehaviour
 
             if (distance <= agent.stoppingDistance)
             {
-                Debug.Log(distance);
                 //Attack the target
                 anim.SetTrigger("attack");
                 //look at the target    
@@ -99,7 +98,6 @@ public class GroundEnemyController : MonoBehaviour
         }
         
     }
-
 
     private void Patrol()
     {
@@ -138,6 +136,7 @@ public class GroundEnemyController : MonoBehaviour
             walkpointSet = true;
         }
     }
+
     public void EnemyDeath()
     {
         Destroy(gameObject,0.5f);
@@ -180,6 +179,7 @@ public class GroundEnemyController : MonoBehaviour
         knockback = false;
 
     }
+
     private IEnumerator KnockBack()
     {
         
