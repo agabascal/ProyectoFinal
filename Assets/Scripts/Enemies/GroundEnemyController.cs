@@ -35,6 +35,11 @@ public class GroundEnemyController : MonoBehaviour
     public Animator anim;
     private bool isDead = false;
 
+    [Header("Sounds")]
+    public AudioSource walk;
+    public AudioSource attack;
+    public AudioSource dead;
+    public AudioSource hit;
 
 
     // Start is called before the first frame update
@@ -94,7 +99,7 @@ public class GroundEnemyController : MonoBehaviour
             rb.velocity = Vector3.zero;
 
             isDead = true;
-            anim.SetTrigger("death");
+
         }
         
     }
@@ -126,6 +131,7 @@ public class GroundEnemyController : MonoBehaviour
 
     private void SearchWalkpoint()
     {
+        walk.Play();
         float randomZ = Random.Range(-walkpointRange,walkpointRange);
         float randomX = Random.Range(-walkpointRange,walkpointRange);
 

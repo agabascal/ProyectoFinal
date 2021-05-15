@@ -485,7 +485,7 @@ GameObject:
   - component: {fileID: 9153898206855990883}
   - component: {fileID: 9153898206855990880}
   m_Layer: 0
-  m_Name: Erizo_animWalk
+  m_Name: Erizo
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -569,7 +569,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lookRadius: 14
-  walkpointRange: 15
+  walkpointRange: 8
   target: {fileID: 0}
   agent: {fileID: 0}
   canAttack: 0
@@ -579,10 +579,19 @@ MonoBehaviour:
   life: 3
   rb: {fileID: 0}
   knockback: 0
-  knockForce: 6
   isHurt: 0
+  protectsItem: 1
+  fieldController: {fileID: 0}
+  knockForce: 6
   attackTime: 0.5
+  hitbox: {fileID: 0}
+  deathParticles: {fileID: 494344367814565812, guid: fe1c960195e06ba4ab984f7065865897,
+    type: 3}
   anim: {fileID: 9153898206855990887}
+  walk: {fileID: 0}
+  attack: {fileID: 0}
+  dead: {fileID: 0}
+  hit: {fileID: 0}
 --- !u!195 &9153898206855990880
 NavMeshAgent:
   m_ObjectHideFlags: 0
