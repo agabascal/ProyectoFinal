@@ -20,7 +20,9 @@ public class MenuManager : MonoBehaviour
     {
         if(intro.time >= intro.clip.length)
         {
+            Debug.Log("Detectado");
             SceneManager.LoadScene(1);
+            videoIntro.SetActive(false);
         }
     }
     private void Start()
