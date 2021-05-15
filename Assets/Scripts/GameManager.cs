@@ -51,12 +51,13 @@ public class GameManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
+        player = FindObjectOfType<PlayerController>().gameObject;
         if (SceneManager.GetActiveScene().buildIndex == 1)
         {
             fadeImage = blackFadeImage;
             StartCoroutine(FadeIn());
         }
-        player = FindObjectOfType<PlayerController>().gameObject;        
+                
     }
 
     // Update is called once per frame

@@ -93,7 +93,10 @@ public class PlayerController : MonoBehaviour
             {
                 Movement();
             }
-            velocity.y += gravity * Time.deltaTime;
+            if (!isHurt)
+            {
+                velocity.y += gravity * Time.deltaTime;
+            }            
             trails[0].SetActive(false);
             trails[1].SetActive(false);
         }
@@ -156,7 +159,7 @@ public class PlayerController : MonoBehaviour
 
         if (GameManager.Instance.partsCollected == 4)
         {
-            if (Input.GetKeyDown(KeyCode.F) && isGrounded)
+            if (Input.GetKeyDown(KeyCode.F) && state == playerState.ground)
             {
                 
                 currentRotation = transform.eulerAngles;
@@ -164,7 +167,7 @@ public class PlayerController : MonoBehaviour
             }
         }
        
-        if (Input.GetKeyDown(KeyCode.X) && state == playerState.flight)
+        if (Input.GetKeyDown(KeyCode.F) && state == playerState.flight)
         {
             state = playerState.ground;
             anim.SetTrigger("land");
@@ -326,8 +329,10 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Enemy"))
-        {      
-            StartCoroutine(KnockBack());
+        {
+            //isHurt = true;
+            //StartCoroutine(KnockBack());
+            velocity.y = Mathf.Sqrt(knockForce * -2f * gravity);
             life--;
         }                
     }
@@ -338,8 +343,7 @@ public class PlayerController : MonoBehaviour
         controller.enabled = false;
         canMove = false;
         capsuleCol.enabled = false;
-        isHurt = true;        
-        //rb.velocity = new Vector3(0, Vector3.up.magnitude / 7, -transform.forward.magnitude * knockForce);
+        //transform.Translate((-transform.forward + Vector3.up * knockForce / 7) * knockForce * Time.deltaTime * 10);
 
         yield return new WaitForSeconds(knockTimer);
 
