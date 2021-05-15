@@ -6,7 +6,7 @@ public class FlyingCourseCheckpoint : MonoBehaviour
 {
 
     public bool isCollected;
-    private Animator anim;
+    public Animator anim;
     public bool isFinalCheckpoint;
     public RaceGame raceManager;
 
@@ -19,10 +19,19 @@ public class FlyingCourseCheckpoint : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        
         if (other.CompareTag("Player"))
         {
-            isCollected = true;
-            anim.Play("Collect");
+            if (isFinalCheckpoint)
+            {
+                raceManager.FinishRace();
+
+            }
+                isCollected = true;
+                anim.SetBool("collect", true);
+            raceManager.checkpointsCollected++;
+            GetComponent<Collider>().enabled = false;
+            
         }
     }
 

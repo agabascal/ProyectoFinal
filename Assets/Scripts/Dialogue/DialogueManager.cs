@@ -20,7 +20,7 @@ public class DialogueManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space)&& canContinue)
+        if (Input.GetKeyDown(KeyCode.Return) && canContinue)
         {
             DisplayNextSentence();
         }
@@ -51,9 +51,18 @@ public class DialogueManager : MonoBehaviour
 
     public void EndDialogue()
     {
-        GameManager.Instance.dialoguePanel.SetActive(false);
-        FindObjectOfType<PlayerController>().canMove = true;
-        Camera.main.transform.GetComponent<CinemachineBrain>().enabled = true;
+        if (GameManager.Instance.treeDialogue.index==0)
+        {
+            GameManager.Instance.treeDialogue.index++;
+            GameManager.Instance.dialoguePanel.SetActive(false);
+            FindObjectOfType<PlayerController>().canMove = true;
+            Camera.main.transform.GetComponent<CinemachineBrain>().enabled = true;
+        }
+        else if(GameManager.Instance.partsCollected == 4)
+        {
+            StartCoroutine(GameManager.Instance.FadeOut());
+        }
+        
     }
 
     private IEnumerator WriteText(string sentence)

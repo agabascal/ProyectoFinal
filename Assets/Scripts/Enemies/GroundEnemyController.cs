@@ -21,15 +21,21 @@ public class GroundEnemyController : MonoBehaviour
     public int life = 3;
     public Rigidbody rb;
     public bool knockback;
-    public float knockForce = 10f;
     public bool isHurt;
+    public bool protectsItem;
+    public ForceFieldController fieldController;
+    public float knockForce = 10f;
     private float distance;
     public float attackTime = 0.5f;
     protected float nextAttackTime = 0.0f;
+    public HitboxController hitbox;
+    public GameObject deathParticles;
 
     [Header("Animation")]
     public Animator anim;
     private bool isDead = false;
+
+
 
     // Start is called before the first frame update
     private void Start()
@@ -50,7 +56,7 @@ public class GroundEnemyController : MonoBehaviour
         agent.updateRotation = false;
         distance = Vector3.Distance(target.position,transform.position);
         
-        if (distance <= lookRadius)
+        if (distance <= lookRadius && canAttack)
         {
             if (agent.enabled)
             {
@@ -59,8 +65,9 @@ public class GroundEnemyController : MonoBehaviour
             
             FaceTarget();
 
-            if (distance <= agent.stoppingDistance && canAttack)
-            {                
+            if (distance <= agent.stoppingDistance)
+            {
+                Debug.Log(distance);
                 //Attack the target
                 anim.SetTrigger("attack");
                 //look at the target    
@@ -77,10 +84,14 @@ public class GroundEnemyController : MonoBehaviour
         {
             HandleAnimation();
         }
+
         if (life == 0 && !isDead)
         {
-            agent.isStopped = true;
-            agent.speed = 0;
+            if (agent.isOnNavMesh)
+            {
+                agent.isStopped = true;
+                agent.speed = 0;
+            }            
             rb.velocity = Vector3.zero;
 
             isDead = true;
@@ -114,6 +125,7 @@ public class GroundEnemyController : MonoBehaviour
             walkpointSet = false;
         }
     }
+
     private void SearchWalkpoint()
     {
         float randomZ = Random.Range(-walkpointRange,walkpointRange);
@@ -128,7 +140,23 @@ public class GroundEnemyController : MonoBehaviour
     }
     public void EnemyDeath()
     {
-        Destroy(gameObject,1.5f);        
+        Destroy(gameObject,0.5f);
+        if (protectsItem)
+        {
+            if (fieldController.enemyList.Contains(this.gameObject))
+            {
+                fieldController.enemyList.Remove(this.gameObject);
+            }
+            
+        }
+        if (hitbox!=null)
+        {
+            hitbox.enabled = false;
+        }
+        
+        GetComponent<Collider>().enabled = false;
+        GameObject particles = Instantiate(deathParticles,transform.position,Quaternion.identity);
+        Destroy(particles,5f);
     }
 
     private void FaceTarget()
@@ -136,7 +164,6 @@ public class GroundEnemyController : MonoBehaviour
          Vector3 direction = (agent.destination - transform.position).normalized;
          Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
          transform.rotation = Quaternion.Slerp(transform.rotation,lookRotation,Time.deltaTime*5f);
-        //        transform.LookAt(target);
     }
 
     private void HandleAnimation()
@@ -183,5 +210,23 @@ public class GroundEnemyController : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position,lookRadius);
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, walkpointRange);
+    }
+
+    public void StartWormMovement()
+    {
+        agent.speed = 3.5f;
+    }
+    public void StopWormMovement()
+    {
+        agent.speed = 0;
+    }
+
+    public void StartAttack()
+    {
+        hitbox.enabled = true;
+    }
+    public void StopAttack()
+    {
+        hitbox.enabled = false;
     }
 }

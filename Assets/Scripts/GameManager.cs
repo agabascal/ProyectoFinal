@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Cinemachine;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,13 +19,21 @@ public class GameManager : MonoBehaviour
     public GameObject[] parts;
     public int partsCollected;
     public DialogueTrigger treeDialogue;
+    private GameObject player;
+    public Vector3 playerStartPos,playerStartRot;
+    public Vector3 cameraStartPos,cameraStartRot;
+    private bool lastDialogue;
+
 
     [Header("UI Elements")]
     //Pause Menu
     public GameObject pausePanel;
     private bool isPaused;
     public Image fadeImage;
+    public Image blackFadeImage,whiteFadeImage;
     public GameObject dialoguePanel;
+    public AudioSource musicEnvaironment;
+    public GameObject panelSettings;
 
     
 
@@ -44,8 +53,10 @@ public class GameManager : MonoBehaviour
 
         if (SceneManager.GetActiveScene().buildIndex == 1)
         {
+            fadeImage = blackFadeImage;
             StartCoroutine(FadeIn());
         }
+        player = FindObjectOfType<PlayerController>().gameObject;        
     }
 
     // Update is called once per frame
@@ -62,11 +73,53 @@ public class GameManager : MonoBehaviour
     {
         for (float i = 1; i > 0; i -= .005f) 
         {            
-            fadeImage.color = new Color(0,0,0,i);
+            fadeImage.color = new Color(fadeImage.color.r, fadeImage.color.g, fadeImage.color.b, i);
             yield return null;
         }
-        dialoguePanel.SetActive(true);
-        treeDialogue.TriggerDialogue();
+
+        if (treeDialogue.index==0)
+        {
+            dialoguePanel.SetActive(true);
+            treeDialogue.TriggerDialogue(treeDialogue.dialogue[treeDialogue.index]);            
+        }
+
+        if (treeDialogue.index == 1 && partsCollected==4)
+        {
+            dialoguePanel.SetActive(true);
+            lastDialogue = true;
+            treeDialogue.TriggerDialogue(treeDialogue.dialogue[treeDialogue.index]);
+            
+        }
+
+    }
+
+    public IEnumerator FadeOut()
+    {
+        Camera.main.GetComponent<CinemachineBrain>().enabled = false;
+        player.GetComponent<PlayerController>().canMove = false;
+
+        for (float i = 0; i < 1; i += .005f)
+        {
+            fadeImage.color = new Color(fadeImage.color.r, fadeImage.color.r, fadeImage.color.r, i);
+            yield return null;
+        }
+        if (treeDialogue.index==1)
+        {
+            if (!lastDialogue)
+            {
+                StartCoroutine(FadeIn());
+            }
+            else
+            {
+                //load next scene
+            }          
+            Camera.main.transform.localPosition = cameraStartPos;
+            Camera.main.transform.localEulerAngles = cameraStartRot;
+            player.transform.localPosition = playerStartPos;
+            player.transform.eulerAngles = playerStartRot;
+        }
+       
+        
     }
 
     public void PauseGame()
@@ -77,6 +130,7 @@ public class GameManager : MonoBehaviour
             pausePanel.SetActive(true);
             isPaused = true;
             Time.timeScale = 0f;
+            musicEnvaironment.Stop();
         }
         else
         {
@@ -84,8 +138,21 @@ public class GameManager : MonoBehaviour
             pausePanel.SetActive(false);
             isPaused = false;
             Time.timeScale = 1f;
+            musicEnvaironment.Play();
         }
         
+    }
+
+    public void Settings()
+    {
+        panelSettings.SetActive(true);
+        pausePanel.SetActive(false);
+    }
+
+    public void Back()
+    {
+        panelSettings.SetActive(false);
+        pausePanel.SetActive(true);
     }
 
     public void Quit()
@@ -98,5 +165,10 @@ public class GameManager : MonoBehaviour
     {        
         parts[id].SetActive(true);
         partsCollected++;
+        if (partsCollected== 4)
+        {
+            fadeImage = whiteFadeImage;
+            StartCoroutine(FadeOut());
+        }
     }
 }
