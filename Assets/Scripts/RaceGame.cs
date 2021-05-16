@@ -8,53 +8,46 @@ public class RaceGame : MonoBehaviour
     [Header("Variables")]
 
     public PlayerController player;
-    public float timer;
-    public GameObject[] checkpoints;
-    public Transform startPosition;
-    public bool raceWon;
-    public FlyingCourseCheckpoint[] checkpointObjects;
-    public int checkpointsCollected=0;
-
-    [Header("UI Elements")]
-    public Text timerText;
+    public GameObject[] enemyIsland;
+    public GameObject[] islandFields;
+    public int islandIndex=0;
 
     // Start is called before the first frame update
     void Start()
     {
         player = FindObjectOfType<PlayerController>().GetComponent<PlayerController>();
-        timer = 50;
+        islandIndex = 0;
     }
 
     // Update is called once per frame
     void Update()
-    {
-        timer -= Time.deltaTime;
-        timerText.text = "Time: "+ ((int)timer);
-
-        if (timer<=0 && !raceWon)
+    {        
+        if (Vector3.Distance(player.transform.position,enemyIsland[islandIndex].transform.position) <= 20f && islandIndex < enemyIsland.Length-1)
         {
-            player.GetComponent<CharacterController>().enabled = false;
-            Vector3 startpos = startPosition.position;
-            player.transform.position = startpos;
-            player.GetComponent<CharacterController>().enabled = true;
-
+            if (player.state == PlayerController.playerState.flight)
+            {
+                player.anim.Play("Land");
+                player.state = PlayerController.playerState.ground;
+            }
+            
+            islandFields[islandIndex].SetActive(true);
+            Invoke("ActivateCollider",0.5f);
         }
-        if (raceWon)
+
+        if (islandIndex == enemyIsland.Length-1)
         {
-            player.shootingUnlocked = true;
-        }
-        else
-        {
-            player.transform.position = startPosition.position;
+            islandFields[islandIndex].SetActive(false);
         }
     }
 
-    public void FinishRace()
+    public void DisableForceField()
     {
-        if (checkpointsCollected >= (int)(checkpointObjects.Length * 0.75f))
-        {
-            Debug.Log((int)(checkpointObjects.Length * 0.75f));
-            raceWon = true;
-        }
-    }    
+        islandFields[islandIndex].SetActive(false);
+        islandIndex++;
+    }
+
+    public void ActivateCollider()
+    {
+        islandFields[islandIndex].GetComponent<Collider>().isTrigger = false;
+    }
 }

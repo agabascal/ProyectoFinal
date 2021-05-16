@@ -23,13 +23,11 @@ public class FlyingCourseCheckpoint : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             if (isFinalCheckpoint)
-            {
-                raceManager.FinishRace();
+            {               
 
             }
                 isCollected = true;
                 anim.SetBool("collect", true);
-            raceManager.checkpointsCollected++;
             GetComponent<Collider>().enabled = false;
             
         }
@@ -43,7 +41,6 @@ public class FlyingCourseCheckpoint : MonoBehaviour
         }
         else
         {
-            raceManager.FinishRace();
         }
           
     }
