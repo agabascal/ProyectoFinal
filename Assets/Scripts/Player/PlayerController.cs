@@ -283,9 +283,9 @@ public class PlayerController : MonoBehaviour
 
         if (!isBoosted)
         {
-            if (forwardSpeed > 45)
+            if (forwardSpeed > 85)
             {
-                forwardSpeed = 45;
+                forwardSpeed = 85;
             }
         }
         else
@@ -296,9 +296,9 @@ public class PlayerController : MonoBehaviour
             }
         }
         
-        if (forwardSpeed < 25)
+        if (forwardSpeed < 65)
         {
-            forwardSpeed = 25;
+            forwardSpeed = 65;
         }              
     }
 
