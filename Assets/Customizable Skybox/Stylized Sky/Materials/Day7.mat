@@ -23,7 +23,7 @@ Material:
     - _HorizonLineBlendMode: 0
     - _HorizonLineContribution: 1
     - _HorizonLineExponent: 1
-    - _SkyGradientExponent: 1
+    - _SkyGradientExponent: 8.89
     - _SunDiscContribution: 1
     - _SunDiscExponent: 100000
     - _SunDiscExponentSize: 100000
@@ -37,6 +37,6 @@ Material:
     m_Colors:
     - _HorizonLineColor: {r: 0, g: 0, b: 0, a: 0}
     - _SkyGradientBottom: {r: 0.9607844, g: 0.90196085, b: 0.7725491, a: 1}
-    - _SkyGradientTop: {r: 0.033018887, g: 1, b: 0.9020197, a: 1}
+    - _SkyGradientTop: {r: 0.38714847, g: 0.7792575, b: 0.9433962, a: 1}
     - _SunDiscColor: {r: 1, g: 1, b: 1, a: 1}
     - _SunHaloColor: {r: 1, g: 1, b: 1, a: 0}
