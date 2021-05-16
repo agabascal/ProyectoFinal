@@ -17,6 +17,7 @@ public class GroundEnemyController : MonoBehaviour
     public LayerMask groundLayer;
     public GameObject wormParticles;
     private float timer = 5f;
+    public float navigationSpeed;
 
     //Combat
     [Header("Combat")]
@@ -74,6 +75,7 @@ public class GroundEnemyController : MonoBehaviour
 
             if (distance <= agent.stoppingDistance)
             {
+                agent.speed = 0f;
                 //Attack the target
                 anim.SetTrigger("attack");
                 //look at the target    
@@ -235,6 +237,7 @@ public class GroundEnemyController : MonoBehaviour
         GameObject dirtParticles = Instantiate(wormParticles,transform.position, Quaternion.Euler(transform.rotation.x,transform.localEulerAngles.y-180,transform.rotation.z));
         Destroy(dirtParticles,1.5f);
     }
+
     public void StopWormMovement()
     {
         agent.speed = 0;
@@ -244,8 +247,10 @@ public class GroundEnemyController : MonoBehaviour
     {
         hitbox.enabled = true;
     }
+
     public void StopAttack()
     {
         hitbox.enabled = false;
+        agent.speed = navigationSpeed;
     }
 }

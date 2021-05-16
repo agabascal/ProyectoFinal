@@ -29,7 +29,7 @@ public class HitboxController : MonoBehaviour
                 {
                     if (!collision.gameObject.GetComponent<PlayerController>().isHurt)
                     {
-                        /*collision.gameObject.GetComponent<PlayerController>().isHurt = true;
+                        collision.gameObject.GetComponent<PlayerController>().isHurt = true;
                         collision.gameObject.GetComponent<PlayerController>().life--;
                         collision.gameObject.GetComponent<PlayerController>().Knock();                       
                         //collision.GetComponent<Rigidbody>().velocity = -collision.transform.forward*5;*/

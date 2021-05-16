@@ -59,7 +59,6 @@ public class PlayerController : MonoBehaviour
     public Rigidbody rb;
     public bool isHurt;
     public BoxCollider tailHitbox;
-    public bool canBeHit;
 
     [Header("Range")]
     //Range Attack
@@ -118,7 +117,10 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            Knock();
+        }
         if (state == playerState.ground && canMove)
         {
             //Gravity
@@ -178,6 +180,10 @@ public class PlayerController : MonoBehaviour
             anim.SetTrigger("death");
         }
 
+        if (isHurt)
+        {
+            transform.Translate(-transform.forward * -knockForce/2 * Time.deltaTime);
+        }
     }
     
     #region player movement
@@ -313,45 +319,45 @@ public class PlayerController : MonoBehaviour
 
     public void MeleeAttack()
     {
-        canBeHit = false;
+        isHurt = true;
         tailHitbox.enabled = true;
     }
 
     public void StopAttack()
     {
         tailHitbox.enabled = false;
+        isHurt = false;
     }
-
 
     //Knockback on contact with enemies
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Enemy") && canBeHit)
+        if (other.gameObject.CompareTag("Enemy") && !isHurt)
         {
-            canBeHit = false;
-            StartCoroutine(KnockBack());
-            velocity.y = Mathf.Sqrt(knockForce * -2f * gravity);
+            Knock();
             life--;
         }                
     }
 
     private IEnumerator KnockBack()
     {
-        rb.isKinematic = false;
         isHurt = true;
+        rb.isKinematic = false;
+        rb.useGravity = true;
         controller.enabled = false;
-        canMove = false;
-        capsuleCol.enabled = false;
-        //transform.Translate((-transform.forward + Vector3.up * knockForce / 7) * knockForce * Time.deltaTime * 10);
-
+        //apply force to char controller
+        
+        rb.velocity = (Vector3.up * knockForce);
+              
+        //Delay to reactivate components
         yield return new WaitForSeconds(knockTimer);
 
-        capsuleCol.enabled = false;
+        //Reactivate components
         controller.enabled = true;
         rb.isKinematic = true;
+        rb.useGravity = false;
+
         isHurt = false;
-        canMove = true;
-        canBeHit = true;
     }
 
     public void Knock()
