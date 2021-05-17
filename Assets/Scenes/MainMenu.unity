@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -285,8 +285,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000011444, y: -21.916}
-  m_SizeDelta: {x: 242.89563, y: 262.3878}
+  m_AnchoredPosition: {x: 0.00001049, y: -29.44}
+  m_SizeDelta: {x: 269.41638, y: 291.03677}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &120949389
 MonoBehaviour:
@@ -309,7 +309,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: d4a1261cb897dde45a7fcc482fa47465, type: 3}
-    m_FontSize: 11
+    m_FontSize: 13
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 9
@@ -514,14 +514,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 155c8310976047441aa33326bd2eb899, type: 3}
+    m_Font: {fileID: 12800000, guid: d4a1261cb897dde45a7fcc482fa47465, type: 3}
     m_FontSize: 16
     m_FontStyle: 0
     m_BestFit: 0
@@ -3349,8 +3349,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 20}
+  m_AnchoredPosition: {x: 0, y: -2}
+  m_SizeDelta: {x: 0, y: 23.999989}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1315437080
 MonoBehaviour:
@@ -3558,7 +3558,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1273065844}
   m_HandleRect: {fileID: 1273065843}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -3682,7 +3682,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 270310703}
   m_HandleRect: {fileID: 270310702}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -3950,7 +3950,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1575898520
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5880,8 +5880,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.16100001, y: 0}
   m_AnchorMax: {x: 0.93222547, y: 1}
-  m_AnchoredPosition: {x: 0.45999146, y: -2.2799997}
-  m_SizeDelta: {x: -1.0864258, y: 0.5602417}
+  m_AnchoredPosition: {x: 2.5960007, y: 0.0000009536743}
+  m_SizeDelta: {x: 2.1770935, y: 2.8097038}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2095722138
 MonoBehaviour:
@@ -5896,7 +5896,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
