@@ -90,7 +90,7 @@ public class GroundEnemyController : MonoBehaviour
 
         if (life <= 0 && !isDead)
         {
-            AudioManager.PlayDeathEnemiesAudio();
+            
             anim.SetTrigger("death");
             if (agent.isOnNavMesh)
             {
@@ -169,6 +169,7 @@ public class GroundEnemyController : MonoBehaviour
 
         //AudioManager.PlayDeathEnemiesAudio();
         GetComponent<Collider>().enabled = false;
+        AudioManager.PlayDeathEnemiesAudio();
         GameObject particles = Instantiate(deathParticles,transform.position,Quaternion.identity);
         Destroy(particles,5f);
     }

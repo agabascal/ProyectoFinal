@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Cinemachine;
 
@@ -10,7 +11,7 @@ public class DialogueManager : MonoBehaviour
     private Queue<string> sentences;
     public Text dialogueText;
     private bool canContinue;
-    
+    public GameObject continueMarker;
 
     // Start is called before the first frame update
     void Start()
@@ -51,15 +52,24 @@ public class DialogueManager : MonoBehaviour
 
     public void EndDialogue()
     {
-        if (GameManager.Instance.treeDialogue.index==0)
+        if (GameManager.Instance.treeDialogue != null)
         {
-            GameManager.Instance.treeDialogue.index++;
-            GameManager.Instance.dialoguePanel.SetActive(false);
-            FindObjectOfType<PlayerController>().canMove = true;
-            Camera.main.transform.GetComponent<CinemachineBrain>().enabled = true;
+            if (GameManager.Instance.treeDialogue.index == 0)
+            {
+                GameManager.Instance.treeDialogue.index++;
+                GameManager.Instance.dialoguePanel.SetActive(false);
+                FindObjectOfType<PlayerController>().canMove = true;
+                Camera.main.transform.GetComponent<CinemachineBrain>().enabled = true;
+            }
+            else if (GameManager.Instance.partsCollected == 4)
+            {
+                StartCoroutine(GameManager.Instance.FadeOut());
+            }
         }
-        else if(GameManager.Instance.partsCollected == 4)
+
+        if (SceneManager.GetActiveScene().buildIndex == 2)
         {
+            GameManager.Instance.fadeImage = GameManager.Instance.blackFadeImage;
             StartCoroutine(GameManager.Instance.FadeOut());
         }
         
@@ -67,6 +77,7 @@ public class DialogueManager : MonoBehaviour
 
     private IEnumerator WriteText(string sentence)
     {
+        continueMarker.SetActive(false);
         canContinue = false;
         dialogueText.text = "";
         foreach (char letter in sentence.ToCharArray())
@@ -75,5 +86,6 @@ public class DialogueManager : MonoBehaviour
             yield return null;
         }
         canContinue = true;
+        continueMarker.SetActive(true);
     }
 }
