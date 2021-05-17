@@ -43,11 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfa1ecfb711bd3f47ac0f0ae667bf8b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ambientClip: {fileID: 8300000, guid: 9bc080f72bb4e9e4498f81a875c318b8, type: 3}
   windClip: {fileID: 8300000, guid: 2db50e3e367e645409ee08db2b133943, type: 3}
-  musicClip: {fileID: 8300000, guid: 36be9a875099cfb4b8a2c7b1d28a45bb, type: 3}
-  music2Clip: {fileID: 8300000, guid: 136fec3bebadbfd49b990d85afd94da1, type: 3}
-  intromusicClip: {fileID: 8300000, guid: f2fddc4ba9814fe4d843461a9a13bca9, type: 3}
   walkStepClip: {fileID: 8300000, guid: 62844dd5028fbf146a4e25cb69f19488, type: 3}
   flyClip: {fileID: 8300000, guid: 22df9522820c20748907e6c8b35e33fb, type: 3}
   jumpClip: {fileID: 8300000, guid: 300f857b41944d54cbf6f2ee7035359a, type: 3}
@@ -66,8 +62,14 @@ MonoBehaviour:
   hitEnemiesClip: {fileID: 8300000, guid: 68a841295c5435e4080cf3745e8bb885, type: 3}
   backClip: {fileID: 8300000, guid: 22003479000e9564f95603ce24fd590a, type: 3}
   buttonClip: {fileID: 8300000, guid: dd21425bf4ae15f418d2d2f20745ae84, type: 3}
-  ambientGroup: {fileID: 0}
-  musicGroup: {fileID: 0}
-  playerGroup: {fileID: 0}
-  enemiesGroup: {fileID: 0}
-  uiGroup: {fileID: 0}
+  capsulaClip: {fileID: 8300000, guid: 0fd145c0d3f04a24eb21e27d92321223, type: 3}
+  ambientGroup: {fileID: -8662601857149477941, guid: 5cf53811009dafe478f7df7ea0fa4582,
+    type: 2}
+  musicGroup: {fileID: -5486912577919259278, guid: 5cf53811009dafe478f7df7ea0fa4582,
+    type: 2}
+  playerGroup: {fileID: 992316043930239432, guid: 5cf53811009dafe478f7df7ea0fa4582,
+    type: 2}
+  enemiesGroup: {fileID: 7061928942646176681, guid: 5cf53811009dafe478f7df7ea0fa4582,
+    type: 2}
+  uiGroup: {fileID: -6424785660450198892, guid: 5cf53811009dafe478f7df7ea0fa4582,
+    type: 2}
