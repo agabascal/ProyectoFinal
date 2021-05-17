@@ -136,7 +136,6 @@ public class PlayerController : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 anim.Play("Attack");
-                AudioManager.PlayAttackSaruAudio();
             }
         }
 
@@ -242,7 +241,6 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space)&&isGrounded)
         {
             anim.SetTrigger("jump");
-            AudioManager.PlayJumpAudio();
         }
         anim.SetBool("isFlying",isFlying);
         controller.Move(velocity * Time.deltaTime);
@@ -341,6 +339,16 @@ public class PlayerController : MonoBehaviour
     public void FlutterAudio()
     {
         AudioManager.PlayFlyAudio();
+    }
+
+    public void AttackAudio()
+    {
+        AudioManager.PlayAttackSaruAudio();
+    }
+
+    public void JumpAudio()
+    {
+        AudioManager.PlayJumpAudio();
     }
     #endregion
 

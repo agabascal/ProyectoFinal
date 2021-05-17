@@ -138,7 +138,7 @@ public class GroundEnemyController : MonoBehaviour
         {
             walk.Play();
         }*/
-        AudioManager.PlayWalkSpiderAudio();
+        //AudioManager.PlayWalkSpiderAudio();
         float randomZ = Random.Range(-walkpointRange,walkpointRange);
         float randomX = Random.Range(-walkpointRange,walkpointRange);
 
@@ -166,7 +166,7 @@ public class GroundEnemyController : MonoBehaviour
             hitbox.enabled = false;
         }
 
-        AudioManager.PlayDeathEnemiesAudio();
+        //AudioManager.PlayDeathEnemiesAudio();
         GetComponent<Collider>().enabled = false;
         GameObject particles = Instantiate(deathParticles,transform.position,Quaternion.identity);
         Destroy(particles,5f);
@@ -247,5 +247,15 @@ public class GroundEnemyController : MonoBehaviour
     {
         hitbox.enabled = false;
         agent.speed = navigationSpeed;
+    }
+
+    public void AttackSpiderSound()
+    {
+        AudioManager.PlayAttackSpiderAudio();
+    }
+
+    public void AttackWormSound()
+    {
+        AudioManager.PlayAttackWormAudio();
     }
 }

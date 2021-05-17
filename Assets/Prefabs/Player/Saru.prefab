@@ -2628,6 +2628,7 @@ GameObject:
   - component: {fileID: 8290737319422704658}
   - component: {fileID: 8290737319422704662}
   - component: {fileID: 8290737319422704663}
+  - component: {fileID: 3657393166950884858}
   m_Layer: 0
   m_Name: Saru
   m_TagString: Player
@@ -2690,6 +2691,7 @@ MonoBehaviour:
   - {fileID: 305056499955745591}
   isFlying: 0
   isBoosted: 0
+  currentRotation: {x: 0, y: 0, z: 0}
   life: 3
   knockTimer: 1.25
   isKnocked: 0
@@ -2769,6 +2771,14 @@ CapsuleCollider:
   m_Height: 2.63
   m_Direction: 1
   m_Center: {x: 0, y: 1.27, z: 0}
+--- !u!81 &3657393166950884858
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8290737319422704659}
+  m_Enabled: 1
 --- !u!1 &8439965962135897750
 GameObject:
   m_ObjectHideFlags: 0
