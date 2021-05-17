@@ -11,8 +11,6 @@ public class MenuManager : MonoBehaviour
     public GameObject panelPrincipal;
     public GameObject panelSettings;
     public GameObject panelCredits;
-    public AudioSource buttonSound;
-    public AudioSource backSound;
     public VideoPlayer intro;
     public GameObject videoIntro;
 
@@ -36,21 +34,21 @@ public class MenuManager : MonoBehaviour
         intro.Play();
         panelPrincipal.SetActive(false);
         videoIntro.SetActive(true);
-        buttonSound.Play();
+        AudioManager.PlayButtonAudio();
     }
 
     public void Settings()
     {
         panelPrincipal.SetActive(false);
         panelSettings.SetActive(true);
-        buttonSound.Play();
+        AudioManager.PlayButtonAudio();
     }
 
     public void Credits()
     {
         panelPrincipal.SetActive(false);
         panelCredits.SetActive(true);
-        buttonSound.Play();
+        AudioManager.PlayButtonAudio();
     }
 
     public void Exit()
@@ -63,6 +61,6 @@ public class MenuManager : MonoBehaviour
         panelPrincipal.SetActive(true);
         panelSettings.SetActive(false);
         panelCredits.SetActive(false);
-        backSound.Play();
+        AudioManager.PlayBackButtonAudio();
     }
 }
