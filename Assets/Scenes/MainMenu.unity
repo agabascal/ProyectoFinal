@@ -157,7 +157,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.090347834, y: 0.17650001}
   m_AnchorMax: {x: 0.17300001, y: 0.2595}
-  m_AnchoredPosition: {x: 1.6500244, y: 0.4000244}
+  m_AnchoredPosition: {x: 72, y: 58}
   m_SizeDelta: {x: 6.2036133, y: 0.7034683}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &22962339
@@ -1712,7 +1712,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.07943479, y: 0.27261356}
   m_AnchorMax: {x: 0.18400002, y: 0.35761347}
-  m_AnchoredPosition: {x: 1.5700073, y: 0.3000183}
+  m_AnchoredPosition: {x: 71.91998, y: 57.899994}
   m_SizeDelta: {x: 3.2721786, y: -0.29670715}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &514965457
@@ -1942,7 +1942,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -3297,7 +3297,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -3687,7 +3687,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.102000006, y: 0.36761346}
   m_AnchorMax: {x: 0.16100001, y: 0.43500003}
-  m_AnchoredPosition: {x: 1.4000244, y: 0.3999939}
+  m_AnchoredPosition: {x: 71.75, y: 57.99997}
   m_SizeDelta: {x: -0.6182556, y: -0.24700737}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1548875665
@@ -3903,7 +3903,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -4332,7 +4332,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -4446,7 +4446,7 @@ GameObject:
   - component: {fileID: 1789526856}
   - component: {fileID: 1789526855}
   m_Layer: 5
-  m_Name: Text
+  m_Name: title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4468,8 +4468,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -206.75, y: 105}
-  m_SizeDelta: {x: 287.2802, y: 131.24503}
+  m_AnchoredPosition: {x: 95.3, y: 130.4}
+  m_SizeDelta: {x: 236.96176, y: 131.24503}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1789526855
 MonoBehaviour:
@@ -4484,26 +4484,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 263863f99bece354c8dd7e97e52db147, type: 3}
-    m_FontSize: 41
+    m_Font: {fileID: 12800000, guid: a03f5907459d8634d9064d473736df7e, type: 3}
+    m_FontSize: 51
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 78
+    m_MaxSize: 113
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'SARU: THE HOPE OF STINGRAYS'
+  m_Text: Saru
 --- !u!222 &1789526856
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5045,7 +5045,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.10634784, y: 0.082726784}
   m_AnchorMax: {x: 0.15786952, y: 0.16534023}
-  m_AnchoredPosition: {x: -1.5, y: 0.099975586}
+  m_AnchoredPosition: {x: 68.849976, y: 57.69995}
   m_SizeDelta: {x: 1.0366211, y: 0.16799545}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2006582732
@@ -5175,6 +5175,84 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &2017770073
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2017770074}
+  - component: {fileID: 2017770076}
+  - component: {fileID: 2017770075}
+  m_Layer: 5
+  m_Name: subtitle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2017770074
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2017770073}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2078650227}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 40, y: 56}
+  m_SizeDelta: {x: 386.20782, y: 131.24503}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2017770075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2017770073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: 82a6df72dbb17e34b9305e858b605dd4, type: 3}
+    m_FontSize: 33
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 10
+    m_MaxSize: 94
+    m_Alignment: 1
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: the hope of stingrays
+--- !u!222 &2017770076
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2017770073}
+  m_CullTransparentMesh: 0
 --- !u!1 &2036872461
 GameObject:
   m_ObjectHideFlags: 0
@@ -5464,6 +5542,7 @@ RectTransform:
   - {fileID: 22962338}
   - {fileID: 2006582731}
   - {fileID: 1789526854}
+  - {fileID: 2017770074}
   m_Father: {fileID: 1724558555}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
