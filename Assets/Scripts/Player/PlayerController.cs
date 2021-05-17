@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour
     public bool isFlying;
     public bool isBoosted;
 
-    private Vector3 currentRotation;
+    public Vector3 currentRotation;
     #endregion
 
     #region Combat
@@ -111,6 +111,11 @@ public class PlayerController : MonoBehaviour
                 velocity.y = -5f;
             }
             transform.Translate(velocity * Time.deltaTime);
+
+           /* if (Input.GetAxis("Horizontal") == 0)
+            {
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(transform.rotation.x,transform.rotation.y,0f),.5f);
+            }*/
         }
     }
 
@@ -251,24 +256,39 @@ public class PlayerController : MonoBehaviour
 
     private void Flight()
     {
-            
+
         //Manage Direction and lift forces media character rotation
 
         currentRotation.x += Input.GetAxis("Vertical") * xSensitivity;
         currentRotation.x = Mathf.Clamp(currentRotation.x, -80, 80);
 
-        currentRotation.z += -Input.GetAxis("Horizontal") *zSensitivity;
+        currentRotation.z += -Input.GetAxis("Horizontal") * zSensitivity;
         currentRotation.z = Mathf.Clamp(currentRotation.z, -45, 45);
 
         currentRotation.y += Input.GetAxis("Horizontal");
-       
-        transform.rotation = Quaternion.Euler(currentRotation);
+        //if (Input.GetAxisRaw("Horizontal") != 0)
+        //{
+            transform.rotation = Quaternion.Euler(currentRotation);
+        //}
+        /*else
+        {
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(transform.rotation.eulerAngles.x,
+                                                                                        transform.rotation.eulerAngles.y,
+                                                                                        0f), Time.deltaTime * 2);
+            if (currentRotation.y >= 360 || currentRotation.y <=0)
+            {
+                currentRotation.y = transform.rotation.eulerAngles.y;
+            }        
+            currentRotation = new Vector3(transform.rotation.eulerAngles.x,transform.rotation.eulerAngles.y , transform.rotation.eulerAngles.z);
+
+        //hacer un if si current.y > 360 entonces sea 0
+        }*/
+        
 
         if (currentRotation.magnitude >0.1f)
         {
             transform.Rotate(Input.GetAxis("Vertical"), 0.0f, -Input.GetAxis("Horizontal"));
-        }
-              
+        }       
 
         controller.Move(transform.forward * forwardSpeed * Time.deltaTime);
         forwardSpeed -= transform.forward.y * Time.deltaTime * 35.0f;

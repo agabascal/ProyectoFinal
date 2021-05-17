@@ -9,6 +9,7 @@ public class NpcController : MonoBehaviour
     private NavMeshAgent agent;
     public float walkPointRange = 8f;
     private bool walkPointSet;
+    private bool isWaiting;
     private Vector3 walkPoint;
     public LayerMask groundLayer;
     private float timer = 5f;
@@ -33,11 +34,16 @@ public class NpcController : MonoBehaviour
         if (!walkPointSet)
         {
             anim.SetBool("isStopped", agent.isStopped);
-            Invoke("SearchWalkPoint",3f);
+            if (!isWaiting)
+            {
+                StartCoroutine(WalkpointDelay());
+            }
+            
         }
         else
         {
             agent.SetDestination(walkPoint);
+            anim.SetBool("isStopped", isWaiting);
         }
 
         timer -= Time.deltaTime;
@@ -46,9 +52,7 @@ public class NpcController : MonoBehaviour
 
         //walkpoint reached
         if (distanceToWalkpoint.magnitude < 1f || timer <= 0f)
-        {
-            agent.isStopped = true;
-            anim.SetBool("isStopped", agent.isStopped);
+        {            
             walkPointSet = false;
             timer = 5f;
         }
@@ -72,6 +76,16 @@ public class NpcController : MonoBehaviour
         Vector3 direction = (agent.destination - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+    }
+
+    private IEnumerator WalkpointDelay()
+    {
+        agent.isStopped = true;
+        anim.SetBool("isStopped", isWaiting);
+        isWaiting = true; 
+        yield return new WaitForSeconds(Random.Range(2,5));
+        SearchWalkPoint();
+        isWaiting = false;
     }
 
     private void OnDrawGizmos()
