@@ -74,6 +74,7 @@ public class GroundEnemyController : MonoBehaviour
                 anim.SetTrigger("attack");
                 //look at the target    
                 FaceTarget();
+                AudioManager.PlayAttackSpiderAudio();
             }
         }
         if (distance>=10)
@@ -89,7 +90,7 @@ public class GroundEnemyController : MonoBehaviour
 
         if (life <= 0 && !isDead)
         {
-            
+            AudioManager.PlayDeathEnemiesAudio();
             anim.SetTrigger("death");
             if (agent.isOnNavMesh)
             {

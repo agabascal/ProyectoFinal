@@ -69,7 +69,9 @@ MonoBehaviour:
     type: 2}
   playerGroup: {fileID: 992316043930239432, guid: 5cf53811009dafe478f7df7ea0fa4582,
     type: 2}
-  enemiesGroup: {fileID: 7061928942646176681, guid: 5cf53811009dafe478f7df7ea0fa4582,
+  enemiesSpiderGroup: {fileID: 7061928942646176681, guid: 5cf53811009dafe478f7df7ea0fa4582,
+    type: 2}
+  enemiesWormGroup: {fileID: 6759910819020898220, guid: 5cf53811009dafe478f7df7ea0fa4582,
     type: 2}
   uiGroup: {fileID: -6424785660450198892, guid: 5cf53811009dafe478f7df7ea0fa4582,
     type: 2}
