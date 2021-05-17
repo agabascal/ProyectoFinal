@@ -38,12 +38,6 @@ public class GroundEnemyController : MonoBehaviour
     public Animator anim;
     private bool isDead = false;
 
-    [Header("Sounds")]
-    public AudioSource walk;
-    public AudioSource attack;
-    public AudioSource dead;
-    public AudioSource hit;
-
 
     // Start is called before the first frame update
     private void Start()
@@ -140,11 +134,11 @@ public class GroundEnemyController : MonoBehaviour
 
     private void SearchWalkpoint()
     {
-        if (walk != null)
+        /*if (walk != null)
         {
             walk.Play();
-        }
-        
+        }*/
+        AudioManager.PlayWalkSpiderAudio();
         float randomZ = Random.Range(-walkpointRange,walkpointRange);
         float randomX = Random.Range(-walkpointRange,walkpointRange);
 
@@ -171,7 +165,8 @@ public class GroundEnemyController : MonoBehaviour
         {
             hitbox.enabled = false;
         }
-        
+
+        AudioManager.PlayDeathEnemiesAudio();
         GetComponent<Collider>().enabled = false;
         GameObject particles = Instantiate(deathParticles,transform.position,Quaternion.identity);
         Destroy(particles,5f);

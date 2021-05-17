@@ -130,7 +130,8 @@ public class PlayerController : MonoBehaviour
             isFlying = false;
             if (Input.GetMouseButtonDown(0))
             {
-                anim.Play("Attack");                
+                anim.Play("Attack");
+                AudioManager.PlayAttackSaruAudio();
             }
         }
 
@@ -150,6 +151,7 @@ public class PlayerController : MonoBehaviour
         {
             canMove = false;
             anim.Play("shoot");
+            AudioManager.PlayShootAudio();
         }        
 
         if (GameManager.Instance.partsCollected == 4)
@@ -158,6 +160,7 @@ public class PlayerController : MonoBehaviour
             {                
                 currentRotation = transform.eulerAngles;
                 anim.SetTrigger("takeOff");
+                AudioManager.PlayTakeoffAudio();
             }
         }
        
@@ -166,6 +169,7 @@ public class PlayerController : MonoBehaviour
             state = playerState.ground;
             anim.SetTrigger("land");
             transform.rotation = Quaternion.Euler(0,0,0);
+            AudioManager.PlayLandingAudio();
         }
 
         if (isGrounded && !isHurt)
@@ -178,6 +182,7 @@ public class PlayerController : MonoBehaviour
         {
             canMove = false;
             anim.SetTrigger("death");
+            AudioManager.PlayDeathAudio();
         }
 
         if (isHurt)
@@ -231,7 +236,8 @@ public class PlayerController : MonoBehaviour
         // jump
         if (Input.GetKeyDown(KeyCode.Space)&&isGrounded)
         {
-            anim.SetTrigger("jump");                      
+            anim.SetTrigger("jump");
+            AudioManager.PlayJumpAudio();
         }
         anim.SetBool("isFlying",isFlying);
         controller.Move(velocity * Time.deltaTime);
@@ -305,6 +311,16 @@ public class PlayerController : MonoBehaviour
     public void StartFlight()
     {
         state = playerState.flight;
+    }
+
+    public void StepAudio()
+    {
+        AudioManager.PlayFootStepAudio();
+    }
+
+    public void FlutterAudio()
+    {
+        AudioManager.PlayFlyAudio();
     }
     #endregion
 
