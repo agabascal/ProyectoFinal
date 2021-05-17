@@ -248,4 +248,14 @@ public class GroundEnemyController : MonoBehaviour
         hitbox.enabled = false;
         agent.speed = navigationSpeed;
     }
+
+    public void AttackSpiderSound()
+    {
+        AudioManager.PlayAttackSpiderAudio();
+    }
+
+    public void AttackWormSound()
+    {
+        AudioManager.PlayAttackWormAudio();
+    }
 }
