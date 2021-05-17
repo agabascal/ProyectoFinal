@@ -8,11 +8,7 @@ public class AudioManager : MonoBehaviour
     static AudioManager current;
 
     [Header("Ambient Audio")]
-    public AudioClip ambientClip;
     public AudioClip windClip;
-    public AudioClip musicClip;
-    public AudioClip music2Clip;
-    public AudioClip intromusicClip;
 
     [Header("Saru Audio")]
     public AudioClip walkStepClip;
@@ -76,25 +72,6 @@ public class AudioManager : MonoBehaviour
         enemiesSource.outputAudioMixerGroup = enemiesGroup;
         uiSource.outputAudioMixerGroup = uiGroup;
 
-        StartLevel1Audio();
-    }
-
-    void StartLevel1Audio()
-    {
-        ambientSource.clip = ambientClip;
-        ambientSource.loop = true;
-        ambientSource.Play();
-
-        musicSource.clip = musicClip;
-        musicSource.loop = true;
-        musicSource.Play();
-    }
-
-    void StartLevel2Audio()
-    {
-        musicSource.clip = music2Clip;
-        musicSource.loop = true;
-        musicSource.Play();
     }
 
     public static void PlayFootStepAudio()
