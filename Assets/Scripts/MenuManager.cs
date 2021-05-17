@@ -13,6 +13,7 @@ public class MenuManager : MonoBehaviour
     public GameObject panelCredits;
     public VideoPlayer intro;
     public GameObject videoIntro;
+    public AudioSource musicIntro;
 
     private void Update()
     {
@@ -35,6 +36,7 @@ public class MenuManager : MonoBehaviour
         panelPrincipal.SetActive(false);
         videoIntro.SetActive(true);
         AudioManager.PlayButtonAudio();
+        musicIntro.Stop();
     }
 
     public void Settings()
