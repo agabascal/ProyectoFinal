@@ -145,6 +145,7 @@ public class GameManager : MonoBehaviour
             isPaused = true;
             Time.timeScale = 0f;
             musicEnvaironment.Stop();
+            AudioManager.PlayButtonAudio();
         }
         else
         {
@@ -153,6 +154,7 @@ public class GameManager : MonoBehaviour
             isPaused = false;
             Time.timeScale = 1f;
             musicEnvaironment.Play();
+            AudioManager.PlayButtonAudio();
         }
         
     }
@@ -161,18 +163,21 @@ public class GameManager : MonoBehaviour
     {
         panelSettings.SetActive(true);
         pausePanel.SetActive(false);
+        AudioManager.PlayButtonAudio();
     }
 
     public void Back()
     {
         panelSettings.SetActive(false);
         pausePanel.SetActive(true);
+        AudioManager.PlayBackButtonAudio();
     }
 
     public void Quit()
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(0);
+        AudioManager.PlayButtonAudio();
     }
 
     public void UpdateCollected(int id)

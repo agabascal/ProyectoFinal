@@ -34,6 +34,7 @@ public class AudioManager : MonoBehaviour
     [Header("UI Audio")]
     public AudioClip backClip;
     public AudioClip buttonClip;
+    public AudioClip capsulaClip;
 
     [Header("Mixer Groups")]
     public AudioMixerGroup ambientGroup;
@@ -270,6 +271,17 @@ public class AudioManager : MonoBehaviour
         }
 
         current.uiSource.clip = current.buttonClip;
+        current.uiSource.Play();
+    }
+
+    public static void PlayCapsulAudio()
+    {
+        if (current == null)
+        {
+            return;
+        }
+
+        current.uiSource.clip = current.capsulaClip;
         current.uiSource.Play();
     }
 }
