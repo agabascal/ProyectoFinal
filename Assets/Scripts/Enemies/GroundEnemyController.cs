@@ -9,15 +9,15 @@ public class GroundEnemyController : MonoBehaviour
     [Header("Navigation")]
     public float lookRadius = 10f;
     public float walkpointRange;
+    private float timer = 5f;
+    public float navigationSpeed;
     public Transform target;
     public NavMeshAgent agent;
     private Vector3 walkPoint;
-    bool walkpointSet;
+    private bool walkpointSet;
     public bool canAttack;
     public LayerMask groundLayer;
-    public GameObject wormParticles;
-    private float timer = 5f;
-    public float navigationSpeed;
+    public GameObject wormParticles;       
 
     //Combat
     [Header("Combat")]
