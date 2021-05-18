@@ -14,12 +14,14 @@ public class MenuManager : MonoBehaviour
     public VideoPlayer intro;
     public GameObject videoIntro;
     public AudioSource musicIntro;
+    public GameObject blackPanel;
 
     private void Update()
     {
-        if(intro.time >= intro.clip.length)
+        
+        if(intro.time > 21)
         {
-            Debug.Log("Detectado");
+            blackPanel.SetActive(true);            
             SceneManager.LoadScene(1);
             videoIntro.SetActive(false);
         }
