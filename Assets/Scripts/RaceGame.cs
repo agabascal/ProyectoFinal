@@ -63,6 +63,10 @@ public class RaceGame : MonoBehaviour
 
         guideArrow.transform.LookAt(target);
 
+        if (islandIndex==3)
+        {
+            islandFields[3].SetActive(false) ;
+        }
         if (islandIndex == 3 && targetIndex == 16 && Vector3.Distance(player.transform.position, enemyIsland[3].transform.position) <= 50)
         {
             if (!playerArrived)
@@ -73,8 +77,10 @@ public class RaceGame : MonoBehaviour
                 player.canMove = false;
                 for (int i = 0; i < npcs.Length; i++)
                 {
+                    npcs[i].GetComponent<NpcController>().walkPointSet = true;
+                    npcs[i].GetComponent<NpcController>().walkPoint = player.transform.position;                    
                     npcs[i].GetComponent<NavMeshAgent>().SetDestination(player.transform.position);
-                    npcs[i].GetComponent<NavMeshAgent>().stoppingDistance = 2f;
+                    npcs[i].GetComponent<NavMeshAgent>().stoppingDistance = 8f;
                     npcs[i].GetComponent<NavMeshAgent>().isStopped = false;
                     npcs[i].GetComponent<NavMeshAgent>().speed = 2f;
                 }
