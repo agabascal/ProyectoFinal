@@ -31929,6 +31929,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8619457466625255304, guid: e574c2471e8f2704a994c18e66039422,
+        type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -8662601857149477941, guid: 5cf53811009dafe478f7df7ea0fa4582,
+        type: 2}
     - target: {fileID: 8619457466625255305, guid: e574c2471e8f2704a994c18e66039422,
         type: 3}
       propertyPath: m_Name
@@ -50809,6 +50815,11 @@ PrefabInstance:
       propertyPath: navigationSpeed
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8774077727728956175, guid: 50a97a02f8ea39b43bfabca30b87bdb9,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9099927984045277530, guid: 50a97a02f8ea39b43bfabca30b87bdb9,
         type: 3}
       propertyPath: m_RootOrder
@@ -55829,6 +55840,12 @@ PrefabInstance:
       propertyPath: m_audioClip
       value: 
       objectReference: {fileID: 8300000, guid: 136fec3bebadbfd49b990d85afd94da1, type: 3}
+    - target: {fileID: 1153742156230613824, guid: 73f3fcdae56791346a7bc776e7a75b08,
+        type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -5486912577919259278, guid: 5cf53811009dafe478f7df7ea0fa4582,
+        type: 2}
     - target: {fileID: 1153742156230613825, guid: 73f3fcdae56791346a7bc776e7a75b08,
         type: 3}
       propertyPath: m_Name
@@ -73193,50 +73210,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: Aranya 2
       objectReference: {fileID: 0}
-    - target: {fileID: 8774077727513421492, guid: 50a97a02f8ea39b43bfabca30b87bdb9,
-        type: 3}
-      propertyPath: m_BaseOffset
-      value: 0.16
-      objectReference: {fileID: 0}
-    - target: {fileID: 8774077727513421498, guid: 50a97a02f8ea39b43bfabca30b87bdb9,
-        type: 3}
-      propertyPath: protectsItem
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8774077727513421498, guid: 50a97a02f8ea39b43bfabca30b87bdb9,
-        type: 3}
-      propertyPath: walkpointRange
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 8774077727513421498, guid: 50a97a02f8ea39b43bfabca30b87bdb9,
         type: 3}
       propertyPath: fieldController
       value: 
       objectReference: {fileID: 1489754354}
-    - target: {fileID: 8774077727513421498, guid: 50a97a02f8ea39b43bfabca30b87bdb9,
+    - target: {fileID: 8774077727728956175, guid: 50a97a02f8ea39b43bfabca30b87bdb9,
         type: 3}
-      propertyPath: navigationSpeed
+      propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9099927984045277530, guid: 50a97a02f8ea39b43bfabca30b87bdb9,
         type: 3}
       propertyPath: m_RootOrder
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9099927984045277530, guid: 50a97a02f8ea39b43bfabca30b87bdb9,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 9099927984045277530, guid: 50a97a02f8ea39b43bfabca30b87bdb9,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 9099927984045277530, guid: 50a97a02f8ea39b43bfabca30b87bdb9,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 9099927984045277530, guid: 50a97a02f8ea39b43bfabca30b87bdb9,
         type: 3}

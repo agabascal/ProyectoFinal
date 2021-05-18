@@ -14,7 +14,7 @@ PlayerSettings:
   accelerometerFrequency: 60
   companyName: DreamTeam Studios
   productName: Saru
-  defaultCursor: {fileID: 0}
+  defaultCursor: {fileID: 2800000, guid: 9a9fc58016266b147859737e815b6085, type: 3}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0, g: 1, b: 0.98154783, a: 1}
   m_ShowUnitySplashScreen: 1

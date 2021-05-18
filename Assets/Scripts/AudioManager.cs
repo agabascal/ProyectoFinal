@@ -20,6 +20,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip takeoffClip;
     public AudioClip shootClip;
     public AudioClip attackClip;
+    public AudioClip runClip;
 
     [Header("Enemies Audio")]
     public AudioClip walkSpiderClip;
@@ -171,6 +172,17 @@ public class AudioManager : MonoBehaviour
         }
 
         current.playerSource.clip = current.attackClip;
+        current.playerSource.Play();
+    }
+
+    public static void PlayRunSaruAudio()
+    {
+        if (current == null)
+        {
+            return;
+        }
+
+        current.playerSource.clip = current.runClip;
         current.playerSource.Play();
     }
 

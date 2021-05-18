@@ -52,6 +52,7 @@ public class SettingsMenu : MonoBehaviour
     }
     public void SetVolume(float volume)
     {
+        Debug.Log("arepita");
         audioMixer.SetFloat("volume", volume);
     }
 

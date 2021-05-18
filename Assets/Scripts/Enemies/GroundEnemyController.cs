@@ -72,7 +72,6 @@ public class GroundEnemyController : MonoBehaviour
 
             if (distance <= agent.stoppingDistance)
             {
-                Debug.Log("epa panita");
                 agent.speed = 0f;
                 //Attack the target
                 anim.SetTrigger("attack");

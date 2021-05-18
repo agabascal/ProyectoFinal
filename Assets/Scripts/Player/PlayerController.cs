@@ -78,6 +78,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         controller = GetComponent<CharacterController>();
         capsuleCol = GetComponent<CapsuleCollider>();
         anim = GetComponent<Animator>();
@@ -138,7 +139,11 @@ public class PlayerController : MonoBehaviour
             {
                 anim.Play("Attack");
             }
-            windSource.Stop();
+            if (windSource != null)
+            {
+                windSource.Stop();
+            }
+            
         }
 
         else
@@ -154,7 +159,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonDown(1) && shootingUnlocked)
+        if (Input.GetMouseButtonDown(1))
         {
             canMove = false;
             anim.Play("shoot");
@@ -165,13 +170,7 @@ public class PlayerController : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.F) && isGrounded)
             {
-                /*GameObject sfxVoice = Instantiate(new GameObject(), transform.position, Quaternion.identity);
-                sfxVoice.AddComponent<AudioSource>();
-                sfxVoice.AddComponent<AudioSource>().clip = AudioManager.current.voiceClip;
-                sfxVoice.AddComponent<AudioSource>().loop = false;
-                sfxVoice.AddComponent<AudioSource>().Play();
-
-                Destroy(sfxVoice, 2f);*/
+                
                 AudioManager.PlayVoiceSaruAudio();
                 currentRotation = transform.eulerAngles;
                 anim.SetTrigger("takeOff");
@@ -372,6 +371,10 @@ public class PlayerController : MonoBehaviour
     public void JumpAudio()
     {
         AudioManager.PlayJumpAudio();
+    }
+    public void RunAudio()
+    {
+        AudioManager.PlayRunSaruAudio();
     }
     #endregion
 

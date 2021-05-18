@@ -69,7 +69,8 @@ public class GameManager : MonoBehaviour
                 StartCoroutine(FadeIn());
                 break;
         }
-        
+
+        Cursor.lockState = CursorLockMode.Locked;
         
 
                 
@@ -160,6 +161,7 @@ public class GameManager : MonoBehaviour
         if (!isPaused)
         {
             Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
             pausePanel.SetActive(true);
             isPaused = true;
             Time.timeScale = 0f;
@@ -169,6 +171,7 @@ public class GameManager : MonoBehaviour
         else
         {
             Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
             pausePanel.SetActive(false);
             isPaused = false;
             Time.timeScale = 1f;

@@ -570,8 +570,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lookRadius: 14
-  walkpointRange: 8
-  navigationSpeed: 0
+  walkpointRange: 10
+  navigationSpeed: 2.5
   target: {fileID: 0}
   agent: {fileID: 0}
   canAttack: 0
@@ -591,6 +591,8 @@ MonoBehaviour:
   deathParticles: {fileID: 494344367814565812, guid: fe1c960195e06ba4ab984f7065865897,
     type: 3}
   anim: {fileID: 9153898206855990887}
+  enemyaudio: {fileID: 0}
+  attackClip: {fileID: 0}
 --- !u!195 &9153898206855990880
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -601,7 +603,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.74
-  m_Speed: 3.5
+  m_Speed: 2.5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120

@@ -53,6 +53,7 @@ MonoBehaviour:
   takeoffClip: {fileID: 8300000, guid: b7c352fce937ec44f8775ad173d1d18a, type: 3}
   shootClip: {fileID: 8300000, guid: ed9d3ef815a00124d921aafad52f4edf, type: 3}
   attackClip: {fileID: 8300000, guid: a8c77b55d6942a042b8c978aaaef2197, type: 3}
+  runClip: {fileID: 8300000, guid: 10dec91d726247c4ca929476f9d726b9, type: 3}
   walkSpiderClip: {fileID: 8300000, guid: 9d2644bdce4a92a4db8ee60ad72798d2, type: 3}
   walkWormClip: {fileID: 8300000, guid: c60cb500a41162a40986c1a4e710a912, type: 3}
   walkErizoClip: {fileID: 8300000, guid: 9d2644bdce4a92a4db8ee60ad72798d2, type: 3}
