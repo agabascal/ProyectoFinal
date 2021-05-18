@@ -34,8 +34,7 @@ public class MenuManager : MonoBehaviour
     }
     public void Play()
     {
-        StartCoroutine(FadeOut());        
-        
+        StartCoroutine(FadeOut());                
         AudioManager.PlayButtonAudio();
         musicIntro.Stop();
     }

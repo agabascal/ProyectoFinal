@@ -99,6 +99,7 @@ public class RaceGame : MonoBehaviour
         islandIndex++;
         targetIndex++;
         guideArrow.SetActive(true);
+        player.life = 3;
         target = targets[targetIndex].transform;
     }
 
