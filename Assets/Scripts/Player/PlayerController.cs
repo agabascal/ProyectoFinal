@@ -209,6 +209,7 @@ public class PlayerController : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.F))
             {
+                windSource.Play();
                 state = playerState.flight;
                 anim.Play("Fly");                
             }

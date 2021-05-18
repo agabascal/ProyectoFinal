@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Video;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Cinemachine;
@@ -35,6 +36,8 @@ public class GameManager : MonoBehaviour
     public AudioSource musicEnvaironment;
     public GameObject panelSettings;
     public Image[] hearts;
+    public GameObject finalPlayer;
+    public GameObject videoPlayer;
 
     [Header("General Elements")]
     public int heartAmount=3;
@@ -104,7 +107,7 @@ public class GameManager : MonoBehaviour
             }
 
             if (treeDialogue.index == 1 && partsCollected == 4)
-            {
+            {                
                 dialoguePanel.SetActive(true);
                 lastDialogue = true;
                 treeDialogue.TriggerDialogue(treeDialogue.dialogue[treeDialogue.index]);
@@ -125,35 +128,48 @@ public class GameManager : MonoBehaviour
         }
 
         //Level 1 to Level 2 Transition
-        if (treeDialogue != null)
+        if (SceneManager.GetActiveScene().buildIndex == 1)
         {
-            if (treeDialogue.index == 1)
+            if (treeDialogue != null)
             {
-                Camera.main.transform.GetComponent<CinemachineBrain>().enabled = false;
-                player.GetComponent<Animator>().SetFloat("speed", 0f);
-                Camera.main.transform.localPosition = cameraStartPos;
-                Camera.main.transform.localEulerAngles = cameraStartRot;
-
-                player.transform.localPosition = playerStartPos;
-                player.transform.eulerAngles = playerStartRot;
-
-                if (!lastDialogue)
+                if (treeDialogue.index == 1)
                 {
-                    StartCoroutine(FadeIn());
-                }
-                else
-                {
-                    SceneManager.LoadScene(2);
-                }
+                    /*Camera.main.transform.GetComponent<CinemachineBrain>().enabled = false;
+                    player.GetComponent<Animator>().SetFloat("speed", 0f);
+                    Camera.main.transform.localPosition = cameraStartPos;
+                    Camera.main.transform.localEulerAngles = cameraStartRot;*/
+                    if (videoPlayer != null && finalPlayer != null)
+                    {
+                        videoPlayer.SetActive(true);
+                        finalPlayer.GetComponent<VideoPlayer>().Play();
+                    }                    
+                    player.transform.localPosition = playerStartPos;
+                    player.transform.eulerAngles = playerStartRot;
 
+                    if (!lastDialogue)
+                    {
+                        StartCoroutine(FadeIn());
+                    }
+                    else
+                    {                        
+                        SceneManager.LoadScene(2);
+                        if (videoPlayer != null && finalPlayer != null)
+                        {
+                            Destroy(videoPlayer);
+                            Destroy(finalPlayer);
+                        }
+                    }
+
+                }
             }
         }
-
-        if (FindObjectOfType<RaceGame>().finalIslandDialogue!= null && FindObjectOfType<RaceGame>().playerArrived)
+        if (SceneManager.GetActiveScene().buildIndex == 2)
         {
-            SceneManager.LoadScene(0);
-        }
-        
+            if (FindObjectOfType<RaceGame>().finalIslandDialogue != null && FindObjectOfType<RaceGame>().playerArrived)
+            {
+                SceneManager.LoadScene(0);
+            }
+        }                
     }
 
     public void PauseGame()
@@ -170,6 +186,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            panelSettings.SetActive(false);
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             pausePanel.SetActive(false);
