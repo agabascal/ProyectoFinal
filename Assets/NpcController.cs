@@ -63,7 +63,7 @@ public class NpcController : MonoBehaviour
         float randomZ = Random.Range(-walkPointRange, walkPointRange);
         float randomX = Random.Range(-walkPointRange, walkPointRange);
 
-        walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
+        walkPoint = new Vector3(transform.position.x + 5 + randomX, transform.position.y, transform.position.z + 5 + randomZ);
 
         if (Physics.Raycast(walkPoint, -transform.up, 4f, groundLayer))
         {
@@ -92,5 +92,6 @@ public class NpcController : MonoBehaviour
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position,walkPointRange);
+        Gizmos.DrawWireSphere(transform.position,5);
     }
 }

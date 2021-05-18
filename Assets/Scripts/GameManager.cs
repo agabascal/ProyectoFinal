@@ -58,11 +58,20 @@ public class GameManager : MonoBehaviour
 
         player = FindObjectOfType<PlayerController>().gameObject;
 
-        if (SceneManager.GetActiveScene().buildIndex == 1)
+        switch (SceneManager.GetActiveScene().buildIndex)
         {
-            fadeImage = blackFadeImage;
-            StartCoroutine(FadeIn());
+            case 1:
+                fadeImage = blackFadeImage;
+                StartCoroutine(FadeIn());
+                break;
+            case 2:
+                fadeImage = whiteFadeImage;
+                StartCoroutine(FadeIn());
+                break;
         }
+        
+        
+
                 
     }
 
@@ -83,18 +92,22 @@ public class GameManager : MonoBehaviour
             fadeImage.color = new Color(fadeImage.color.r, fadeImage.color.g, fadeImage.color.b, i);
             yield return null;
         }
-
-        if (treeDialogue.index==0)
+        if (treeDialogue != null)
         {
-            dialoguePanel.SetActive(true);
-            treeDialogue.TriggerDialogue(treeDialogue.dialogue[treeDialogue.index]);            
-        }
 
-        if (treeDialogue.index == 1 && partsCollected==4)
-        {
-            dialoguePanel.SetActive(true);
-            lastDialogue = true;
-            treeDialogue.TriggerDialogue(treeDialogue.dialogue[treeDialogue.index]);            
+
+            if (treeDialogue.index == 0)
+            {
+                dialoguePanel.SetActive(true);
+                treeDialogue.TriggerDialogue(treeDialogue.dialogue[treeDialogue.index]);
+            }
+
+            if (treeDialogue.index == 1 && partsCollected == 4)
+            {
+                dialoguePanel.SetActive(true);
+                lastDialogue = true;
+                treeDialogue.TriggerDialogue(treeDialogue.dialogue[treeDialogue.index]);
+            }
         }
 
     }
@@ -109,6 +122,7 @@ public class GameManager : MonoBehaviour
             fadeImage.color = new Color(fadeImage.color.r, fadeImage.color.r, fadeImage.color.r, i);
             yield return null;
         }
+
         //Level 1 to Level 2 Transition
         if (treeDialogue != null)
         {
@@ -132,6 +146,11 @@ public class GameManager : MonoBehaviour
                 }
 
             }
+        }
+
+        if (FindObjectOfType<RaceGame>().finalIslandDialogue!= null && FindObjectOfType<RaceGame>().playerArrived)
+        {
+            SceneManager.LoadScene(0);
         }
         
     }

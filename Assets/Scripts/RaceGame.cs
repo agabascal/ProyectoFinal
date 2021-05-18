@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.AI;
+
 
 public class RaceGame : MonoBehaviour
 {
@@ -21,7 +23,7 @@ public class RaceGame : MonoBehaviour
     public Transform target;
     public float distanceToTarget;
     public float[] distanceToIsland;
-    private bool playerArrived;
+    public bool playerArrived;
     public DialogueTrigger finalIslandDialogue;
 
     // Start is called before the first frame update
@@ -37,7 +39,7 @@ public class RaceGame : MonoBehaviour
     void Update()
     {
         distanceToTarget = Vector3.Distance(player.transform.position, target.position);
-        if (Vector3.Distance(player.transform.position,enemyIsland[islandIndex].transform.position) <= distanceToIsland[distanceIndex] && islandIndex < enemyIsland.Length-1)
+        if (Vector3.Distance(player.transform.position, enemyIsland[islandIndex].transform.position) <= distanceToIsland[distanceIndex] && islandIndex < enemyIsland.Length - 1)
         {
             Debug.Log("hey hey");
             if (player.state == PlayerController.playerState.flight)
@@ -47,21 +49,21 @@ public class RaceGame : MonoBehaviour
                 player.state = PlayerController.playerState.ground;
                 guideArrow.SetActive(false);
             }
-            
+
             islandFields[islandIndex].SetActive(true);
-            Invoke("ActivateCollider",0.5f);
+            Invoke("ActivateCollider", 0.5f);
         }
 
         if (Vector3.Distance(player.transform.position, targets[targetIndex].transform.position) <= 35f && targetIndex < targets.Length)
         {
             targetIndex++;
             target = targets[targetIndex].transform;
-        }        
-        
+        }
+
 
         guideArrow.transform.LookAt(target);
 
-        if (islandIndex == 3 && targetIndex == 16 && Vector3.Distance(player.transform.position,enemyIsland[3].transform.position)<=50)
+        if (islandIndex == 3 && targetIndex == 16 && Vector3.Distance(player.transform.position, enemyIsland[3].transform.position) <= 50)
         {
             if (!playerArrived)
             {
@@ -69,18 +71,25 @@ public class RaceGame : MonoBehaviour
                 player.state = PlayerController.playerState.ground;
                 guideArrow.SetActive(false);
                 player.canMove = false;
-                
                 for (int i = 0; i < npcs.Length; i++)
-                {                    
+                {
                     npcs[i].GetComponent<NavMeshAgent>().SetDestination(player.transform.position);
                     npcs[i].GetComponent<NavMeshAgent>().stoppingDistance = 2f;
+                    npcs[i].GetComponent<NavMeshAgent>().isStopped = false;
                     npcs[i].GetComponent<NavMeshAgent>().speed = 2f;
                 }
-                
-                dialoguePanel.SetActive(true);                
+
+                dialoguePanel.SetActive(true);
                 finalIslandDialogue.TriggerDialogue(finalIslandDialogue.dialogue[0]);
                 playerArrived = true;
             }
+        }
+
+        if ((player.transform.position.x < -8000f || player.transform.position.x > -300) || (player.transform.position.y < 4800f|| player.transform.position.y > 7000) || (player.transform.position.z > 3800f || player.transform.position.z <-1200))
+        {
+            GameManager.Instance.fadeImage = GameManager.Instance.whiteFadeImage;
+            StartCoroutine(GameManager.Instance.FadeOut());
+            StartCoroutine(playerDeath());
         }
     }
 
@@ -98,7 +107,12 @@ public class RaceGame : MonoBehaviour
         if (islandFields[islandIndex].GetComponent<Collider>().isTrigger)
         {
             islandFields[islandIndex].GetComponent<Collider>().isTrigger = false;
-        }
-        
+        }        
+    }
+
+    public IEnumerator playerDeath()
+    {
+        yield return new WaitForSeconds(3f);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

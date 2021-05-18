@@ -96,6 +96,7 @@ public class PlayerController : MonoBehaviour
             velocity.y += gravity * Time.deltaTime;
             trails[0].SetActive(false);
             trails[1].SetActive(false);
+            
         }
         else
         {
@@ -111,21 +112,18 @@ public class PlayerController : MonoBehaviour
                 velocity.y = -5f;
             }
             transform.Translate(velocity * Time.deltaTime);
-
-           /* if (Input.GetAxis("Horizontal") == 0)
-            {
-                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(transform.rotation.x,transform.rotation.y,0f),.5f);
-            }*/
+            
+            /* if (Input.GetAxis("Horizontal") == 0)
+             {
+                 transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(transform.rotation.x,transform.rotation.y,0f),.5f);
+             }*/
         }
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            Knock();
-        }
+
         if (state == playerState.ground && canMove)
         {
             //Gravity
@@ -172,7 +170,7 @@ public class PlayerController : MonoBehaviour
         {
             state = playerState.ground;
             anim.SetTrigger("land");
-            transform.rotation = Quaternion.Euler(0,0,0);
+            //transform.rotation = Quaternion.Euler(0,0,0);
             AudioManager.PlayLandingAudio();
         }
 
@@ -192,6 +190,16 @@ public class PlayerController : MonoBehaviour
         if (isHurt)
         {
             transform.Translate(-transform.forward * -knockForce/2 * Time.deltaTime);
+        }
+
+        if (!isGrounded && flightUnlocked && velocity.y<-6)
+        {
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                state = playerState.flight;
+                anim.Play("Fly");                
+            }
+           
         }
     }
     
