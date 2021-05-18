@@ -28,6 +28,7 @@ public class MenuManager : MonoBehaviour
     }
     private void Start()
     {
+        Cursor.lockState = CursorLockMode.None;
         panelPrincipal.SetActive(true);
         panelSettings.SetActive(false);
         panelCredits.SetActive(false);

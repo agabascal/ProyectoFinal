@@ -69,6 +69,7 @@ public class DialogueManager : MonoBehaviour
 
         if (SceneManager.GetActiveScene().buildIndex == 2)
         {
+            FindObjectOfType<RaceGame>().dialoguePanel.SetActive(false);
             GameManager.Instance.fadeImage = GameManager.Instance.blackFadeImage;
             StartCoroutine(GameManager.Instance.FadeOut());
         }
