@@ -47,6 +47,9 @@ public class PlayerController : MonoBehaviour
     public bool isBoosted;
 
     public Vector3 currentRotation;
+
+    public AudioSource windSource;
+    public AudioClip windClip;
     #endregion
 
     #region Combat
@@ -135,10 +138,12 @@ public class PlayerController : MonoBehaviour
             {
                 anim.Play("Attack");
             }
+            windSource.Stop();
         }
 
         else
         {
+
             isFlying = true;
             isGrounded = Physics.CheckSphere(groundCheck.position, checkDistance, groundMask);
 
@@ -159,10 +164,18 @@ public class PlayerController : MonoBehaviour
         if (GameManager.Instance.partsCollected == 4)
         {
             if (Input.GetKeyDown(KeyCode.F) && isGrounded)
-            {                
+            {
+                /*GameObject sfxVoice = Instantiate(new GameObject(), transform.position, Quaternion.identity);
+                sfxVoice.AddComponent<AudioSource>();
+                sfxVoice.AddComponent<AudioSource>().clip = AudioManager.current.voiceClip;
+                sfxVoice.AddComponent<AudioSource>().loop = false;
+                sfxVoice.AddComponent<AudioSource>().Play();
+
+                Destroy(sfxVoice, 2f);*/
+                AudioManager.PlayVoiceSaruAudio();
                 currentRotation = transform.eulerAngles;
                 anim.SetTrigger("takeOff");
-                AudioManager.PlayTakeoffAudio();
+                //AudioManager.PlayTakeoffAudio();
             }
         }
        
@@ -170,6 +183,7 @@ public class PlayerController : MonoBehaviour
         {
             state = playerState.ground;
             anim.SetTrigger("land");
+           
             //transform.rotation = Quaternion.Euler(0,0,0);
             AudioManager.PlayLandingAudio();
         }
@@ -337,6 +351,7 @@ public class PlayerController : MonoBehaviour
     public void StartFlight()
     {
         state = playerState.flight;
+        windSource.Play();
     }
 
     public void StepAudio()

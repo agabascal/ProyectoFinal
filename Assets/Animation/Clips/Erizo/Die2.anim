@@ -9783,7 +9783,7 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.76666665
+  - time: 0.5
     functionName: EnemyDeath
     data: 
     objectReferenceParameter: {fileID: 0}

@@ -38,6 +38,9 @@ public class GroundEnemyController : MonoBehaviour
     public Animator anim;
     private bool isDead = false;
 
+    [Header("Sound")]
+    public AudioSource enemyaudio;
+    public AudioClip attackClip;
 
     // Start is called before the first frame update
     private void Start()
@@ -69,6 +72,7 @@ public class GroundEnemyController : MonoBehaviour
 
             if (distance <= agent.stoppingDistance)
             {
+                Debug.Log("epa panita");
                 agent.speed = 0f;
                 //Attack the target
                 anim.SetTrigger("attack");
@@ -200,8 +204,8 @@ public class GroundEnemyController : MonoBehaviour
     {
         
         agent.enabled = false;
-        rb.isKinematic = false;                
-
+        rb.isKinematic = false;
+        AudioManager.PlayHitEnemiesAudio();
         rb.velocity = (target.transform.forward +(Vector3.up * knockForce / 7)) * knockForce;
 
         yield return new WaitForSeconds(1.5f);
@@ -242,6 +246,11 @@ public class GroundEnemyController : MonoBehaviour
 
     public void StartAttack()
     {
+        GameObject audiosfx = Instantiate(new GameObject(), transform.position, Quaternion.identity);
+        audiosfx.AddComponent<AudioSource>().clip = attackClip;
+        audiosfx.GetComponent<AudioSource>().loop = false;
+        audiosfx.GetComponent<AudioSource>().Play();
+        Destroy(audiosfx, 2f);
         hitbox.enabled = true;
     }
 
@@ -251,10 +260,10 @@ public class GroundEnemyController : MonoBehaviour
         agent.speed = navigationSpeed;
     }
 
-    public void AttackSpiderSound()
+    /*public void AttackSpiderSound()
     {
         AudioManager.PlayAttackSpiderAudio();
-    }
+    }*/
 
     public void AttackWormSound()
     {

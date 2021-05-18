@@ -41,7 +41,6 @@ public class RaceGame : MonoBehaviour
         distanceToTarget = Vector3.Distance(player.transform.position, target.position);
         if (Vector3.Distance(player.transform.position, enemyIsland[islandIndex].transform.position) <= distanceToIsland[distanceIndex] && islandIndex < enemyIsland.Length - 1)
         {
-            Debug.Log("hey hey");
             if (player.state == PlayerController.playerState.flight)
             {
                 distanceIndex++;

@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   windClip: {fileID: 8300000, guid: 2db50e3e367e645409ee08db2b133943, type: 3}
-  walkStepClip: {fileID: 8300000, guid: 62844dd5028fbf146a4e25cb69f19488, type: 3}
+  walkStepClip: {fileID: 8300000, guid: 87d3405e4205aad45b2562cae7534e1d, type: 3}
   flyClip: {fileID: 8300000, guid: 22df9522820c20748907e6c8b35e33fb, type: 3}
   jumpClip: {fileID: 8300000, guid: 300f857b41944d54cbf6f2ee7035359a, type: 3}
   hitClip: {fileID: 8300000, guid: f270f1fcfb1f31d4c9ea87f1046d9ab7, type: 3}
@@ -69,9 +69,7 @@ MonoBehaviour:
     type: 2}
   playerGroup: {fileID: 992316043930239432, guid: 5cf53811009dafe478f7df7ea0fa4582,
     type: 2}
-  enemiesSpiderGroup: {fileID: 7061928942646176681, guid: 5cf53811009dafe478f7df7ea0fa4582,
-    type: 2}
-  enemiesWormGroup: {fileID: 6759910819020898220, guid: 5cf53811009dafe478f7df7ea0fa4582,
+  enemiesGroup: {fileID: 7061928942646176681, guid: 5cf53811009dafe478f7df7ea0fa4582,
     type: 2}
   uiGroup: {fileID: -6424785660450198892, guid: 5cf53811009dafe478f7df7ea0fa4582,
     type: 2}

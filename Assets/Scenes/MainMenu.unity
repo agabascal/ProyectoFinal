@@ -2100,7 +2100,7 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: d4a1261cb897dde45a7fcc482fa47465, type: 3}
     m_FontSize: 28
     m_FontStyle: 1
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 2
     m_MaxSize: 40
     m_Alignment: 4
@@ -3533,7 +3533,7 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: d4a1261cb897dde45a7fcc482fa47465, type: 3}
     m_FontSize: 28
     m_FontStyle: 1
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 2
     m_MaxSize: 40
     m_Alignment: 4
@@ -4114,7 +4114,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -0, y: 0}
-  m_SizeDelta: {x: 17.887066, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1585317922
 MonoBehaviour:
@@ -4139,7 +4139,7 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: d4a1261cb897dde45a7fcc482fa47465, type: 3}
     m_FontSize: 28
     m_FontStyle: 1
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 2
     m_MaxSize: 40
     m_Alignment: 4
@@ -4148,9 +4148,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'EXIT
-
-'
+  m_Text: EXIT
 --- !u!222 &1585317923
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4644,7 +4642,7 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: d4a1261cb897dde45a7fcc482fa47465, type: 3}
     m_FontSize: 27
     m_FontStyle: 1
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 2
     m_MaxSize: 40
     m_Alignment: 4
@@ -5345,10 +5343,10 @@ RectTransform:
   m_Father: {fileID: 2078650227}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.10634784, y: 0.082726784}
-  m_AnchorMax: {x: 0.15786952, y: 0.16534023}
-  m_AnchoredPosition: {x: 6.9299316, y: 51.799866}
-  m_SizeDelta: {x: 1.0366211, y: 0.16799545}
+  m_AnchorMin: {x: 0.10634784, y: 0.21166325}
+  m_AnchorMax: {x: 0.17300001, y: 0.29540744}
+  m_AnchoredPosition: {x: 0.42993164, y: 0.7998657}
+  m_SizeDelta: {x: -11.963379, y: 0.16799545}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2006582732
 MonoBehaviour:

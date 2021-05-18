@@ -31,6 +31,7 @@ public class ForceFieldController : MonoBehaviour
                 isCollapsed = true;
                 forcefieldAnimation.Play("collapse");
                 Destroy(gameObject, 1.5f);
+                AudioManager.PlayCapsulAudio();
             }
             else
             {

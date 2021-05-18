@@ -5,7 +5,7 @@ using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
-    static AudioManager current;
+    public static AudioManager current;
 
     [Header("Ambient Audio")]
     public AudioClip windClip;
@@ -148,7 +148,6 @@ public class AudioManager : MonoBehaviour
         {
             return;
         }
-
         current.playerSource.clip = current.voiceClip;
         current.playerSource.Play();
     }

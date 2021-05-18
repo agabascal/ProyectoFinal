@@ -16,6 +16,7 @@ public class HitboxController : MonoBehaviour
             case HitboxType.player:
                 if (collision.gameObject.CompareTag("Enemy"))
                 {
+                    AudioManager.PlayHitEnemiesAudio();
                     if (!collision.gameObject.GetComponent<GroundEnemyController>().isHurt)
                     {
                         collision.gameObject.GetComponent<GroundEnemyController>().isHurt = true;
