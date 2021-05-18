@@ -21,9 +21,9 @@ public class MenuManager : MonoBehaviour
         
         if(intro.time > 21)
         {
-            blackPanel.SetActive(true);            
+            blackPanel.GetComponent<Image>().color = Color.black;
             SceneManager.LoadScene(1);
-            videoIntro.SetActive(false);
+            //videoIntro.SetActive(false);
         }
     }
     private void Start()
@@ -34,9 +34,8 @@ public class MenuManager : MonoBehaviour
     }
     public void Play()
     {
-        intro.Play();
-        panelPrincipal.SetActive(false);
-        videoIntro.SetActive(true);
+        StartCoroutine(FadeOut());        
+        
         AudioManager.PlayButtonAudio();
         musicIntro.Stop();
     }
@@ -66,5 +65,31 @@ public class MenuManager : MonoBehaviour
         panelSettings.SetActive(false);
         panelCredits.SetActive(false);
         AudioManager.PlayBackButtonAudio();
+    }
+
+    private IEnumerator FadeOut()
+    {
+        for (float i = 0; i < 1; i += .005f)
+        {
+            blackPanel.GetComponent<Image>().color = new Color(blackPanel.GetComponent<Image>().color.r, 
+                                                               blackPanel.GetComponent<Image>().color.r, 
+                                                               blackPanel.GetComponent<Image>().color.r, i);
+            yield return null;
+        }
+        StartCoroutine(FadeIn());
+        panelPrincipal.SetActive(false);
+        intro.Play();
+        videoIntro.SetActive(true);
+
+    }
+    private IEnumerator FadeIn()
+    {
+        for (float i = 1; i > 0; i -= .005f)
+        {
+            blackPanel.GetComponent<Image>().color = new Color(blackPanel.GetComponent<Image>().color.r,
+                                                               blackPanel.GetComponent<Image>().color.r,
+                                                               blackPanel.GetComponent<Image>().color.r, i);
+            yield return null;
+        }
     }
 }
