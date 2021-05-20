@@ -7,8 +7,8 @@ public class PlayerController : MonoBehaviour
 {
 
     //States
-    public enum playerState {ground, flight}
-    public playerState state;
+    public enum PlayerState {Ground, Flight, Glide}
+    public PlayerState state;
 
     #region Movement
     [Header("Movement")]
@@ -70,6 +70,13 @@ public class PlayerController : MonoBehaviour
     public GameObject bullet;
     #endregion
 
+    #region Gliding
+    [Header("Gliding")]
+    public float glidingSpeed = 5f;
+    public bool isOnGlidingDistace = false;
+    public float glideCheckDistance=5f;
+    #endregion
+
     [Header("Animation")]
     public Animator anim;    
 
@@ -89,8 +96,9 @@ public class PlayerController : MonoBehaviour
     //Handle physics and movement
     private void FixedUpdate()
     {
-        if (state == playerState.ground)
-        {
+        switch (state) {
+            case PlayerState.Ground:
+        
             checkDistance = 0.1f;
             currentRotation = transform.eulerAngles;
             if (controller.enabled && canMove)
@@ -100,122 +108,167 @@ public class PlayerController : MonoBehaviour
             velocity.y += gravity * Time.deltaTime;
             trails[0].SetActive(false);
             trails[1].SetActive(false);
-            
-        }
-        else
-        {
-            
+                break;
+
+            case PlayerState.Flight:
+        
+
             Flight();
             checkDistance = 1f;
             trails[0].SetActive(true);
             trails[1].SetActive(true);
 
             velocity.y += flightGravity * Time.deltaTime;
-            if (velocity.y <-5)
+            if (velocity.y < -5)
             {
                 velocity.y = -5f;
             }
             transform.Translate(velocity * Time.deltaTime);
-            
-            /* if (Input.GetAxis("Horizontal") == 0)
-             {
-                 transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(transform.rotation.x,transform.rotation.y,0f),.5f);
-             }*/
+
+                /* if (Input.GetAxis("Horizontal") == 0)
+                 {
+                     transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(transform.rotation.x,transform.rotation.y,0f),.5f);
+                 }*/
+                break;
+            case PlayerState.Glide:
+
+                Glide();
+                velocity.y += flightGravity * Time.deltaTime;
+                if (velocity.y < -5)
+                {
+                    velocity.y = -5f;
+                }
+                break;
         }
     }
 
     // Update is called once per frame
     private void Update()
     {
+        #region raycasts
 
-        if (state == playerState.ground && canMove)
+        isOnGlidingDistace = !Physics.Raycast(groundCheck.position, -transform.up, glideCheckDistance, groundMask);
+        isGrounded = Physics.CheckSphere(groundCheck.position, checkDistance, groundMask);
+
+        #endregion
+
+        switch (state)
         {
-            //Gravity
-            isGrounded = Physics.CheckSphere(groundCheck.position, checkDistance, groundMask);
-            anim.SetBool("isGrounded",isGrounded);
+            case PlayerState.Ground:
 
-            isFlying = false;
-            if (Input.GetMouseButtonDown(0))
-            {
-                anim.Play("Attack");
-            }
-            if (windSource != null)
-            {
-                windSource.Stop();
-            }
-            
+                if (canMove)
+                {
+                    //Gravity
+                    
+                    anim.SetBool("isGrounded", isGrounded);
+
+                    isFlying = false;
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        anim.Play("Attack");
+                    }
+                    if (windSource != null)
+                    {
+                        windSource.Stop();
+                    }
+
+                }
+
+                break;
+            case PlayerState.Flight:
+
+                isFlying = true;                
+
+                if (isGrounded && velocity.y < 0)
+                {
+                    state = PlayerState.Ground;
+                    velocity.y = -2f;
+                }
+
+                break;
+            case PlayerState.Glide:
+
+                if (!isFlying)
+                {
+                    anim.Play("Fly");                    
+                    trails[0].SetActive(true);
+                    trails[1].SetActive(true);
+                    isFlying = true;
+                }
+
+                break;
         }
-
-        else
-        {
-
-            isFlying = true;
-            isGrounded = Physics.CheckSphere(groundCheck.position, checkDistance, groundMask);
-
-            if (isGrounded && velocity.y<0)
-            {
-                state = playerState.ground;
-                velocity.y = -2f;                
-            }
-        }
+        #region Inputs
 
         if (Input.GetMouseButtonDown(1))
         {
             canMove = false;
             anim.Play("shoot");
             AudioManager.PlayShootAudio();
-        }        
-
-        if (GameManager.Instance.partsCollected == 4)
-        {
-            if (Input.GetKeyDown(KeyCode.F) && isGrounded)
-            {
-                
-                AudioManager.PlayVoiceSaruAudio();
-                currentRotation = transform.eulerAngles;
-                anim.SetTrigger("takeOff");
-                //AudioManager.PlayTakeoffAudio();
-            }
         }
-       
-        if (Input.GetKeyDown(KeyCode.F) && state == playerState.flight)
+
+        if (GameManager.Instance !=null)
         {
-            state = playerState.ground;
+            if (GameManager.Instance.partsCollected == 4)
+            {
+                if (Input.GetKeyDown(KeyCode.F) && isGrounded)
+                {
+
+                    AudioManager.PlayVoiceSaruAudio();
+                    currentRotation = transform.eulerAngles;
+                    anim.SetTrigger("takeOff");
+                    //AudioManager.PlayTakeoffAudio();
+                }
+            }
+        }        
+       
+        if (Input.GetKeyDown(KeyCode.F) && state == PlayerState.Flight)
+        {
+            state = PlayerState.Ground;
             anim.SetTrigger("land");
            
             //transform.rotation = Quaternion.Euler(0,0,0);
             AudioManager.PlayLandingAudio();
-        }
-
-        if (isGrounded && !isHurt)
+        }            
+       
+        if (!isGrounded && flightUnlocked && velocity.y<-6)
         {
-            state = playerState.ground;
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x,transform.eulerAngles.y,0f);
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                windSource.Play();
+                state = PlayerState.Flight;
+                anim.Play("Fly");                
+            }
+           
         }
 
-        if (life==0 && canMove)
+        if (Input.GetKeyDown(KeyCode.Space) && !isGrounded && isOnGlidingDistace)
+        {
+            state = PlayerState.Glide;
+        }
+
+        #endregion
+        if (isHurt)
+        {
+            transform.Translate(-transform.forward * -knockForce / 2 * Time.deltaTime);
+        }
+
+        if (life == 0 && canMove)
         {
             canMove = false;
             anim.SetTrigger("death");
             AudioManager.PlayDeathAudio();
         }
 
-        if (isHurt)
+        if (isGrounded && !isHurt)
         {
-            transform.Translate(-transform.forward * -knockForce/2 * Time.deltaTime);
+            state = PlayerState.Ground;
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0f);
         }
 
-        if (!isGrounded && flightUnlocked && velocity.y<-6)
-        {
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                windSource.Play();
-                state = playerState.flight;
-                anim.Play("Fly");                
-            }
-           
-        }
+        
     }
+    
     
     #region player movement
 
@@ -263,6 +316,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space)&&isGrounded)
         {
             anim.SetTrigger("jump");
+            
         }
         anim.SetBool("isFlying",isFlying);
         controller.Move(velocity * Time.deltaTime);
@@ -272,6 +326,12 @@ public class PlayerController : MonoBehaviour
     {
         velocity.y = Mathf.Sqrt(jumpSpeed * -2f * gravity);
         
+    }
+
+    private void Glide()
+    {
+        controller.Move(transform.forward * glidingSpeed * Time.deltaTime);
+        //velocity.y += gravity * Time.deltaTime;
     }
 
     private void Flight()
@@ -286,23 +346,8 @@ public class PlayerController : MonoBehaviour
         currentRotation.z = Mathf.Clamp(currentRotation.z, -45, 45);
 
         currentRotation.y += Input.GetAxis("Horizontal");
-        //if (Input.GetAxisRaw("Horizontal") != 0)
-        //{
-            transform.rotation = Quaternion.Euler(currentRotation);
-        //}
-        /*else
-        {
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(transform.rotation.eulerAngles.x,
-                                                                                        transform.rotation.eulerAngles.y,
-                                                                                        0f), Time.deltaTime * 2);
-            if (currentRotation.y >= 360 || currentRotation.y <=0)
-            {
-                currentRotation.y = transform.rotation.eulerAngles.y;
-            }        
-            currentRotation = new Vector3(transform.rotation.eulerAngles.x,transform.rotation.eulerAngles.y , transform.rotation.eulerAngles.z);
 
-        //hacer un if si current.y > 360 entonces sea 0
-        }*/
+        transform.rotation = Quaternion.Euler(currentRotation);
         
 
         if (currentRotation.magnitude >0.1f)
@@ -350,7 +395,7 @@ public class PlayerController : MonoBehaviour
 
     public void StartFlight()
     {
-        state = playerState.flight;
+        state = PlayerState.Flight;
         windSource.Play();
     }
 
@@ -449,5 +494,6 @@ public class PlayerController : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.DrawSphere(groundCheck.position,checkDistance);
+        Debug.DrawRay(groundCheck.position, -transform.up,Color.green,glideCheckDistance);
     }
 }

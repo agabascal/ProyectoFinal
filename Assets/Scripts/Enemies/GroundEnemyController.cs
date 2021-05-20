@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 public class GroundEnemyController : MonoBehaviour
 {
+
     //Navigation
     [Header("Navigation")]
     public float lookRadius = 10f;
@@ -17,7 +18,7 @@ public class GroundEnemyController : MonoBehaviour
     private bool walkpointSet;
     public bool canAttack;
     public LayerMask groundLayer;
-    public GameObject wormParticles;       
+    public GameObject wormParticles;
 
     //Combat
     [Header("Combat")]
@@ -121,15 +122,15 @@ public class GroundEnemyController : MonoBehaviour
             {
                 agent.SetDestination(walkPoint);
             }
-            
+
         }
 
         timer -= Time.deltaTime;
-        
+
         Vector3 distanceToWalkpoint = transform.position - walkPoint;
 
         //walkpoint reached
-        if (distanceToWalkpoint.magnitude <1f || timer<=0f)
+        if (distanceToWalkpoint.magnitude < 1f || timer <= 0f)
         {
             walkpointSet = false;
             timer = 3f;
@@ -143,15 +144,22 @@ public class GroundEnemyController : MonoBehaviour
             walk.Play();
         }*/
         //AudioManager.PlayWalkSpiderAudio();
-        float randomZ = Random.Range(-walkpointRange,walkpointRange);
-        float randomX = Random.Range(-walkpointRange,walkpointRange);
+        float randomZ = Random.Range(-walkpointRange, walkpointRange);
+        float randomX = Random.Range(-walkpointRange, walkpointRange);
 
         walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
 
-        if (Physics.Raycast(walkPoint,-transform.up,2f,groundLayer))
+        if (Physics.Raycast(walkPoint, -transform.up, 2f, groundLayer))
         {
             walkpointSet = true;
         }
+    }
+
+    private void FaceTarget()
+    {
+        Vector3 direction = (agent.destination - transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
     }
 
     public void EnemyDeath()
@@ -177,12 +185,7 @@ public class GroundEnemyController : MonoBehaviour
         Destroy(particles,5f);
     }
 
-    private void FaceTarget()
-    {
-         Vector3 direction = (agent.destination - transform.position).normalized;
-         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-         transform.rotation = Quaternion.Slerp(transform.rotation,lookRotation,Time.deltaTime*5f);
-    }
+    
 
     private void HandleAnimation()
     {

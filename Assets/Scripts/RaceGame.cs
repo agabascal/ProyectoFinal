@@ -41,11 +41,11 @@ public class RaceGame : MonoBehaviour
         distanceToTarget = Vector3.Distance(player.transform.position, target.position);
         if (Vector3.Distance(player.transform.position, enemyIsland[islandIndex].transform.position) <= distanceToIsland[distanceIndex] && islandIndex < enemyIsland.Length - 1)
         {
-            if (player.state == PlayerController.playerState.flight)
+            if (player.state == PlayerController.PlayerState.Flight)
             {
                 distanceIndex++;
                 player.anim.Play("Land");
-                player.state = PlayerController.playerState.ground;
+                player.state = PlayerController.PlayerState.Ground;
                 guideArrow.SetActive(false);
             }
 
@@ -71,7 +71,7 @@ public class RaceGame : MonoBehaviour
             if (!playerArrived)
             {
                 player.anim.Play("Land");
-                player.state = PlayerController.playerState.ground;
+                player.state = PlayerController.PlayerState.Ground;
                 guideArrow.SetActive(false);
                 player.canMove = false;
                 for (int i = 0; i < npcs.Length; i++)
