@@ -486,7 +486,7 @@ public class PlayerController : MonoBehaviour
 
     public void PlayerDeath()
     {
-        //reload scene
+        //reload scene  
         GameManager.Instance.GameOver();
     }
     #endregion
