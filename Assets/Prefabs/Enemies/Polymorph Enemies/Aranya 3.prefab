@@ -672,12 +672,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d8918f4e6f0f184ba5f7b2de8a7fa41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lookRadius: 10
-  walkpointRange: 0
-  navigationSpeed: 0
+  lookRadius: 12
+  walkpointRange: 10
+  navigationSpeed: 1
   target: {fileID: 0}
   agent: {fileID: 8774077727513421492}
-  canAttack: 0
+  canAttack: 1
   groundLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -686,13 +686,14 @@ MonoBehaviour:
   rb: {fileID: 8774077727513421494}
   knockback: 0
   isHurt: 0
+  knockForce: 10
+  hitbox: {fileID: 7207887929992210887}
+  deathParticles: {fileID: 494344367814565812, guid: fe1c960195e06ba4ab984f7065865897,
+    type: 3}
+  anim: {fileID: 8774077727513421491}
+  isDead: 0
   protectsItem: 0
   fieldController: {fileID: 0}
-  knockForce: 10
-  attackTime: 0.5
-  hitbox: {fileID: 0}
-  deathParticles: {fileID: 0}
-  anim: {fileID: 8774077727513421491}
   enemyaudio: {fileID: 3772821775289699873}
   attackClip: {fileID: 8300000, guid: de79284d56cc4e54dad873d07b60fab9, type: 3}
 --- !u!54 &8774077727513421494
@@ -762,7 +763,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 4.96
-  m_BaseOffset: 0.16
+  m_BaseOffset: 0.06
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!82 &3772821775289699873
@@ -872,7 +873,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8774077727728956173}
   - component: {fileID: 8774077727728956175}
-  - component: {fileID: 8774077727728956172}
+  - component: {fileID: 7207887929992210887}
   m_Layer: 0
   m_Name: Hitbox
   m_TagString: Untagged
@@ -902,12 +903,12 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8774077727728956170}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 4.14, y: 1, z: 0.33}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8774077727728956172
+--- !u!114 &7207887929992210887
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -916,7 +917,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8774077727728956170}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5cd37d8fabfa5248870c94a38f32d81, type: 3}
+  m_Script: {fileID: 11500000, guid: fd941548b5fb7af4a89822cb853e026c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1

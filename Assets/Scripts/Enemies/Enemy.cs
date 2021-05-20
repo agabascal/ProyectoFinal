@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy : MonoBehaviour
+public abstract class Enemy : MonoBehaviour
 {
     //Navigation
     [Header("Navigation")]
@@ -24,19 +24,19 @@ public class Enemy : MonoBehaviour
     public int life = 3;
     public Rigidbody rb;
     public bool knockback;
-    public bool isHurt;
-    public bool protectsItem;
-    public ForceFieldController fieldController;
+    public bool isHurt;    
     public float knockForce = 10f;
     private float distance;
-    public float attackTime = 0.5f;
-    protected float nextAttackTime = 0.0f;
-    public HitboxController hitbox;
+    public Hitbox hitbox;
     public GameObject deathParticles;
 
     [Header("Animation")]
     public Animator anim;
-    private bool isDead = false;
+    public bool isDead = false;
+
+    [Header ("Level Progression")]
+    public bool protectsItem;
+    public ForceFieldController fieldController;
 
     [Header("Sound")]
     public AudioSource enemyaudio;
@@ -135,7 +135,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void SearchWalkpoint()
+    public virtual void SearchWalkpoint()
     {
         /*if (walk != null)
         {
@@ -153,18 +153,78 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void FaceTarget()
+    public virtual void FaceTarget()
     {
         Vector3 direction = (agent.destination - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
     }
 
-    private void HandleAnimation()
+    public virtual void HandleAnimation()
     {
 
     }
-    private void OnDrawGizmosSelected()
+
+    public void Knock()
+    {
+        isHurt = true;
+        StartCoroutine(KnockBack());
+        knockback = false;
+
+    }
+    private IEnumerator KnockBack()
+    {
+
+        agent.enabled = false;
+        rb.isKinematic = false;
+        AudioManager.PlayHitEnemiesAudio();
+        rb.velocity = (target.transform.forward + (Vector3.up * knockForce / 7)) * knockForce;
+
+        yield return new WaitForSeconds(1.5f);
+
+        agent.enabled = true;
+        rb.isKinematic = true;
+        isHurt = false;
+    }
+    public virtual void StartAttack()
+    {
+        GameObject audiosfx = Instantiate(new GameObject(), transform.position, Quaternion.identity);
+        audiosfx.AddComponent<AudioSource>().clip = attackClip;
+        audiosfx.GetComponent<AudioSource>().loop = false;
+        audiosfx.GetComponent<AudioSource>().Play();
+        Destroy(audiosfx, 2f);
+        hitbox.enabled = true;
+    }
+
+    public virtual void StopAttack()
+    {
+        hitbox.enabled = false;
+        agent.speed = navigationSpeed;
+    }
+
+    public virtual void EnemyDeath()
+    {
+        Destroy(gameObject, 0.5f);
+        if (protectsItem)
+        {
+            if (fieldController.enemyList.Contains(this.gameObject))
+            {
+                fieldController.enemyList.Remove(this.gameObject);
+            }
+
+        }
+        if (hitbox != null)
+        {
+            hitbox.enabled = false;
+        }
+
+        //AudioManager.PlayDeathEnemiesAudio();
+        GetComponent<Collider>().enabled = false;
+        AudioManager.PlayDeathEnemiesAudio();
+        GameObject particles = Instantiate(deathParticles, transform.position, Quaternion.identity);
+        Destroy(particles, 5f);
+    }
+    public virtual void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, lookRadius);

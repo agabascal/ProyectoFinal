@@ -41,7 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 305056499105689904}
   - component: {fileID: 305056499105689906}
-  - component: {fileID: 305056499105689905}
+  - component: {fileID: 5291742920341254414}
   m_Layer: 0
   m_Name: Hitbox
   m_TagString: Untagged
@@ -76,7 +76,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 0.25, z: 0.47}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &305056499105689905
+--- !u!114 &5291742920341254414
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -85,7 +85,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 305056499105689907}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5cd37d8fabfa5248870c94a38f32d81, type: 3}
+  m_Script: {fileID: 11500000, guid: fd941548b5fb7af4a89822cb853e026c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
@@ -1423,7 +1423,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5630929513586925867}
-  m_LocalRotation: {x: -0.022490935, y: 0.007262823, z: -0.000045230747, w: -0.9997207}
+  m_LocalRotation: {x: -0.022490935, y: 0.0072644744, z: -0.00004524103, w: -0.9997207}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
