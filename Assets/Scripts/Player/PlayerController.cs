@@ -106,6 +106,10 @@ public class PlayerController : MonoBehaviour
                 Movement();
             }
             velocity.y += gravity * Time.deltaTime;
+                if (velocity.y<-2f)
+                {
+                    velocity.y = -2f;
+                }
             trails[0].SetActive(false);
             trails[1].SetActive(false);
                 break;
@@ -199,54 +203,57 @@ public class PlayerController : MonoBehaviour
                 break;
         }
         #region Inputs
-
-        if (Input.GetMouseButtonDown(1))
+        if (life > 0)
         {
-            canMove = false;
-            anim.Play("shoot");
-            AudioManager.PlayShootAudio();
-        }
 
-        if (GameManager.Instance !=null)
-        {
-            if (GameManager.Instance.partsCollected == 4)
+
+            if (Input.GetMouseButtonDown(1))
             {
-                if (Input.GetKeyDown(KeyCode.F) && isGrounded)
-                {
+                canMove = false;
+                anim.Play("shoot");
+                AudioManager.PlayShootAudio();
+            }
 
-                    AudioManager.PlayVoiceSaruAudio();
-                    currentRotation = transform.eulerAngles;
-                    anim.SetTrigger("takeOff");
-                    //AudioManager.PlayTakeoffAudio();
+            if (GameManager.Instance != null)
+            {
+                if (GameManager.Instance.partsCollected == 4)
+                {
+                    if (Input.GetKeyDown(KeyCode.F) && isGrounded)
+                    {
+
+                        AudioManager.PlayVoiceSaruAudio();
+                        currentRotation = transform.eulerAngles;
+                        anim.SetTrigger("takeOff");
+                        //AudioManager.PlayTakeoffAudio();
+                    }
                 }
             }
-        }        
-       
-        if (Input.GetKeyDown(KeyCode.F) && state == PlayerState.Flight)
-        {
-            state = PlayerState.Ground;
-            anim.SetTrigger("land");
-           
-            //transform.rotation = Quaternion.Euler(0,0,0);
-            AudioManager.PlayLandingAudio();
-        }            
-       
-        if (!isGrounded && flightUnlocked && velocity.y<-6)
-        {
-            if (Input.GetKeyDown(KeyCode.F))
+
+            if (Input.GetKeyDown(KeyCode.F) && state == PlayerState.Flight)
             {
-                windSource.Play();
-                state = PlayerState.Flight;
-                anim.Play("Fly");                
+                state = PlayerState.Ground;
+                anim.SetTrigger("land");
+
+                //transform.rotation = Quaternion.Euler(0,0,0);
+                AudioManager.PlayLandingAudio();
             }
-           
-        }
 
-        if (Input.GetKeyDown(KeyCode.Space) && !isGrounded && isOnGlidingDistace)
-        {
-            state = PlayerState.Glide;
-        }
+            if (!isGrounded && flightUnlocked && velocity.y < -6)
+            {
+                if (Input.GetKeyDown(KeyCode.F))
+                {
+                    windSource.Play();
+                    state = PlayerState.Flight;
+                    anim.Play("Fly");
+                }
 
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space) && !isGrounded && isOnGlidingDistace)
+            {
+                state = PlayerState.Glide;
+            }
+        }
         #endregion
         if (isHurt)
         {
@@ -493,7 +500,6 @@ public class PlayerController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawSphere(groundCheck.position,checkDistance);
-        Debug.DrawRay(groundCheck.position, -transform.up,Color.green,glideCheckDistance);
+        Gizmos.DrawSphere(groundCheck.position,checkDistance);        
     }
 }

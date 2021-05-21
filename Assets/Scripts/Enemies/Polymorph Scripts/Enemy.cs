@@ -17,7 +17,7 @@ public abstract class Enemy : MonoBehaviour
     private bool walkpointSet;
     public bool canAttack;
     public LayerMask groundLayer;
-    public GameObject wormParticles;
+    
 
     //Combat
     [Header("Combat")]
@@ -43,7 +43,7 @@ public abstract class Enemy : MonoBehaviour
     public AudioClip attackClip;
 
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
         if (agent == null)
         {
@@ -56,7 +56,7 @@ public abstract class Enemy : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
         agent.updateRotation = false;
         distance = Vector3.Distance(target.position, transform.position);
@@ -230,5 +230,15 @@ public abstract class Enemy : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, lookRadius);
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, walkpointRange);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Bullet"))
+        {
+            StartCoroutine(KnockBack());
+            life--;
+        }
+
     }
 }

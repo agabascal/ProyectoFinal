@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Worm : Enemy
-{ 
+{
+    public GameObject wormParticles;
+
     public void StartWormMovement()
     {
         agent.speed = 3.5f;
