@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Player;
 using UnityEngine;
 
 public class HitboxController : MonoBehaviour
@@ -28,11 +29,11 @@ public class HitboxController : MonoBehaviour
             case HitboxType.enemy:
                 if (collision.gameObject.CompareTag("Player"))
                 {
-                    if (!collision.gameObject.GetComponent<PlayerController>().isHurt)
+                    if (!collision.gameObject.GetComponent<PlayerMovement>().isHurt)
                     {
-                        collision.gameObject.GetComponent<PlayerController>().isHurt = true;
-                        collision.gameObject.GetComponent<PlayerController>().life--;
-                        collision.gameObject.GetComponent<PlayerController>().Knock();                       
+                        collision.gameObject.GetComponent<PlayerMovement>().isHurt = true;
+                        collision.gameObject.GetComponent<PlayerMovement>().life--;
+                        collision.gameObject.GetComponent<PlayerMovement>().Knock();                       
                         //collision.GetComponent<Rigidbody>().velocity = -collision.transform.forward*5;*/
                     }                    
                 }

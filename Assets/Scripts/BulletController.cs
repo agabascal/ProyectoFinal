@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Player;
 using UnityEngine;
 
 public class BulletController : MonoBehaviour
@@ -17,7 +18,7 @@ public class BulletController : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        if (!FindObjectOfType<PlayerController>().isFlying)
+        if (!FindObjectOfType<PlayerMovement>().isFlying)
         {
             rb.AddForce(transform.forward.normalized * speed, ForceMode.Impulse);
             rb.AddForce(transform.up * curvature, ForceMode.Impulse);
@@ -33,7 +34,7 @@ public class BulletController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        Physics.IgnoreCollision(this.GetComponentInChildren<Collider>(),FindObjectOfType<PlayerController>().GetComponent<Collider>());
+        Physics.IgnoreCollision(this.GetComponentInChildren<Collider>(),FindObjectOfType<PlayerMovement>().GetComponent<Collider>());
         if (transform.forward != Vector3.zero)
         {   
             transform.forward = rb.velocity;
@@ -47,7 +48,7 @@ public class BulletController : MonoBehaviour
         {
             if (collision.gameObject.CompareTag("Player"))
             {
-                collision.gameObject.GetComponent<PlayerController>().life--;
+                collision.gameObject.GetComponent<PlayerMovement>().life--;
                 Destroy(gameObject);
             }
         }

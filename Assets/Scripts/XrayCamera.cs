@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Player;
 using UnityEngine;
 
 public class XrayCamera : MonoBehaviour
@@ -13,7 +14,7 @@ public class XrayCamera : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player = FindObjectOfType<PlayerController>().transform;
+        player = FindObjectOfType<PlayerMovement>().transform;
     }
 
     // Update is called once per frame

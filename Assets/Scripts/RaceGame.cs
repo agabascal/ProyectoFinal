@@ -4,13 +4,14 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.AI;
+using Player;
 
 
 public class RaceGame : MonoBehaviour
 {
     [Header("Variables")]
 
-    public PlayerController player;
+    public PlayerMovement player;
     public GameObject[] enemyIsland;
     public GameObject[] islandFields;
     public GameObject[] targets;
@@ -29,7 +30,7 @@ public class RaceGame : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {        
-        player = FindObjectOfType<PlayerController>().GetComponent<PlayerController>();
+        player = FindObjectOfType<PlayerMovement>().GetComponent<PlayerMovement>();
         islandIndex = 0;
         targetIndex = 0;
         target = targets[targetIndex].transform;
@@ -41,11 +42,11 @@ public class RaceGame : MonoBehaviour
         distanceToTarget = Vector3.Distance(player.transform.position, target.position);
         if (Vector3.Distance(player.transform.position, enemyIsland[islandIndex].transform.position) <= distanceToIsland[distanceIndex] && islandIndex < enemyIsland.Length - 1)
         {
-            if (player.state == PlayerController.PlayerState.Flight)
+            if (player.state == PlayerMovement.PlayerState.Flight)
             {
                 distanceIndex++;
                 player.anim.Play("Land");
-                player.state = PlayerController.PlayerState.Ground;
+                player.state = PlayerMovement.PlayerState.Ground;
                 guideArrow.SetActive(false);
             }
 
@@ -71,7 +72,7 @@ public class RaceGame : MonoBehaviour
             if (!playerArrived)
             {
                 player.anim.Play("Land");
-                player.state = PlayerController.PlayerState.Ground;
+                player.state = PlayerMovement.PlayerState.Ground;
                 guideArrow.SetActive(false);
                 player.canMove = false;
                 for (int i = 0; i < npcs.Length; i++)

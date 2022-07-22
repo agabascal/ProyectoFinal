@@ -79,9 +79,9 @@ Material:
     - _Cutoff: 0.5
     - _DstBlend: 0
     - _EnvironmentReflections: 1
-    - _FlowSpeed: 0.001
-    - _FlowStrength: 0.005
-    - _FoamDistance: 0.9
+    - _FlowSpeed: 0.5
+    - _FlowStrength: 0.0001
+    - _FoamDistance: 0.35
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
@@ -90,22 +90,23 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Size: 9.96
+    - _Size: 30
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
+    - _Transparency: 0.72
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _DarkFoamColor: {r: 0.48104307, g: 0.76026845, b: 0.8867924, a: 1}
+    - _DarkFoamColor: {r: 0.20314163, g: 0.4907338, b: 0.51886785, a: 0.4117647}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _LightFoamColor: {r: 0.8503471, g: 0.8901928, b: 0.9150943, a: 1}
+    - _LightFoamColor: {r: 0.85034704, g: 0.8901928, b: 0.9150943, a: 0.42745098}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-    - _WaterColor: {r: 0.3484336, g: 0.66204226, b: 0.8490566, a: 1}
+    - _WaterColor: {r: 0.20790312, g: 0.5667097, b: 0.6037736, a: 0.3137255}
   m_BuildTextureStacks: []
 --- !u!114 &5962838785567800224
 MonoBehaviour:

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Player;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -50,7 +51,7 @@ public abstract class Enemy : MonoBehaviour
             agent = GetComponent<NavMeshAgent>();
         }
 
-        target = FindObjectOfType<PlayerController>().transform;
+        target = FindObjectOfType<PlayerMovement>().transform;
 
         rb = GetComponentInChildren<Rigidbody>();
     }

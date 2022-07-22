@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Player;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,7 +24,7 @@ public class PartController : MonoBehaviour
                 other.GetComponentInChildren<SkinnedMeshRenderer>().material.SetColor("_EmissionColor", other.GetComponentInChildren<SkinnedMeshRenderer>().material.GetColor("_EmissionColor")*intensity);
                 uiImage.sprite = collectedSprite;
                 uiImage.transform.localScale = new Vector3(1,1,1);
-                other.GetComponent<PlayerController>().life = 3;
+                other.GetComponent<PlayerMovement>().life = 3;
             }
             
         }

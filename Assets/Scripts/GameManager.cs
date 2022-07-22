@@ -5,6 +5,7 @@ using UnityEngine.Video;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Cinemachine;
+using Player;
 
 public class GameManager : MonoBehaviour
 {
@@ -59,7 +60,7 @@ public class GameManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
-        player = FindObjectOfType<PlayerController>().gameObject;
+        player = FindObjectOfType<PlayerMovement>().gameObject;
 
         switch (SceneManager.GetActiveScene().buildIndex)
         {
@@ -119,7 +120,7 @@ public class GameManager : MonoBehaviour
     public IEnumerator FadeOut()
     {
         Camera.main.GetComponent<CinemachineBrain>().enabled = false;
-        player.GetComponent<PlayerController>().canMove = false;
+        player.GetComponent<PlayerMovement>().canMove = false;
 
         for (float i = 0; i < 1; i += .005f)
         {
@@ -232,15 +233,15 @@ public class GameManager : MonoBehaviour
 
     public void PlayerLife()
     {
-        if (player.GetComponent<PlayerController>().life > heartAmount)
+        if (player.GetComponent<PlayerMovement>().life > heartAmount)
         {
-            player.GetComponent<PlayerController>().life = heartAmount;
+            player.GetComponent<PlayerMovement>().life = heartAmount;
         }
         if (hearts.Length > 0)
         {
             for (int i = 0; i < hearts.Length; i++)
             {
-                if (i < player.GetComponent<PlayerController>().life)
+                if (i < player.GetComponent<PlayerMovement>().life)
                 {
                     hearts[i].sprite = fullHeart;
                 }

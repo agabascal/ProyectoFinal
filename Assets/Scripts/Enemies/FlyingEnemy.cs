@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Player;
 
 public class FlyingEnemy : MonoBehaviour
 {
@@ -25,7 +26,7 @@ public class FlyingEnemy : MonoBehaviour
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        target = FindObjectOfType<PlayerController>().transform;
+        target = FindObjectOfType<PlayerMovement>().transform;
     }
 
     // Update is called once per frame

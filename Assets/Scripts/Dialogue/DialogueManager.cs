@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Cinemachine;
+using Player;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -58,7 +59,7 @@ public class DialogueManager : MonoBehaviour
             {
                 GameManager.Instance.treeDialogue.index++;
                 GameManager.Instance.dialoguePanel.SetActive(false);
-                FindObjectOfType<PlayerController>().canMove = true;
+                FindObjectOfType<PlayerMovement>().canMove = true;
                 Camera.main.transform.GetComponent<CinemachineBrain>().enabled = true;
             }
             else if (GameManager.Instance.partsCollected == 4)

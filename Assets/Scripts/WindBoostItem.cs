@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Player;
 using UnityEngine;
 
 public class WindBoostItem : MonoBehaviour
@@ -17,7 +18,7 @@ public class WindBoostItem : MonoBehaviour
             }
             else
             {
-                other.GetComponent<PlayerController>().isBoosted = true;
+                other.GetComponent<PlayerMovement>().isBoosted = true;
             }
           
         }

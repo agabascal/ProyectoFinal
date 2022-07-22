@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Player;
 using UnityEngine;
 
 public class EnemyBullet : MonoBehaviour
@@ -30,7 +31,7 @@ public class EnemyBullet : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            collision.gameObject.GetComponent<PlayerController>().life--;
+            collision.gameObject.GetComponent<PlayerMovement>().life--;
             Destroy(gameObject);            
         }
     }

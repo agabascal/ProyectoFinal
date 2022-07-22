@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Player;
 using UnityEngine;
 
 public class FlightCameraControl : MonoBehaviour
@@ -16,7 +17,7 @@ public class FlightCameraControl : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        target = FindObjectOfType<PlayerController>().transform;
+        target = FindObjectOfType<PlayerMovement>().transform;
     }
 
     // Update is called once per frame

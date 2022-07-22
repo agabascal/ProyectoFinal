@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Player;
 
 public class Aranya : Enemy
 {
@@ -13,7 +14,7 @@ public class Aranya : Enemy
             agent = GetComponent<NavMeshAgent>();
         }
 
-        target = FindObjectOfType<PlayerController>().transform;
+        target = FindObjectOfType<PlayerMovement>().transform;
 
         rb = GetComponentInChildren<Rigidbody>();
     }
