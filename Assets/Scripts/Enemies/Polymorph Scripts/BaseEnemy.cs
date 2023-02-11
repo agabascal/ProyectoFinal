@@ -205,7 +205,7 @@ public abstract class BaseEnemy : MonoBehaviour
 
     public virtual void EnemyDeath()
     {
-        gameObject.Destroy(gameObject, 0.5f);
+        Destroy(gameObject, 0.5f);
         if (protectsItem)
         {
             if (fieldController.enemyList.Contains(this.gameObject))
