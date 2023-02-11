@@ -486,7 +486,7 @@ GameObject:
   - component: {fileID: 3258950345902145235}
   - component: {fileID: 8132005547257329323}
   m_Layer: 0
-  m_Name: Erizo 1
+  m_Name: Erizo
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
