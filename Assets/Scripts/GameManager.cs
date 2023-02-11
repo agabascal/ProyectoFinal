@@ -13,9 +13,7 @@ public class GameManager : MonoBehaviour
     //Singleton
     public static GameManager Instance { get; private set; }
     #endregion
-
     
-
     //Level 1 Gameplay
     [Header("Level 1 Gameplay")]
     public GameObject[] parts;

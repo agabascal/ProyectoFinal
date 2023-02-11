@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using Player;
 
-public class Aranya : Enemy
+public class Aranya : BaseEnemy
 {
     // Start is called before the first frame update
     void Start()

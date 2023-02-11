@@ -16,11 +16,11 @@ public class Hitbox : MonoBehaviour
                 if (collision.gameObject.CompareTag("Enemy"))
                 {
                     AudioManager.PlayHitEnemiesAudio();
-                    if (!collision.gameObject.GetComponent<Enemy>().isHurt)
+                    if (!collision.gameObject.GetComponent<BaseEnemy>().isHurt)
                     {
-                        collision.gameObject.GetComponent<Enemy>().isHurt = true;
-                        collision.gameObject.GetComponent<Enemy>().life--;
-                        collision.gameObject.GetComponent<Enemy>().Knock();
+                        collision.gameObject.GetComponent<BaseEnemy>().isHurt = true;
+                        collision.gameObject.GetComponent<BaseEnemy>().life--;
+                        collision.gameObject.GetComponent<BaseEnemy>().Knock();
                     }
                 }
                 break;

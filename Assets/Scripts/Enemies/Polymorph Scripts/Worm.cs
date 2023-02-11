@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Worm : Enemy
+public class Worm : BaseEnemy
 {
     public GameObject wormParticles;
 

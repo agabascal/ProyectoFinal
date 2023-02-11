@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Erizo : Enemy
+public class Erizo : BaseEnemy
 {
    
 }

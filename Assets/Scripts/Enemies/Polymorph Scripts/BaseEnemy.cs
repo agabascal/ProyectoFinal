@@ -4,7 +4,7 @@ using Player;
 using UnityEngine;
 using UnityEngine.AI;
 
-public abstract class Enemy : MonoBehaviour
+public abstract class BaseEnemy : MonoBehaviour
 {
     //Navigation
     [Header("Navigation")]
@@ -205,7 +205,7 @@ public abstract class Enemy : MonoBehaviour
 
     public virtual void EnemyDeath()
     {
-        Destroy(gameObject, 0.5f);
+        gameObject.Destroy(gameObject, 0.5f);
         if (protectsItem)
         {
             if (fieldController.enemyList.Contains(this.gameObject))
