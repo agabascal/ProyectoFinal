@@ -6,7 +6,7 @@ public class ForceFieldController : MonoBehaviour
 {
     public List<GameObject> enemyList;
 
-    public bool allDefeated;
+    private bool allDefeated;
 
     public Animator forcefieldAnimation;
     private bool isCollapsed=false;
