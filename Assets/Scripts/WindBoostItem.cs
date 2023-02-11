@@ -18,7 +18,7 @@ public class WindBoostItem : MonoBehaviour
             }
             else
             {
-                other.GetComponent<PlayerMovement>().isBoosted = true;
+                other.GetComponent<PlayerMovement>().boostFlight();
             }
           
         }

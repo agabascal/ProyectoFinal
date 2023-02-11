@@ -120,7 +120,7 @@ public class GameManager : MonoBehaviour
     public IEnumerator FadeOut()
     {
         Camera.main.GetComponent<CinemachineBrain>().enabled = false;
-        player.GetComponent<PlayerMovement>().canMove = false;
+        player.GetComponent<PlayerMovement>().isMovementEnabled = false;
 
         for (float i = 0; i < 1; i += .005f)
         {
@@ -266,4 +266,6 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
+
+    public PlayerMovement GetPlayer() => player.GetComponent<PlayerMovement>();
 }

@@ -74,7 +74,7 @@ public class RaceGame : MonoBehaviour
                 player.anim.Play("Land");
                 player.state = PlayerMovement.PlayerState.Ground;
                 guideArrow.SetActive(false);
-                player.canMove = false;
+                player.isMovementEnabled = false;
                 for (int i = 0; i < npcs.Length; i++)
                 {
                     npcs[i].GetComponent<NpcController>().walkPointSet = true;

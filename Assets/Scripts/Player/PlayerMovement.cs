@@ -28,7 +28,7 @@ namespace Player
         private Vector3 direction;
         private Vector3 moveDir;
         public CharacterController controller;
-        public bool canMove;
+        public bool isMovementEnabled;
 
         //Jump
         public float jumpSpeed = 8f;
@@ -44,20 +44,25 @@ namespace Player
 
         #region Flight Mechanic
 
-        [Header("Flight")] public float flightGravity = -1;
-        public float forwardSpeed = 25;
+        [Header("Flight")]
+        [SerializeField] private float flightGravity = -1f;
+        [SerializeField] private float xSensitivity;
+        [SerializeField] private float zSensitivity;
+        [SerializeField] private float lerpingSpeed = 2.5f;
+        [SerializeField] private float forwardSpeed = 25;
         private float boostTimer;
-        public float xSensitivity, zSensitivity;
+        private float horizontalInput;
+        private float verticalInput;
 
-        public GameObject[] trails;
+        [SerializeField] private GameObject[] trails;
 
-        public bool isFlying;
-        public bool isBoosted;
+        [SerializeField] private bool isFlying;
+        [SerializeField] private bool isBoosted;
 
-        public Vector3 currentRotation;
+        private Vector3 currentRotation;
 
-        public AudioSource windSource;
-        public AudioClip windClip;
+        [SerializeField] private AudioSource windSource;
+        [SerializeField] private AudioClip windClip;
 
         #endregion
 
@@ -91,6 +96,8 @@ namespace Player
 
         [Header("Animation")] public Animator anim;
 
+        public bool IsFlying => isFlying;
+
         // Start is called before the first frame update
         //get all respective components needed for the different mechanics
         private void Start()
@@ -113,7 +120,7 @@ namespace Player
 
                     checkDistance = 0.1f;
                     currentRotation = transform.eulerAngles;
-                    if (controller.enabled && canMove)
+                    if (controller.enabled && isMovementEnabled)
                     {
                         Movement();
                     }
@@ -131,7 +138,7 @@ namespace Player
                 case PlayerState.Flight:
 
 
-                    Flight();
+                    Flight(horizontalInput, verticalInput);
                     checkDistance = 1f;
                     trails[0].SetActive(true);
                     trails[1].SetActive(true);
@@ -160,6 +167,71 @@ namespace Player
         // Update is called once per frame
         private void Update()
         {
+            if (isHurt)
+            {
+                transform.Translate(-transform.forward * -knockForce / 2 * Time.deltaTime);
+                return;
+            }
+
+            if (life == 0)
+            {
+                if (isMovementEnabled)
+                {
+                    isMovementEnabled = false;
+                    anim.SetTrigger("death");
+                    AudioManager.PlayDeathAudio();
+                }
+
+                return;
+            }
+
+            #region Input
+
+            if (isMovementEnabled)
+            {
+                horizontalInput = Input.GetAxis("Horizontal");
+                verticalInput = Input.GetAxis("Vertical");
+            }
+            
+            if (Input.GetMouseButtonDown(1))
+            {
+                isMovementEnabled = false;
+                anim.Play("shoot");
+                AudioManager.PlayShootAudio();
+            }
+
+            if (GameManager.Instance != null && GameManager.Instance.partsCollected == 4)
+            {
+                if (Input.GetKeyDown(KeyCode.F) && isGrounded)
+                {
+                    AudioManager.PlayVoiceSaruAudio();
+                    currentRotation = transform.eulerAngles;
+                    anim.SetTrigger("takeOff");
+                }
+            }
+
+            if (!isGrounded && flightUnlocked && velocity.y < -6 && Input.GetKeyDown(KeyCode.F))
+            {
+                windSource.Play();
+                state = PlayerState.Flight;
+                anim.Play("Fly");
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space) && !isGrounded && isOnGlidingDistace)
+            {
+                state = PlayerState.Glide;
+            }
+
+            if (Input.GetKeyDown(KeyCode.F) && state == PlayerState.Flight)
+            {
+                state = PlayerState.Ground;
+                anim.SetTrigger("land");
+
+                AudioManager.PlayLandingAudio();
+            }
+
+            #endregion
+
             #region raycasts
 
             isOnGlidingDistace = !Physics.Raycast(groundCheck.position, -transform.up, glideCheckDistance, groundMask);
@@ -170,14 +242,13 @@ namespace Player
             switch (state)
             {
                 case PlayerState.Ground:
-
-                    if (canMove)
+                    if (isMovementEnabled)
                     {
                         //Gravity
-
                         anim.SetBool("isGrounded", isGrounded);
 
                         isFlying = false;
+
                         if (Input.GetMouseButtonDown(0))
                         {
                             anim.Play("Attack");
@@ -189,9 +260,13 @@ namespace Player
                         }
                     }
 
+                    if (isGrounded && !isHurt)
+                    {
+                        transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0f);
+                    }
+
                     break;
                 case PlayerState.Flight:
-
                     isFlying = true;
 
                     if (isGrounded && velocity.y < 0)
@@ -213,76 +288,6 @@ namespace Player
 
                     break;
             }
-
-            #region Inputs
-
-            if (life > 0)
-            {
-                if (Input.GetMouseButtonDown(1))
-                {
-                    canMove = false;
-                    anim.Play("shoot");
-                    AudioManager.PlayShootAudio();
-                }
-
-                if (GameManager.Instance != null)
-                {
-                    if (GameManager.Instance.partsCollected == 4)
-                    {
-                        if (Input.GetKeyDown(KeyCode.F) && isGrounded)
-                        {
-                            AudioManager.PlayVoiceSaruAudio();
-                            currentRotation = transform.eulerAngles;
-                            anim.SetTrigger("takeOff");
-                            //AudioManager.PlayTakeoffAudio();
-                        }
-                    }
-                }
-
-                if (Input.GetKeyDown(KeyCode.F) && state == PlayerState.Flight)
-                {
-                    state = PlayerState.Ground;
-                    anim.SetTrigger("land");
-
-                    //transform.rotation = Quaternion.Euler(0,0,0);
-                    AudioManager.PlayLandingAudio();
-                }
-
-                if (!isGrounded && flightUnlocked && velocity.y < -6)
-                {
-                    if (Input.GetKeyDown(KeyCode.F))
-                    {
-                        windSource.Play();
-                        state = PlayerState.Flight;
-                        anim.Play("Fly");
-                    }
-                }
-
-                if (Input.GetKeyDown(KeyCode.Space) && !isGrounded && isOnGlidingDistace)
-                {
-                    state = PlayerState.Glide;
-                }
-            }
-
-            #endregion
-
-            if (isHurt)
-            {
-                transform.Translate(-transform.forward * -knockForce / 2 * Time.deltaTime);
-            }
-
-            if (life == 0 && canMove)
-            {
-                canMove = false;
-                anim.SetTrigger("death");
-                AudioManager.PlayDeathAudio();
-            }
-
-            if (isGrounded && !isHurt)
-            {
-                state = PlayerState.Ground;
-                transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0f);
-            }
         }
 
 
@@ -290,8 +295,8 @@ namespace Player
 
         private void Movement()
         {
-            float h = Input.GetAxisRaw("Horizontal");
-            float v = Input.GetAxisRaw("Vertical");
+            var h = Input.GetAxisRaw("Horizontal");
+            var v = Input.GetAxisRaw("Vertical");
 
             direction = new Vector3(h, 0, v);
 
@@ -299,30 +304,17 @@ namespace Player
 
             if (direction.magnitude >= 0.1f)
             {
-                float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.transform.eulerAngles.y;
-                float angle =
+                var targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.transform.eulerAngles.y;
+                var angle =
                     Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref smoothVelocity, turnSmooth);
                 transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
                 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
 
-                if (!Input.GetKey(KeyCode.LeftShift))
-                {
-                    if (controller.enabled)
-                    {
-                        moveDir = moveDir.normalized * speed;
-                        controller.Move(moveDir * Time.deltaTime);
-                    }
-                }
-                else
-                {
-                    if (controller.enabled)
-                    {
-                        anim.SetFloat("speed", direction.magnitude * 2);
-                        moveDir = moveDir.normalized * speed * 2;
-                        controller.Move(moveDir * Time.deltaTime);
-                    }
-                }
+                float currentSpeed = Input.GetKey(KeyCode.LeftShift) ? speed * 2 : speed;
+
+                moveDir = moveDir.normalized * currentSpeed;
+                controller.Move(moveDir * Time.deltaTime);
             }
 
             // jump
@@ -342,33 +334,33 @@ namespace Player
 
         private void Glide()
         {
-            controller.Move(transform.forward * glidingSpeed * Time.deltaTime);
+            controller.Move(transform.forward * (glidingSpeed * Time.deltaTime));
             //velocity.y += gravity * Time.deltaTime;
         }
 
-        private void Flight()
+        private void Flight(float horizontalInput, float verticalInput)
         {
             //Manage Direction and lift forces media character rotation
 
-            currentRotation.x += Input.GetAxis("Vertical") * xSensitivity;
-            currentRotation.x = Mathf.Clamp(currentRotation.x, -80, 80);
+            float rotationLimitX = Mathf.Clamp(currentRotation.x + verticalInput * xSensitivity, -80f, 80f);
+            float rotationLimitZ = 0f;
 
-            currentRotation.z += -Input.GetAxis("Horizontal") * zSensitivity;
-            currentRotation.z = Mathf.Clamp(currentRotation.z, -45, 45);
-
-            currentRotation.y += Input.GetAxis("Horizontal");
-
+            rotationLimitZ = horizontalInput == 0f
+                ? rotationLimitZ = Mathf.Lerp(currentRotation.z, 0f, Time.deltaTime * lerpingSpeed)
+                : rotationLimitZ = Mathf.Clamp(currentRotation.z - horizontalInput * xSensitivity, -45f, 45f);
+                
+            currentRotation = new Vector3(rotationLimitX, currentRotation.y + horizontalInput, rotationLimitZ);
+            
             transform.rotation = Quaternion.Euler(currentRotation);
-
-
+            
             if (currentRotation.magnitude > 0.1f)
             {
-                transform.Rotate(Input.GetAxis("Vertical"), 0.0f, -Input.GetAxis("Horizontal"));
+                transform.Rotate(verticalInput, 0.0f, -horizontalInput);
             }
 
-            controller.Move(transform.forward * forwardSpeed * Time.deltaTime);
+            float currentForwardSpeed = transform.forward.y + forwardSpeed;
+            controller.Move(transform.forward * (currentForwardSpeed * Time.deltaTime));
             forwardSpeed -= transform.forward.y * Time.deltaTime * 35.0f;
-
 
             //Contact with WindBoostItems gameobjects 
             if (isBoosted)
@@ -382,25 +374,20 @@ namespace Player
                 }
             }
 
-            if (!isBoosted)
+            if (forwardSpeed > (isBoosted ? 180 : 85))
             {
-                if (forwardSpeed > 85)
-                {
-                    forwardSpeed = 85;
-                }
-            }
-            else
-            {
-                if (forwardSpeed > 180)
-                {
-                    forwardSpeed = 180;
-                }
+                forwardSpeed = isBoosted ? 180 : 85;
             }
 
             if (forwardSpeed < 65)
             {
                 forwardSpeed = 65;
             }
+        }
+
+        public void boostFlight()
+        {
+            isBoosted = true;
         }
 
         public void StartFlight()
@@ -442,7 +429,7 @@ namespace Player
         {
             GameObject newBullet = Instantiate(bullet, shootPoint.transform.position, transform.rotation);
             Physics.IgnoreCollision(newBullet.GetComponentInChildren<Collider>(), GetComponent<Collider>());
-            canMove = true;
+            isMovementEnabled = true;
         }
 
         public void MeleeAttack()

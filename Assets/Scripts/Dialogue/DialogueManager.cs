@@ -59,7 +59,7 @@ public class DialogueManager : MonoBehaviour
             {
                 GameManager.Instance.treeDialogue.index++;
                 GameManager.Instance.dialoguePanel.SetActive(false);
-                FindObjectOfType<PlayerMovement>().canMove = true;
+                FindObjectOfType<PlayerMovement>().isMovementEnabled = true;
                 Camera.main.transform.GetComponent<CinemachineBrain>().enabled = true;
             }
             else if (GameManager.Instance.partsCollected == 4)

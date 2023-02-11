@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Player;
 using UnityEngine;
@@ -8,17 +9,23 @@ public class BulletController : MonoBehaviour
     public enum bulletType {player, enemy};
     public bulletType type;
     public GameObject particles;
+    private PlayerMovement player;
 
     [Header("Physics")]
     public float speed;
     public float curvature = 5;
-    private Rigidbody rb;        
+    private Rigidbody rb;
+
+    private void Awake()
+    {
+        player = GameManager.Instance.GetPlayer();
+    }
 
     // Start is called before the first frame update
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        if (!FindObjectOfType<PlayerMovement>().isFlying)
+        if (!player.IsFlying)
         {
             rb.AddForce(transform.forward.normalized * speed, ForceMode.Impulse);
             rb.AddForce(transform.up * curvature, ForceMode.Impulse);
